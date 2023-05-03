@@ -1,7 +1,11 @@
 import React from 'react';
+import { NavBar } from '../../Components/Navbar/index';
 
-export const App = () =>  {
+export const RenderScale = () =>  {
   return ( 
-    <h1>Hello</h1>   
+    <>
+      <NavBar/>
+      <h1>Hello</h1>   
+    </>
   );
 }
