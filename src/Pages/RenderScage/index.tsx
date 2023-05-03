@@ -5,7 +5,6 @@ export const RenderScale = () =>  {
   return ( 
     <>
       <NavBar/>
-      <h1>Hello</h1>   
     </>
   );
 }

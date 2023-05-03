@@ -1,9 +1,20 @@
 import React from "react"
+import { Container } from "./style"
 
 
 export const NavBar = () => {
 
   return (
-    <h1>NavBar</h1>
+    <Container>
+      <h4
+        style={{
+          fontFamily: 'Dosis',
+          color: '#FFFFFF', 
+          fontWeight: '100',
+          margin: 'inherit',
+          fontSize: 'xx-large'
+        }}
+      >Pascom</h4>
+    </Container>    
   )
 }
