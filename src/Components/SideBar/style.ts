@@ -11,6 +11,8 @@ export const SidebarContainer = styled.div`
   position: fixed;
   width: 25%;
   margin-top: 4rem;
-  display: flex;
+  /* display: flex;
   justify-content: space-around;
+  flex-direction: column; */
+  padding: 30px;
 `;
