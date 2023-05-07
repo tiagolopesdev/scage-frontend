@@ -7,4 +7,6 @@ export const SidebarContainer = styled.div`
   position: fixed;
   width: 25%;
   margin-top: 4rem;
+  display: flex;
+  justify-content: space-around;
 `;
