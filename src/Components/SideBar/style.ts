@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+export const Search = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 export const SidebarContainer = styled.div`
   background-color: #d1d1d1;
