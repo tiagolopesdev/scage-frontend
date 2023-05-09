@@ -41,9 +41,12 @@ export const SideBar = () => {
       <div
         style={{
           marginTop: '15%',
+          scrollBehavior: 'smooth',
+          overflowY: 'scroll',
+          height: '60%'
         }}
       >
-        <User/>
+        <User users={users} />
       </div>
     </SidebarContainer>
   )
