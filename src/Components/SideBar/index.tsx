@@ -56,16 +56,9 @@ export const SideBar = () => {
           <Icon src={String(IconFilter)} />
         </IconButton>
       </Search>
-      <div
-        style={{
-          marginTop: '15%',
-          scrollBehavior: 'smooth',
-          overflowY: 'scroll',
-          height: '60%'
-        }}
-      >
+      <ScroolCustom>
         <User users={users} />
-      </div>
+      </ScroolCustom>
     </SidebarContainer>
   )
 }
