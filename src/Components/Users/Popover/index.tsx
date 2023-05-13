@@ -18,8 +18,8 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
 
   const { id, anchorEl, open, setAnchorEl, user } = props
 
-  const [optionMasc, setOptionMasc] = useState(user.sex === 0 ? true : false);
-  const [optionFem, setOptionFem] = useState(user.sex === 1 ? true : false);
+  const [optionMasc, setOptionMasc] = useState(user.sex === Sex.MASCULINO ? true : false);
+  const [optionFem, setOptionFem] = useState(user.sex === Sex.FEMININO ? true : false);
 
   const StyleButtonCustom = (styleCustom?: any) => ({
     borderRadius: '15px',
