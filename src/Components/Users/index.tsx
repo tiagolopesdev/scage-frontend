@@ -24,8 +24,6 @@ export const User = (usersProps: IUsersProps) => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  // console.log('id ', id)
-
   const renderUsers = () => {
     return (
       users.map((user, index) => {
