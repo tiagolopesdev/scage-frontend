@@ -2,6 +2,7 @@ import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
+import { ButtonContainer, TextFieldContainer } from './style';
 
 interface IManipulationUserProps {
   id: string | undefined,
@@ -14,55 +15,54 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
 
   const { id, anchorEl, open, setAnchorEl } = props
 
+  const StyleButtonCustom = (styleCustom?: any) => ({
+    borderRadius: '15px',
+    fontFamily: 'Dosis',
+    textTransform: 'none',
+    fontSize: '1rem',
+    fontWeight: '600',
+    padding: '0px',
+    ...styleCustom
+  })
+
   return (
     <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={() => { setAnchorEl(null) }}
-        anchorOrigin={{
-          vertical: 'center',
-          horizontal: 'left',
-        }}
-      >
-        <div style={{ minWidth: '17rem' }}>
-          <div
-            style={{
-              margin: '0px 20px 15px 20px',
-              display: 'flex',
-              flexDirection: 'column-reverse'
-            }}
-          >
-            <TextField style={{ marginTop: '20px' }} id="standard-basic" label="Sexo" variant="standard" />
-            <TextField style={{ marginTop: '20px' }} id="standard-basic" label="E-mail" variant="standard" />
-            <TextField style={{ marginTop: '20px' }} id="standard-basic" label="Nome" variant="standard" />
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              margin: '30px 20px 15px 20px',
-            }}
-          >
-            <Button
-              variant="outlined"
-              size='small'
-              color='error'
-              onClick={() => { setAnchorEl(null) }}
-              fullWidth
-            >Cancelar</Button>
-            <Button
-              style={{
-                marginLeft: '20px'
-              }}
-              variant="contained"
-              color='primary'
-              size='small'
-              onClick={() => { setAnchorEl(null) }}
-              fullWidth
-            >Salvar</Button>
-          </div>
-        </div>
-      </Popover>
+      id={id}
+      open={open}
+      anchorEl={anchorEl}
+      onClose={() => { setAnchorEl(null) }}
+      anchorOrigin={{
+        vertical: 'center',
+        horizontal: 'left',
+      }}
+    >
+      <div style={{ minWidth: '17rem' }}>
+        <TextFieldContainer>
+          <TextField style={{ marginTop: '20px' }} id="standard-basic" label="Sexo" variant="standard" />
+          <TextField style={{ marginTop: '20px' }} id="standard-basic" label="E-mail" variant="standard" />
+          <TextField style={{ marginTop: '20px' }} id="standard-basic" label="Nome" variant="standard" />
+        </TextFieldContainer>
+        <ButtonContainer>
+          <Button
+            variant="outlined"
+            size='small'
+            color='error'
+            onClick={() => { setAnchorEl(null) }}
+            fullWidth
+            style={StyleButtonCustom()}
+          >Cancelar</Button>
+          <Button
+            style={StyleButtonCustom({
+              marginLeft: '20px',
+              backgroundColor: 'rgb(14, 202, 101)',
+            })}
+            variant="contained"
+            size='small'
+            onClick={() => { setAnchorEl(null) }}
+            fullWidth
+          >Salvar</Button>
+        </ButtonContainer>
+      </div>
+    </Popover>
   );
 }
