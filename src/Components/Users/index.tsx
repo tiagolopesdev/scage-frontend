@@ -16,6 +16,7 @@ export const User = (usersProps: IUsersProps) => {
   const { users } = usersProps;
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [userManipulation, setUserManipulation] = useState<IUser>();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -26,7 +27,7 @@ export const User = (usersProps: IUsersProps) => {
 
   const renderUsers = () => {
     return (
-      users.map((user, index) => {
+      users.map((user) => {
         return (
             <Card
               style={{
@@ -71,6 +72,7 @@ export const User = (usersProps: IUsersProps) => {
                   >
                     <Icon
                       src={String(IconUserEdit)}
+                      onClick={() => { setUserManipulation(user) }}
                     />
                   </IconButton>
                   <IconButton>
@@ -93,6 +95,7 @@ export const User = (usersProps: IUsersProps) => {
           anchorEl={anchorEl}
           open={open}
           setAnchorEl={setAnchorEl}
+          user={userManipulation as IUser}
         /> : ''
       }
     </>

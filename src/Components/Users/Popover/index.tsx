@@ -3,17 +3,21 @@ import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
 import { ButtonContainer, TextFieldContainer } from './style';
+import { IUser } from '../../../@types/IUser';
 
 interface IManipulationUserProps {
   id: string | undefined,
   open: boolean,
   anchorEl: HTMLButtonElement | null,
   setAnchorEl: React.Dispatch<React.SetStateAction<HTMLButtonElement | null>>
+  user: IUser
 }
 
 export const ManipulationUser = (props: IManipulationUserProps) => {
 
-  const { id, anchorEl, open, setAnchorEl } = props
+  const { id, anchorEl, open, setAnchorEl, user } = props
+
+  console.log('User ', user)
 
   const StyleButtonCustom = (styleCustom?: any) => ({
     borderRadius: '15px',
@@ -38,9 +42,9 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
     >
       <div style={{ minWidth: '17rem' }}>
         <TextFieldContainer>
-          <TextField style={{ marginTop: '20px' }} id="standard-basic" label="Sexo" variant="standard" />
-          <TextField style={{ marginTop: '20px' }} id="standard-basic" label="E-mail" variant="standard" />
-          <TextField style={{ marginTop: '20px' }} id="standard-basic" label="Nome" variant="standard" />
+          <TextField defaultValue={user.sex}  style={{ marginTop: '20px' }} id="standard-basic" label="Sexo" variant="standard" />
+          <TextField defaultValue={user.email} style={{ marginTop: '20px' }} id="standard-basic" label="E-mail" variant="standard" />
+          <TextField defaultValue={user.name} style={{ marginTop: '20px' }} id="standard-basic" label="Nome" variant="standard" />
         </TextFieldContainer>
         <ButtonContainer>
           <Button
