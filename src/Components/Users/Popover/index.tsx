@@ -14,23 +14,8 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
 
   const { id, anchorEl, open, setAnchorEl } = props
 
-  // const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-
-  // const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-
-  // const open = Boolean(anchorEl);
-  // const id = open ? 'simple-popover' : undefined;
-
-  console.log('Open ', id)
-
   return (
-    <div>
-      {/* <Button aria-describedby={id} variant="contained" onClick={handleClick}>
-        Open Popover
-      </Button> */}
-      <Popover
+    <Popover
         id={id}
         open={open}
         anchorEl={anchorEl}
@@ -79,6 +64,5 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
           </div>
         </div>
       </Popover>
-    </div>
   );
 }
