@@ -1,6 +1,13 @@
+import { IUser } from "../../@types/IUser";
 import { Sex } from "../../@types/Sex";
 import { userChannel } from "../Bases/api"
 
+
+export const updateUser = async (user: IUser) => {
+  return await userChannel.put('api/User/updateUser', user)
+    .then((response) => response.data.message)
+    .catch((error) => error.response.data)
+}
 
 export const getAllUsersByFiltersService = async (name: string, sex?: Sex) => {
 
