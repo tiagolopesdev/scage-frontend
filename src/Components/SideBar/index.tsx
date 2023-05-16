@@ -1,18 +1,20 @@
-import { ScroolCustom, Search, SidebarContainer } from "./style"
+import { ScroolCustom, Search, SidebarContainer } from "../Users/style"
 import { Input } from "../Input"
 import { IconButton } from "@mui/material"
 import IconFilter from "../../Assets/filter_search.svg"
 import { Icon } from "../Img"
-import { User } from "../Users"
+import { User } from "../Users/user"
 import { useEffect, useState } from "react"
 import { getAllUsersByFiltersService, getAllUsersService } from "../../Services/Users"
 import { IUser } from "../../@types/IUser"
+import { UserListFloating } from "../Users/user-list-floating"
 
 
 export const SideBar = () => {
 
   const [users, setUsers] = useState<IUser[]>([]);
   const [nameToFilter, setNameToFilter] = useState('');
+  const [userWasManipuled, setUserWasManipuled] = useState(false);
 
   const getAllUsers = async () => {
     try {
@@ -34,7 +36,7 @@ export const SideBar = () => {
 
       const responseApi: IUser[] = await getAllUsersByFiltersService(nameToFilter);
 
-      setUsers(responseApi);      
+      setUsers(responseApi);
 
     } catch (expection) {
 
@@ -43,22 +45,9 @@ export const SideBar = () => {
 
   useEffect(() => {
     nameToFilter ? getUsersByFilter() : getAllUsers()
-  }, [nameToFilter])
+  }, [nameToFilter, userWasManipuled])
 
   return (
-    <SidebarContainer>      
-      <Search>
-        <Input
-          label="Digite o nome do servo"
-          onChange={(event: any) => { setNameToFilter(event.target.value) }}
-        />
-        <IconButton>
-          <Icon src={String(IconFilter)} />
-        </IconButton>
-      </Search>
-      <ScroolCustom>
-        <User users={users} />
-      </ScroolCustom>
-    </SidebarContainer>
+    <UserListFloating/>
   )
 }
