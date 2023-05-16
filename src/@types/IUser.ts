@@ -1,7 +1,8 @@
-import { Sex } from "./Sex";
 
 export interface IUser {
+  id?: string,
   name: string,
   email: string,
-  sex: Sex
+  sex: string,
+  isEnable?: boolean
 }
