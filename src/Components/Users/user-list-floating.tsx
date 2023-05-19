@@ -1,6 +1,6 @@
 import { ScroolCustom, Search, SidebarContainer } from "./style"
 import { Input } from "../Input"
-import { IconButton } from "@mui/material"
+import { Button, IconButton } from "@mui/material"
 import IconFilter from "../../Assets/filter_search.svg"
 import { Icon } from "../Img"
 import { User } from "../Users/user"
@@ -37,6 +37,16 @@ export const UserListFloating = () => {
     if (userWasManipuled) setUserWasManipuled(false)
   }, [nameToFilter, userWasManipuled])
 
+  const StyleButtonCustom = (styleCustom?: any) => ({
+    borderRadius: '12px',
+    fontFamily: 'Dosis',
+    textTransform: 'none',
+    fontSize: '1rem',
+    fontWeight: '600',
+    padding: '3px',
+    ...styleCustom
+  })
+
   return (
     <SidebarContainer>
       <Search>
@@ -55,6 +65,13 @@ export const UserListFloating = () => {
           </>
         })}
       </ScroolCustom>
+      <Button
+        style={StyleButtonCustom({ marginTop: '15px', backgroundColor: 'rgb(14, 202, 101)' })}
+        variant="contained"
+        size='small'
+        onClick={() => { }}
+        fullWidth
+      >Adicionar novo servo</Button>
     </SidebarContainer>
   )
 }
