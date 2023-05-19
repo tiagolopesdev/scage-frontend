@@ -5,7 +5,7 @@ import { ButtonContainer, TextFieldContainer } from './style';
 import { IUser } from '../../../@types/IUser';
 import { Sex } from '../../../@types/Sex';
 import { Dispatch, useState } from 'react';
-import { updateUser } from '../../../Services/Users';
+import { createUser, updateUser } from '../../../Services/Users';
 import toast, { Toaster } from 'react-hot-toast';
 
 interface IManipulationUserProps {
@@ -39,7 +39,7 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
     }
   }
 
-  const editUser = async () => {
+  const handlerUser = async () => {
     try {
 
       const userToEdit: IUser = {
@@ -50,7 +50,9 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
         isEnable: userManipulation.isEnable,
       }
 
-      const responseApi = await updateUser(userToEdit);
+      const responseApi = user ? 
+        await updateUser(userToEdit) :
+        await createUser(userToEdit);
 
       //TODO -> Customizar o toast para font usada no projeto
       toast.success(responseApi)
@@ -157,7 +159,7 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
             })}
             variant="contained"
             size='small'
-            onClick={() => { editUser() }}
+            onClick={() => { handlerUser() }}
             fullWidth
           >Salvar</Button>
         </ButtonContainer>
