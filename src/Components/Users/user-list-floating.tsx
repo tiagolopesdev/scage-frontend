@@ -7,6 +7,7 @@ import { User } from "../Users/user"
 import { useEffect, useState } from "react"
 import { getAllUsersByFiltersService, getAllUsersService } from "../../Services/Users"
 import { IUser } from "../../@types/IUser"
+import { ManipulationUser } from "./Popover"
 
 
 export const UserListFloating = () => {
@@ -14,6 +15,14 @@ export const UserListFloating = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [nameToFilter, setNameToFilter] = useState('');
   const [userWasManipuled, setUserWasManipuled] = useState(false);
+
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   const managementFindUsers = async () => {
     try {
@@ -69,9 +78,18 @@ export const UserListFloating = () => {
         style={StyleButtonCustom({ marginTop: '15px', backgroundColor: 'rgb(14, 202, 101)' })}
         variant="contained"
         size='small'
-        onClick={() => { }}
+        onClick={handleClick}
         fullWidth
       >Adicionar novo servo</Button>
+      {open ?
+        <ManipulationUser
+          id={id}
+          anchorEl={anchorEl}
+          open={open}
+          setAnchorEl={setAnchorEl}
+          setUserWasManipuled={setUserWasManipuled}
+        /> : ''
+      }
     </SidebarContainer>
   )
 }
