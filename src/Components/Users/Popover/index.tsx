@@ -52,11 +52,13 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
 
       const responseApi = await updateUser(userToEdit);
 
+      //TODO -> Customizar o toast para font usada no projeto
       toast.success(responseApi)
       
-      setAnchorEl(null)
-      setUserWasManipuled(true);
-      
+      setTimeout(() => {
+        setAnchorEl(null)
+        setUserWasManipuled(true);
+      }, 2000)
     } catch (error: any) {
       console.log('Error ', error)
       toast.error(error)
