@@ -2,6 +2,11 @@ import { IUser } from "../../@types/IUser";
 import { Sex } from "../../@types/Sex";
 import { userChannel } from "../Bases/api"
 
+export const createUser = async (user: IUser) => {
+  return await userChannel.post('api/User/createUser', user)
+    .then((response) => response.data.message)
+    .catch((error) => error.response.data)
+}
 
 export const updateUser = async (user: IUser) => {
   return await userChannel.put('api/User/updateUser', user)
