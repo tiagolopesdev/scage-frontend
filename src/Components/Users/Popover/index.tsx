@@ -24,10 +24,10 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
   const [optionMasc, setOptionMasc] = useState(user?.sex === Sex.MASCULINO ? true : false);
   const [optionFem, setOptionFem] = useState(user?.sex === Sex.FEMININO ? true : false);
   const [userManipulation, setUserManipulation] = useState<IUser>({
-    id: user?.id,
-    email: user?.email,
-    name: user?.name,
-    sex: user?.sex,
+    id: user?.id ?? '',
+    email: user?.email ?? '',
+    name: user?.name ?? '',
+    sex: user?.sex ?? '',
     isEnable: true
   });
 
@@ -95,24 +95,32 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
                 <Radio
                   checked={optionMasc}
                   onClick={() => {
+                    if (!optionMasc && !optionFem) {
+                      setOptionMasc(!optionMasc)
+                      return
+                    }                    
                     setOptionMasc(!optionMasc)
                     setOptionFem(!optionFem)
                   }}
+                  />
+                }
                 />
-              }
-            />
             <FormControlLabel
               label={Sex.FEMININO.toString()}
               control={
                 <Radio
-                  checked={optionFem}
-                  onClick={() => {
+                checked={optionFem}
+                onClick={() => {
+                  if (!optionMasc && !optionFem) {
                     setOptionFem(!optionFem)
-                    setOptionMasc(!optionMasc)
-                  }}
+                    return
+                  }
+                  setOptionFem(!optionFem)
+                  setOptionMasc(!optionMasc)
+                }}
                 />
               }
-            />
+              />
           </RadioGroup>
           <TextField
             label="E-mail"
