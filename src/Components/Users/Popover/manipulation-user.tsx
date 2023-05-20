@@ -1,12 +1,12 @@
 import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
-import { FormControlLabel, Radio, RadioGroup, TextField, duration } from '@mui/material';
+import { FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
 import { ButtonContainer, TextFieldContainer } from './style';
 import { IUser } from '../../../@types/IUser';
 import { Sex } from '../../../@types/Sex';
 import { Dispatch, useState } from 'react';
 import { createUser, updateUser } from '../../../Services/Users';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { CustomToast } from '../../CustomToast';
 
 interface IManipulationUserProps {
