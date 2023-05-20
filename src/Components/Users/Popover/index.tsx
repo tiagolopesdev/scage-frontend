@@ -51,19 +51,26 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
         isEnable: userManipulation.isEnable,
       }
 
-      const responseApi = user ? 
+      const responseApi = user ?
         await updateUser(userToEdit) :
         await createUser(userToEdit);
 
-      CustomToast()
-
+      CustomToast({
+        duration: 2000,
+        message: responseApi,
+        isError: false
+      });
+      
       setTimeout(() => {
         setAnchorEl(null)
         setUserWasManipuled(true);
       }, 2000)
     } catch (error: any) {
-      console.log('Error ', error)
-      toast.error(error)
+      CustomToast({
+        duration: 2000,
+        message: error,
+        isError: true
+      });
     }
   }
 
