@@ -1,12 +1,13 @@
 import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
-import { FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
+import { FormControlLabel, Radio, RadioGroup, TextField, duration } from '@mui/material';
 import { ButtonContainer, TextFieldContainer } from './style';
 import { IUser } from '../../../@types/IUser';
 import { Sex } from '../../../@types/Sex';
 import { Dispatch, useState } from 'react';
 import { createUser, updateUser } from '../../../Services/Users';
 import toast, { Toaster } from 'react-hot-toast';
+import { CustomToast } from '../../CustomToast';
 
 interface IManipulationUserProps {
   id: string | undefined,
@@ -54,9 +55,8 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
         await updateUser(userToEdit) :
         await createUser(userToEdit);
 
-      //TODO -> Customizar o toast para font usada no projeto
-      toast.success(responseApi)
-      
+      CustomToast()
+
       setTimeout(() => {
         setAnchorEl(null)
         setUserWasManipuled(true);
@@ -102,29 +102,29 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
                     if (!optionMasc && !optionFem) {
                       setOptionMasc(!optionMasc)
                       return
-                    }                    
+                    }
                     setOptionMasc(!optionMasc)
                     setOptionFem(!optionFem)
                   }}
-                  />
-                }
                 />
+              }
+            />
             <FormControlLabel
               label={Sex.FEMININO.toString()}
               control={
                 <Radio
-                checked={optionFem}
-                onClick={() => {
-                  if (!optionMasc && !optionFem) {
+                  checked={optionFem}
+                  onClick={() => {
+                    if (!optionMasc && !optionFem) {
+                      setOptionFem(!optionFem)
+                      return
+                    }
                     setOptionFem(!optionFem)
-                    return
-                  }
-                  setOptionFem(!optionFem)
-                  setOptionMasc(!optionMasc)
-                }}
+                    setOptionMasc(!optionMasc)
+                  }}
                 />
               }
-              />
+            />
           </RadioGroup>
           <TextField
             label="E-mail"
