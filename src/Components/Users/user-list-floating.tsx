@@ -7,7 +7,8 @@ import { User } from "../Users/user"
 import { useEffect, useState } from "react"
 import { getAllUsersByFiltersService, getAllUsersService } from "../../Services/Users"
 import { IUser } from "../../@types/IUser"
-import { ManipulationUser } from "./Popover"
+import { ManipulationUser } from "./Popover/manipulation-user"
+import { FilterUser } from "./Popover/filter-user"
 
 
 export const UserListFloating = () => {
@@ -16,12 +17,18 @@ export const UserListFloating = () => {
   const [nameToFilter, setNameToFilter] = useState('');
   const [userWasManipuled, setUserWasManipuled] = useState(false);
 
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const [anchorManipulationPopover, setAnchorManipulationPopover] = useState<HTMLButtonElement | null>(null);
+  const openManipulationPopover = Boolean(anchorManipulationPopover);
+  const idManipulation = openManipulationPopover ? 'simple-popover-manipulation' : undefined;
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const [anchorFilterPopover, setAnchorFilterPopover] = useState<HTMLButtonElement | null>(null);
+  const openFilterPopover = Boolean(anchorFilterPopover);
+  const idFilter = openFilterPopover ? 'simple-popover-filter' : undefined;
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>, popoverManipulation: boolean) => {
+    popoverManipulation ?
+      setAnchorManipulationPopover(event.currentTarget) :
+      setAnchorFilterPopover(event.currentTarget);
   };
 
   const managementFindUsers = async () => {
@@ -63,7 +70,9 @@ export const UserListFloating = () => {
           label="Digite o nome do servo"
           onChange={(event: any) => { setNameToFilter(event.target.value) }}
         />
-        <IconButton>
+        <IconButton
+          onClick={(event: any) => { handleClick(event, false) }}
+        >
           <Icon src={String(IconFilter)} />
         </IconButton>
       </Search>
@@ -78,16 +87,24 @@ export const UserListFloating = () => {
         style={StyleButtonCustom({ marginTop: '15px', backgroundColor: 'rgb(14, 202, 101)' })}
         variant="contained"
         size='small'
-        onClick={handleClick}
+        onClick={(event: any) => { handleClick(event, true) }}
         fullWidth
       >Adicionar novo servo</Button>
-      {open ?
+      {openManipulationPopover ?
         <ManipulationUser
-          id={id}
-          anchorEl={anchorEl}
-          open={open}
-          setAnchorEl={setAnchorEl}
+          id={idManipulation}
+          anchorEl={anchorManipulationPopover}
+          open={openManipulationPopover}
+          setAnchorEl={setAnchorManipulationPopover}
           setUserWasManipuled={setUserWasManipuled}
+        /> : ''
+      }
+      {openFilterPopover ?
+        <FilterUser
+          id={idFilter}
+          anchorEl={anchorFilterPopover}
+          open={openFilterPopover}
+          setAnchorEl={setAnchorFilterPopover}
         /> : ''
       }
     </SidebarContainer>
