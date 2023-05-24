@@ -15,6 +15,7 @@ export const UserListFloating = () => {
 
   const [users, setUsers] = useState<IUser[]>([]);
   const [nameToFilter, setNameToFilter] = useState('');
+  const [sexFilter, setSexFilter] = useState('');
   const [userWasManipuled, setUserWasManipuled] = useState(false);
 
   const [anchorManipulationPopover, setAnchorManipulationPopover] = useState<HTMLButtonElement | null>(null);
@@ -34,8 +35,8 @@ export const UserListFloating = () => {
   const managementFindUsers = async () => {
     try {
 
-      const responseApi: IUser[] = nameToFilter ?
-        await getAllUsersByFiltersService(nameToFilter) :
+      const responseApi: IUser[] = nameToFilter || sexFilter ?
+        await getAllUsersByFiltersService(nameToFilter, sexFilter) :
         await getAllUsersService();
 
       setUsers(responseApi);
@@ -51,7 +52,7 @@ export const UserListFloating = () => {
   useEffect(() => {
     managementFindUsers()
     if (userWasManipuled) setUserWasManipuled(false)
-  }, [nameToFilter, userWasManipuled])
+  }, [nameToFilter, userWasManipuled, sexFilter])
 
   const StyleButtonCustom = (styleCustom?: any) => ({
     borderRadius: '12px',
@@ -105,6 +106,7 @@ export const UserListFloating = () => {
           anchorEl={anchorFilterPopover}
           open={openFilterPopover}
           setAnchorEl={setAnchorFilterPopover}
+          setSexSelected={setSexFilter}
         /> : ''
       }
     </SidebarContainer>
