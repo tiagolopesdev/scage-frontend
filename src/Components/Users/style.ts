@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+export const BadgeSizeFixed = styled.div`
+  height: 7%;
+`
+
 export const ScroolCustom = styled.div`
   margin-top: 5%;
   scroll-behavior: smooth;

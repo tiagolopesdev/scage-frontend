@@ -1,4 +1,4 @@
-import { ScroolCustom, Search, SidebarContainer } from "./style"
+import { BadgeSizeFixed, ScroolCustom, Search, SidebarContainer } from "./style"
 import { Input } from "../Input"
 import { Button, Chip, IconButton } from "@mui/material"
 import IconFilter from "../../Assets/filter_search.svg"
@@ -77,15 +77,17 @@ export const UserListFloating = () => {
           <Icon src={String(IconFilter)} />
         </IconButton>
       </Search>
-      {sexFilter ?
-        <Chip
-          style={{
-            marginTop: '10px'
-          }}
-          label={sexFilter}
-          onDelete={() => { setSexFilter('') }} /> :
-        ''
-      }
+      <BadgeSizeFixed>
+        {sexFilter ?
+          <Chip
+            style={{
+              marginTop: '10px'
+            }}
+            label={sexFilter}
+            onDelete={() => { setSexFilter('') }} /> :
+          ''
+        }        
+      </BadgeSizeFixed>
       <ScroolCustom>
         {users.map((user) => {
           return <>
