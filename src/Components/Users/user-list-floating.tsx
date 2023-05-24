@@ -1,6 +1,6 @@
 import { ScroolCustom, Search, SidebarContainer } from "./style"
 import { Input } from "../Input"
-import { Button, IconButton } from "@mui/material"
+import { Button, Chip, IconButton } from "@mui/material"
 import IconFilter from "../../Assets/filter_search.svg"
 import { Icon } from "../Img"
 import { User } from "../Users/user"
@@ -77,6 +77,15 @@ export const UserListFloating = () => {
           <Icon src={String(IconFilter)} />
         </IconButton>
       </Search>
+      {sexFilter ?
+        <Chip
+          style={{
+            marginTop: '10px'
+          }}
+          label={sexFilter}
+          onDelete={() => { setSexFilter('') }} /> :
+        ''
+      }
       <ScroolCustom>
         {users.map((user) => {
           return <>
