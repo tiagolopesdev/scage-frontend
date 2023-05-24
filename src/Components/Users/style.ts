@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 export const ScroolCustom = styled.div`
-  margin-top: 15%;
+  margin-top: 5%;
   scroll-behavior: smooth;
   overflow-y: scroll;
-  height: 60%;
+  height: 58%;
   padding-right: 2%;
 
   ::-webkit-scrollbar {
