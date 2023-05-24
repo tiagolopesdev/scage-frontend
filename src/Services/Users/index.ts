@@ -14,9 +14,15 @@ export const updateUser = async (user: IUser) => {
     .catch((error) => error.response.data)
 }
 
-export const getAllUsersByFiltersService = async (name: string, sex?: Sex) => {
+export const getAllUsersByFiltersService = async (name?: string, sex?: string) => {
 
-  const uri = sex ? `name=${name}&sex=${sex}` : `name=${name}`
+  var uri: string = '';
+
+  if (name && sex) {
+    uri = `name=${name}&sex=${sex}`
+  } else {
+    uri = sex ? `sex=${sex}` : `name=${name}`
+  }
 
   return await userChannel.get(`api/User/filters?${uri}`)
     .then((response) => response.data.data)
