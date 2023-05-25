@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavBar } from '../../Components/Navbar';
-import { SideBar } from '../../Components/SideBar';
+import { UserListFloating } from '../../Components/Users/user-list-floating';
 
 export const RenderScale = () =>  {
   return ( 
@@ -11,7 +11,7 @@ export const RenderScale = () =>  {
       }}
     >
       <NavBar/>
-      <SideBar/>
+      <UserListFloating/>
     </div>
   );
 }
