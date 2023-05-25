@@ -1,4 +1,4 @@
-import { Button, FormControlLabel, Popover, Radio, RadioGroup, TextField } from "@mui/material";
+import { Button, FormControlLabel, Popover, Radio, RadioGroup } from "@mui/material";
 import { ButtonContainer, TextFieldContainer } from "./style";
 import { Sex } from "../../../@types/Sex";
 import { useState } from "react";
