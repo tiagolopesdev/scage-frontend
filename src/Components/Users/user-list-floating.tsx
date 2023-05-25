@@ -9,6 +9,7 @@ import { getAllUsersByFiltersService, getAllUsersService } from "../../Services/
 import { IUser } from "../../@types/IUser"
 import { ManipulationUser } from "./Popover/manipulation-user"
 import { FilterUser } from "./Popover/filter-user"
+import { CustomToast } from "../CustomToast"
 
 
 export const UserListFloating = () => {
@@ -42,12 +43,13 @@ export const UserListFloating = () => {
       setUsers(responseApi);
 
     } catch (exception) {
+      CustomToast({
+        duration: 2000,
+        isError: true,
+        message: 'Não foi possível obter usuários'
+      })
     }
   }
-
-  useEffect(() => {
-    managementFindUsers()
-  }, [])
 
   useEffect(() => {
     managementFindUsers()
