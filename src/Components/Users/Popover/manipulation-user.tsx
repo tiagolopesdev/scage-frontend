@@ -32,14 +32,6 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
     isEnable: true
   });
 
-  const identificationTypeSex = () => {
-    if (optionMasc) {
-      return Sex.MASCULINO
-    } else {
-      return Sex.FEMININO
-    }
-  }
-
   const handlerUser = async () => {
     try {
 
@@ -47,7 +39,7 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
         id: userManipulation.id,
         name: userManipulation.name,
         email: userManipulation.email,
-        sex: identificationTypeSex(),
+        sex: optionMasc ? Sex.MASCULINO : Sex.FEMININO,
         isEnable: userManipulation.isEnable,
       }
 
