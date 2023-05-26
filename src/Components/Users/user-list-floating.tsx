@@ -1,6 +1,6 @@
 import { BadgeSizeFixed, ScroolCustom, Search, SidebarContainer } from "./style"
 import { Input } from "../Input"
-import { Button, Chip, IconButton } from "@mui/material"
+import { Button, Chip, IconButton, Skeleton } from "@mui/material"
 import IconFilter from "../../Assets/filter_search.svg"
 import { Icon } from "../Img"
 import { User } from "../Users/user"
@@ -36,12 +36,16 @@ export const UserListFloating = () => {
   const managementFindUsers = async () => {
     try {
 
-      const responseApi: IUser[] = nameToFilter || sexFilter ?
-        await getAllUsersByFiltersService(nameToFilter, sexFilter) :
-        await getAllUsersService();
+      var responseApi: IUser[] = [];
+
+      if (nameToFilter === '' || sexFilter === '') {
+        responseApi = await getAllUsersService();        
+      } else {
+        responseApi = await getAllUsersByFiltersService(nameToFilter, sexFilter)
+      }
 
       setUsers(responseApi);
-
+      
     } catch (exception) {
       CustomToast({
         duration: 2000,
@@ -66,6 +70,22 @@ export const UserListFloating = () => {
     ...styleCustom
   })
 
+  const managerUserRender = () => {
+    if (users.length > 0) {
+      return <>
+        {users.map((user) => {
+            return <>
+              <User user={user} setUserWasManipuled={setUserWasManipuled} />
+            </>
+          })}      
+      </>
+    } else {
+      return (
+        <Skeleton variant="rounded" width={330} height={380} />
+      )
+    }
+  }
+
   return (
     <SidebarContainer>
       <Search>
@@ -88,14 +108,10 @@ export const UserListFloating = () => {
             label={sexFilter}
             onDelete={() => { setSexFilter('') }} /> :
           ''
-        }        
+        }
       </BadgeSizeFixed>
       <ScroolCustom>
-        {users.map((user) => {
-          return <>
-            <User user={user} setUserWasManipuled={setUserWasManipuled} />
-          </>
-        })}
+        { managerUserRender() }
       </ScroolCustom>
       <Button
         style={StyleButtonCustom({ marginTop: '15px', backgroundColor: 'rgb(14, 202, 101)' })}
