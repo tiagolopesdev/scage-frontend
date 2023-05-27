@@ -10,6 +10,7 @@ export const Icon = (props: IActionIconProps) => {
         width: '20px'
       }}
       {...props}
+      alt="icon feedback"
     />
   )
 }
