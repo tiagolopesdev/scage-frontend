@@ -15,17 +15,14 @@ export const CustomToast = (props: ICustomToast) => {
 
   const typeIconDisplay = isError ? String(iconError) : String(iconSuccess);
 
-  const displayToast = () => {
-    return toast.custom(
-      <ToastContainer>
-        <img src={typeIconDisplay}
-          style={{ width: '25px', marginLeft: '15px' }}
-        />
-        <TextStyle>{message}</TextStyle>
-      </ToastContainer>,
-      { duration: duration }
-    )
-  }
-
-  return <> {displayToast()} </>
+  return toast.custom(
+    <ToastContainer>
+      <img src={typeIconDisplay}
+        style={{ width: '25px', marginLeft: '15px' }}
+        alt={message}
+      />
+      <TextStyle>{message}</TextStyle>
+    </ToastContainer>,
+    { duration }
+  )
 }
