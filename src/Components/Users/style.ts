@@ -32,7 +32,8 @@ export const SidebarContainer = styled.div`
   background-color: #d1d1d1;
   height: 100%;
   position: fixed;
-  width: 25%;
-  margin-top: 4rem;
+  width: 350px;
+  top: 4rem;
+  right: 0;
   padding: 30px;
 `;
