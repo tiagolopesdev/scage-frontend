@@ -6,17 +6,16 @@ import { Card, CardActions, CardContent, IconButton, Typography } from "@mui/mat
 import { IUser } from "../../@types/IUser"
 import { ManipulationUser } from "./Popover/manipulation-user"
 import { Dispatch, useState } from "react"
-import { updateUser } from "../../Services/Users"
-import toast from "react-hot-toast"
 
 interface IUsersProps {
   user: IUser,
-  setUserWasManipuled: Dispatch<React.SetStateAction<boolean>>
+  setUserWasManipuled: Dispatch<React.SetStateAction<boolean>>,
+  onDelete: (user: IUser) => Promise<void>
 }
 
 export const User = (usersProps: IUsersProps) => {
 
-  const { user, setUserWasManipuled } = usersProps;
+  const { user, setUserWasManipuled, onDelete } = usersProps;
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [userManipulation, setUserManipulation] = useState<IUser>();
@@ -27,30 +26,6 @@ export const User = (usersProps: IUsersProps) => {
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
-
-  const deleteUser = async () => {
-    try {
-
-      const userToEdit: IUser = {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        sex: user.sex,
-        isEnable: false,
-      }
-
-      const responseApi = await updateUser(userToEdit);
-
-      toast.success(responseApi)      
-      
-      setAnchorEl(null)
-      setUserWasManipuled(true);
-      
-    } catch (error: any) {
-      console.log('Error ', error)
-      toast.error(error)
-    }
-  }
 
   return (
     <>
@@ -102,7 +77,7 @@ export const User = (usersProps: IUsersProps) => {
             </IconButton>
             <IconButton
               aria-describedby={id}
-              onClick={deleteUser}
+              onClick={() => { onDelete(user) }}
             >
               <Icon src={String(IconUserDelete)} />
             </IconButton>
