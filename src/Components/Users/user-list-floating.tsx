@@ -5,11 +5,12 @@ import IconFilter from "../../Assets/filter_search.svg"
 import { Icon } from "../Img"
 import { User } from "../Users/user"
 import { useEffect, useState } from "react"
-import { getAllUsersByFiltersService, getAllUsersService } from "../../Services/Users"
+import { getAllUsersByFiltersService, getAllUsersService, updateUser } from "../../Services/Users"
 import { IUser } from "../../@types/IUser"
 import { ManipulationUser } from "./Popover/manipulation-user"
 import { FilterUser } from "./Popover/filter-user"
 import { CustomToast } from "../CustomToast"
+import toast from "react-hot-toast"
 
 
 export const UserListFloating = () => {
@@ -36,16 +37,16 @@ export const UserListFloating = () => {
   const managementFindUsers = async () => {
     try {
 
-      var responseApi: IUser[] = [];
+      let responseApi: IUser[] = [];
 
       if (nameToFilter === '' || sexFilter === '') {
-        responseApi = await getAllUsersService();        
+        responseApi = await getAllUsersService();
       } else {
         responseApi = await getAllUsersByFiltersService(nameToFilter, sexFilter)
       }
 
       setUsers(responseApi);
-      
+
     } catch (exception) {
       CustomToast({
         duration: 2000,
@@ -60,28 +61,46 @@ export const UserListFloating = () => {
     if (userWasManipuled) setUserWasManipuled(false)
   }, [nameToFilter, userWasManipuled, sexFilter])
 
-  const StyleButtonCustom = (styleCustom?: any) => ({
-    borderRadius: '12px',
-    fontFamily: 'Dosis',
-    textTransform: 'none',
-    fontSize: '1rem',
-    fontWeight: '600',
-    padding: '3px',
-    ...styleCustom
-  })
+  const deleteUser = async (user: IUser) => {
+    try {
+
+      const userToEdit: IUser = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        sex: user.sex,
+        isEnable: false,
+      }
+
+      const responseApi = await updateUser(userToEdit);
+
+      toast.success(responseApi)
+
+      setAnchorManipulationPopover(null)
+      setUserWasManipuled(true);
+
+    } catch (error: any) {
+      toast.error(error)
+    }
+  }
+
 
   const managerUserRender = () => {
     if (users.length > 0) {
       return <>
         {users.map((user) => {
-            return <>
-              <User user={user} setUserWasManipuled={setUserWasManipuled} />
-            </>
-          })}      
+          return <>
+            <User
+              user={user}
+              setUserWasManipuled={setUserWasManipuled}
+              onDelete={deleteUser}
+            />
+          </>
+        })}
       </>
     } else {
       return (
-        <Skeleton variant="rounded" width={330} height={380} />
+        <Skeleton variant="rounded" width={330} height='100%' />
       )
     }
   }
@@ -111,10 +130,19 @@ export const UserListFloating = () => {
         }
       </BadgeSizeFixed>
       <ScroolCustom>
-        { managerUserRender() }
+        {managerUserRender()}
       </ScroolCustom>
       <Button
-        style={StyleButtonCustom({ marginTop: '15px', backgroundColor: 'rgb(14, 202, 101)' })}
+        style={{
+          borderRadius: '12px',
+          fontFamily: 'Dosis',
+          textTransform: 'none',
+          fontSize: '1rem',
+          fontWeight: '600',
+          padding: '3px',
+          marginTop: '15px',
+          backgroundColor: 'rgb(14, 202, 101)'
+        }}
         variant="contained"
         size='small'
         onClick={(event: any) => { handleClick(event, true) }}
