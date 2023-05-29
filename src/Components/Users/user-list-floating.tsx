@@ -39,7 +39,7 @@ export const UserListFloating = () => {
 
       let responseApi: IUser[] = [];
 
-      if (nameToFilter === '' || sexFilter === '') {
+      if (nameToFilter === '' && sexFilter === '') {
         responseApi = await getAllUsersService();
       } else {
         responseApi = await getAllUsersByFiltersService(nameToFilter, sexFilter)
