@@ -1,36 +1,27 @@
 import { IUser } from "../../@types/IUser";
-import { Sex } from "../../@types/Sex";
 import { userChannel } from "../Bases/api"
 
-export const createUser = async (user: IUser) => {
-  return await userChannel.post('api/User/createUser', user)
+
+export const createUser = (user: IUser) => {
+  return userChannel.post('api/User/createUser', user)
+  .then((response) => response.data.message)
+  .catch((error) => error)
+}
+
+export const updateUser = (user: IUser) => {
+  return userChannel.put('api/User/updateUser', user)
     .then((response) => response.data.message)
     .catch((error) => error.response.data)
 }
 
-export const updateUser = async (user: IUser) => {
-  return await userChannel.put('api/User/updateUser', user)
-    .then((response) => response.data.message)
-    .catch((error) => error.response.data)
-}
-
-export const getAllUsersByFiltersService = async (name?: string, sex?: string) => {
-
-  var uri: string = '';
-
-  if (name && sex) {
-    uri = `name=${name}&sex=${sex}`
-  } else {
-    uri = sex ? `sex=${sex}` : `name=${name}`
-  }
-
-  return await userChannel.get(`api/User/filters?${uri}`)
+export const getAllUsersByFiltersService = (name?: string, sex?: string) => {
+  return userChannel.get('api/User/filters', { params: { name, sex } })
     .then((response) => response.data.data)
     .catch((response) => response.message);
 }
 
-export const getAllUsersService = async () => {
-  return await userChannel.get("api/User")
+export const getAllUsersService = () => {  
+  return userChannel.get("api/User")
     .then((response) => response.data.data)
     .catch((response) => { return response });
 }
