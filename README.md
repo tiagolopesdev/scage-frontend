@@ -29,25 +29,6 @@ Um sistema que gere de forma aleatória uma escala para todo o mês com todas as
 * Escalas
   ![Escalas geradas](https://github.com/tiagolopesdev/desafios/assets/58925056/96bbe646-1cc3-47c6-82a3-d6c8849808fe)
   
-### Preparação do ambiente
-* Frontend
-  * Após clonar o repositório, execute o comanda abaixo para instalar as dependencias:
-  ```javascript
-  npm install
-  `````   
-* Backend
-  * Após clonar e repositório, execute os seguintes comandos para restaurar e construir a API:
-  ```javascript
-  dotnet restore
-  `````
-  ```javascript
-  dotnet build
-  `````
-  * A versão do .NET nas API's é a 7. Para baixar [acesse aqui](https://dotnet.microsoft.com/pt-br/download/dotnet/7.0).
-  * Após ter a versão 7 do .NET, acesse o seguinte caminho `scage-users-api/SCAGEUsers/SCAGEUsers.api`. Em seguinda, execute o comando abaixo para executar a API:
-  ```javascript
-  dotnet run
-  `````
 
 
 
