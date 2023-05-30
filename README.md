@@ -1,3 +1,5 @@
+![Group 3](https://github.com/tiagolopesdev/desafios/assets/58925056/fbb80eef-ff17-4147-8d0a-baf01901f6db)
+
 
 ## Sistema de geração de escala Pascom (SCAGE)
 
