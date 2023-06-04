@@ -5,8 +5,7 @@ import { UserListFloating } from '../../Components/Users/user-list-floating';
 export const RenderScale = () => {
   return (
     <>
-      <NavBar />
-      <UserListFloating />
+      <NavBar />      
       <div
         style={{
           margin: '1%',
@@ -36,6 +35,7 @@ export const RenderScale = () => {
           <CardDay />
         </div>
       </div>
+      <UserListFloating />
     </>
   );
 }
