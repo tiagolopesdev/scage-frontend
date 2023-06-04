@@ -1,27 +1,21 @@
 import { CardDay } from '../../Components/Cards/Day';
 import { NavBar } from '../../Components/Navbar';
 import { UserListFloating } from '../../Components/Users/user-list-floating';
+import { ScroolCustom } from '../../Styles';
+import { CardDayContainer } from './style';
 
 export const RenderScale = () => {
   return (
     <>
-      <NavBar />      
-      <div
-        style={{
-          margin: '1%',
-          position: 'fixed',
-          left: '0'
-        }}
-      >
-        <div
+      <NavBar />
+      <CardDayContainer>
+        <ScroolCustom
           style={{
             margin: '0% 25rem 2% 2%',
             display: 'flex',
             flexWrap: 'wrap',
-            scrollBehavior: 'smooth',
-            overflowY: 'scroll',
             right: '40%',
-            height: '37rem'
+            height: '38rem'
           }}
         >
           <CardDay />
@@ -33,8 +27,8 @@ export const RenderScale = () => {
           <CardDay />
           <CardDay />
           <CardDay />
-        </div>
-      </div>
+        </ScroolCustom>
+      </CardDayContainer>
       <UserListFloating />
     </>
   );
