@@ -3,9 +3,30 @@ import SelectNewUserIcon from '../../../Assets/render_user.svg'
 import CameraIcon from '../../../Assets/camera_icon.svg'
 import DeskIcon from '../../../Assets/desk_icon.svg'
 import { Icon } from "../../Img"
+import { Reorder, useDragControls } from "framer-motion"
+import { useState } from "react"
+
+const GroupMock = [
+  {
+    name: 'Fulano A',
+    id: 1
+  },
+  {
+    name: 'Fulano B',
+    id: 2
+  },
+  {
+    name: 'Fulano C',
+    id: 3
+  }
+]
 
 
 export const CardDay = () => {
+
+  const controls = useDragControls()
+
+  const [elements, setElements] = useState(GroupMock);
 
   const StylePeoplesContent = ({
     display: 'flex',
@@ -16,6 +37,8 @@ export const CardDay = () => {
     borderRadius: '10px',
   })
 
+  console.log('Element -> ', elements[2])
+
   return (
     <Card style={{ minWidth: '200px', minHeight: '250px', margin: '1%' }}>
       <CardContent style={{
@@ -23,7 +46,7 @@ export const CardDay = () => {
         flexDirection: 'column',
         alignItems: 'center'
       }} >
-        <Typography gutterBottom variant="h5" component="div" color='#005AAC' 
+        <Typography gutterBottom variant="h5" component="div" color='#005AAC'
           style={{
             fontFamily: 'Dosis',
             fontWeight: 'bold'
@@ -31,23 +54,22 @@ export const CardDay = () => {
         >
           Nome missa
         </Typography>
-        <div style={{ margin: '10px 0px 25px 0px', width: '-webkit-fill-available' }} >
-          <div style={StylePeoplesContent} >
-            <Icon src={String(CameraIcon)} style={{ width: '18px' }} />
-            <h2 style={{ margin: '0px 40px 0px 10px', fontFamily: 'Dosis' }} >Fulano</h2>
-            <Icon src={String(SelectNewUserIcon)} />
-          </div>
-          <div style={StylePeoplesContent} >
-            <Icon src={String(CameraIcon)} style={{ width: '18px' }} />
-            <h2 style={{ margin: '0px 40px 0px 10px', fontFamily: 'Dosis' }} >Fulano</h2>
-            <Icon src={String(SelectNewUserIcon)} />
-          </div>
-          <div style={StylePeoplesContent} >
-            <Icon src={String(DeskIcon)} style={{ width: '18px' }} />
-            <h2 style={{ margin: '0px 40px 0px 10px', fontFamily: 'Dosis' }} >Fulano</h2>
-            <Icon src={String(SelectNewUserIcon)} />
-          </div>
-        </div>
+        <Reorder.Group values={elements} onReorder={setElements} >
+          {
+            elements.map((item, index) => (
+              <Reorder.Item
+                value={item}
+                key={item.id}
+              >
+                <div style={StylePeoplesContent} onPointerDown={(e) => controls.start(e)}>
+                  <Icon src={index === 2 ? String(DeskIcon) : String(CameraIcon)} style={{ width: '18px' }} />
+                  <h2 style={{ margin: '0px 40px 0px 10px', fontFamily: 'Dosis' }} >{item.name}</h2>
+                  <Icon src={String(SelectNewUserIcon)} />
+                </div>
+              </Reorder.Item>
+            ))
+          }
+        </Reorder.Group>
         <Button
           style={{
             backgroundColor: 'rgb(14, 202, 101)',
