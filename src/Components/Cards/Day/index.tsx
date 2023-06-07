@@ -54,18 +54,26 @@ export const CardDay = () => {
         >
           Nome missa
         </Typography>
-        <Reorder.Group values={elements} onReorder={setElements} >
+        <Reorder.Group values={elements}
+          onReorder={setElements}
+          style={{
+            listStyle: "none",
+            paddingInlineStart: "0px"
+          }}
+        >
           {
             elements.map((item, index) => (
               <Reorder.Item
                 value={item}
                 key={item.id}
               >
-                <div style={StylePeoplesContent} onPointerDown={(e) => controls.start(e)}>
-                  <Icon src={index === 2 ? String(DeskIcon) : String(CameraIcon)} style={{ width: '18px' }} />
-                  <h2 style={{ margin: '0px 40px 0px 10px', fontFamily: 'Dosis' }} >{item.name}</h2>
-                  <Icon src={String(SelectNewUserIcon)} />
-                </div>
+                <span>
+                  <div style={StylePeoplesContent} onPointerDown={(e) => controls.start(e)}>
+                    <Icon src={index === 2 ? String(DeskIcon) : String(CameraIcon)} style={{ width: '18px' }} />
+                    <h2 style={{ margin: '0px 40px 0px 10px', fontFamily: 'Dosis' }} >{item.name}</h2>
+                    <Icon src={String(SelectNewUserIcon)} />
+                  </div>
+                </span>
               </Reorder.Item>
             ))
           }
