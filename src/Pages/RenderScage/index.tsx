@@ -1,4 +1,4 @@
-import { CardDay } from '../../Components/Cards/Day';
+import { CardDay } from '../../Components/Cards/Day/index';
 import { NavBar } from '../../Components/Navbar';
 import { UserListFloating } from '../../Components/Users/user-list-floating';
 import { ScroolCustom } from '../../Styles';

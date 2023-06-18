@@ -11,7 +11,7 @@ import { ManipulationUser } from "./Popover/manipulation-user"
 import { FilterUser } from "./Popover/filter-user"
 import { CustomToast } from "../CustomToast"
 import toast from "react-hot-toast"
-import { ScroolCustom } from "../../Styles"
+import { ScroolCustom } from "../../Styles/index"
 
 
 export const UserListFloating = () => {
