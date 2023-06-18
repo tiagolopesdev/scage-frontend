@@ -14,13 +14,9 @@ export const RenderScale = () => {
             margin: '0% 25rem 2% 2%',
             display: 'flex',
             flexWrap: 'wrap',
-            right: '40%',
-            height: '38rem'
+            right: '40%'
           }}
         >
-          <CardDay />
-          <CardDay />
-          <CardDay />
           <CardDay />
           <CardDay />
           <CardDay />

@@ -6,4 +6,5 @@ export const CardDayContainer = styled.div`
   position: fixed;
   left: 0;
   height: 38rem;
+  display: flex;
 `
