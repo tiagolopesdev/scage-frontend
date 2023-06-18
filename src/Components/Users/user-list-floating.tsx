@@ -1,4 +1,4 @@
-import { BadgeSizeFixed, ScroolCustom, Search, SidebarContainer } from "./style"
+import { BadgeSizeFixed, Search, SidebarContainer } from "./style"
 import { Input } from "../Input"
 import { Button, Chip, IconButton, Skeleton } from "@mui/material"
 import IconFilter from "../../Assets/filter_search.svg"
@@ -11,6 +11,7 @@ import { ManipulationUser } from "./Popover/manipulation-user"
 import { FilterUser } from "./Popover/filter-user"
 import { CustomToast } from "../CustomToast"
 import toast from "react-hot-toast"
+import { ScroolCustom } from "../../Styles"
 
 
 export const UserListFloating = () => {
@@ -129,7 +130,13 @@ export const UserListFloating = () => {
           ''
         }
       </BadgeSizeFixed>
-      <ScroolCustom>
+      <ScroolCustom
+        style={{
+          marginTop: '5%',
+          height: '58%',
+          paddingRight: '2%'
+        }}
+      >
         {managerUserRender()}
       </ScroolCustom>
       <Button
@@ -148,24 +155,26 @@ export const UserListFloating = () => {
         onClick={(event: any) => { handleClick(event, true) }}
         fullWidth
       >Adicionar novo servo</Button>
-      {openManipulationPopover ?
-        <ManipulationUser
-          id={idManipulation}
-          anchorEl={anchorManipulationPopover}
-          open={openManipulationPopover}
-          setAnchorEl={setAnchorManipulationPopover}
-          setUserWasManipuled={setUserWasManipuled}
-        /> : ''
+      {
+        openManipulationPopover ?
+          <ManipulationUser
+            id={idManipulation}
+            anchorEl={anchorManipulationPopover}
+            open={openManipulationPopover}
+            setAnchorEl={setAnchorManipulationPopover}
+            setUserWasManipuled={setUserWasManipuled}
+          /> : ''
       }
-      {openFilterPopover ?
-        <FilterUser
-          id={idFilter}
-          anchorEl={anchorFilterPopover}
-          open={openFilterPopover}
-          setAnchorEl={setAnchorFilterPopover}
-          setSexSelected={setSexFilter}
-        /> : ''
+      {
+        openFilterPopover ?
+          <FilterUser
+            id={idFilter}
+            anchorEl={anchorFilterPopover}
+            open={openFilterPopover}
+            setAnchorEl={setAnchorFilterPopover}
+            setSexSelected={setSexFilter}
+          /> : ''
       }
-    </SidebarContainer>
+    </SidebarContainer >
   )
 }
