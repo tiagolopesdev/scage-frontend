@@ -1,11 +1,23 @@
-import { Button } from '@mui/material';
+import { Button, ButtonGroup } from '@mui/material';
 import { CardDay } from '../../Components/Cards/Day/index';
 import { NavBar } from '../../Components/Navbar';
 import { UserListFloating } from '../../Components/Users/user-list-floating';
 import { ScroolCustom } from '../../Styles';
-import { CardDayContainer } from './style';
+import { ButtonGroupContainer, CardDayContainer } from './style';
+import { CSSProperties } from 'react';
 
 export const RenderScale = () => {
+
+  const ButtonStyle = (backgroundColorProp: string): CSSProperties => ({
+    borderRadius: '12px',
+    fontFamily: 'Dosis',
+    textTransform: 'none',
+    fontSize: '1rem',
+    fontWeight: '600',
+    backgroundColor: backgroundColorProp,
+    margin: '0% 2% 0% 3%'
+  })
+
   return (
     <>
       <NavBar />
@@ -27,66 +39,30 @@ export const RenderScale = () => {
             <CardDay />
           </ScroolCustom>
         </CardDayContainer>
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '0px',
-            backgroundColor: '#CBCBCB',
-            width: '100%',
-            boxShadow: '0px -6px 15px rgba(0, 0, 0, 0.3)'
-          }}
-        >
-          <div
-            style={{
-              padding: '20px',
-              display: 'flex',
-              maxWidth: '60%'
-            }}
+        <ButtonGroupContainer>
+          <ButtonGroup
+            style={{ padding: '15px 0px 20px 0px', minWidth: '60%' }}
           >
             <Button
-              style={{
-                borderRadius: '12px',
-                fontFamily: 'Dosis',
-                textTransform: 'none',
-                fontSize: '1rem',
-                fontWeight: '600',
-                backgroundColor: 'rgb(14, 202, 101)',
-                margin: '0% 2% 0% 3%'
-              }}
+              style={ButtonStyle('rgb(14, 202, 101)')}
               variant="contained"
               size='small'
-            fullWidth
+              fullWidth
             >Gerar nova escala</Button>
             <Button
-              style={{
-                borderRadius: '12px',
-                fontFamily: 'Dosis',
-                textTransform: 'none',
-                fontSize: '1rem',
-                fontWeight: '600',
-                backgroundColor: 'rgb(14, 202, 101)',
-                margin: '0% 3% 0% 3%'
-              }}
+              style={ButtonStyle('rgb(14, 202, 101)')}
               variant="contained"
               size='small'
-            fullWidth
+              fullWidth
             >Adicionar novo dia</Button>
             <Button
-              style={{
-                borderRadius: '12px',
-                fontFamily: 'Dosis',
-                textTransform: 'none',
-                fontSize: '1rem',
-                fontWeight: '600',
-                backgroundColor: '#30B2DB',
-                margin: '0% 3% 0% 3%'
-              }}
+              style={ButtonStyle('#30B2DB')}
               variant="contained"
               size='small'
-            fullWidth
+              fullWidth
             >Exportar escala em PDF</Button>
-          </div>
-        </div>
+          </ButtonGroup>
+        </ButtonGroupContainer>
       </div>
       <UserListFloating />
     </>
