@@ -4,9 +4,12 @@ import { NavBar } from '../../Components/Navbar';
 import { UserListFloating } from '../../Components/Users/user-list-floating';
 import { ScroolCustom } from '../../Styles';
 import { ButtonGroupContainer, CardDayContainer } from './style';
-import { CSSProperties } from 'react';
+import { CSSProperties, useState } from 'react';
+import { ModalGenerationScale } from '../../Components/ModalGenerationScale';
 
 export const RenderScale = () => {
+
+  const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
 
   const ButtonStyle = (backgroundColorProp: string): CSSProperties => ({
     borderRadius: '12px',
@@ -44,6 +47,7 @@ export const RenderScale = () => {
             style={{ padding: '15px 0px 20px 0px', minWidth: '60%' }}
           >
             <Button
+              onClick={() => { setOpenModalGenerationScale(!openModalGenerationScale) }}
               style={ButtonStyle('rgb(14, 202, 101)')}
               variant="contained"
               size='small'
@@ -65,6 +69,12 @@ export const RenderScale = () => {
         </ButtonGroupContainer>
       </div>
       <UserListFloating />
+      {openModalGenerationScale ?
+        <ModalGenerationScale 
+          openModal={openModalGenerationScale}
+          openModalState={setOpenModalGenerationScale}
+        /> : ''
+      }
     </>
   );
 }
