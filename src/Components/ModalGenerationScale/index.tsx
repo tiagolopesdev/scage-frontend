@@ -61,9 +61,9 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell style={{ fontFamily: 'Dosis' }}>{<strong>Nome</strong>}</TableCell>
-                <TableCell align="right">{<strong>Data</strong>}</TableCell>
-                <TableCell align="right">{<strong>Horário</strong>}</TableCell>
+                <TableCell style={{ fontFamily: 'Dosis', fontSize: 'larger' }} >{<strong>Nome</strong>}</TableCell>
+                <TableCell style={{ fontFamily: 'Dosis', fontSize: 'larger' }} align="center">{<strong>Data</strong>}</TableCell>
+                <TableCell style={{ fontFamily: 'Dosis', fontSize: 'larger' }} align="center">{<strong>Horário</strong>}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -73,8 +73,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
                 <TableCell component="th" scope="row">
                   Missa dominical dsdsdsds dsdsdsd
                 </TableCell>
-                <TableCell align="right">00/00/000</TableCell>
-                <TableCell align="right">00:00</TableCell>
+                <TableCell align="center">00/00/000</TableCell>
+                <TableCell align="center">00:00</TableCell>
                 <TableCell align="right" style={{ padding: '0rem 0.5rem 0rem 0.5rem' }}>
                   <IconButton>
                     <Icon src={String(IconEdit)}/>
