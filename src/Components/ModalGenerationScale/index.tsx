@@ -68,7 +68,6 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             </TableHead>
             <TableBody>
               <TableRow
-                // key={row.name}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
@@ -108,6 +107,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             variant="outlined"
             size='small'
             fullWidth
+            onClick={() => { HandlerClose() }}
           >Cancelar</Button>
           <Button
             style={{
