@@ -1,7 +1,20 @@
-import { Box, Button, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Modal,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow
+} from "@mui/material";
 import { Icon } from "../Img";
 import IconEdit from '../../Assets/icon_user_edit.svg'
 import IconDelete from '../../Assets/icon_trash.svg'
+import { ButtonGroup, ContainerNewDay } from "./style";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -23,11 +36,18 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
   const { openModal, openModalState } = props
 
-  console.log('MOdal open')
-
   const HandlerClose = () => {
     openModalState(!openModal)
   }
+
+  const ButtonStyleCustom = (customStyle: any) => ({
+    borderRadius: '12px',
+    fontFamily: 'Dosis',
+    textTransform: 'none',
+    fontSize: '1rem',
+    fontWeight: '600',
+    ...customStyle
+  })
 
   return (
     <Modal
@@ -37,26 +57,13 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-          }}
-        >
+        <ContainerNewDay>
           <Button
-            style={{
-              borderRadius: '12px',
-              fontFamily: 'Dosis',
-              textTransform: 'none',
-              fontSize: '1rem',
-              fontWeight: '600',
-              backgroundColor: 'rgb(14, 202, 101)',
-              marginBottom: '4%'
-            }}
+            style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginBottom: '4%' })}
             variant="contained"
             size='small'
           >Adicionar novo dia</Button>
-        </div>
+        </ContainerNewDay>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -67,9 +74,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
+              <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
                 <TableCell component="th" scope="row">
                   Missa dominical dsdsdsds dsdsdsd
                 </TableCell>
@@ -77,53 +82,31 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
                 <TableCell align="center">00:00</TableCell>
                 <TableCell align="right" style={{ padding: '0rem 0.5rem 0rem 0.5rem' }}>
                   <IconButton>
-                    <Icon src={String(IconEdit)}/>
+                    <Icon src={String(IconEdit)} />
                   </IconButton>
                   <IconButton>
-                    <Icon src={String(IconDelete)}/>
+                    <Icon src={String(IconDelete)} />
                   </IconButton>
                 </TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            margin: '50px 0px 0px 0px'
-          }}
-        >
+        <ButtonGroup>
           <Button
-            style={{
-              borderRadius: '12px',
-              fontFamily: 'Dosis',
-              textTransform: 'none',
-              fontSize: '1rem',
-              fontWeight: '600',
-              color: '#CA0E0E',
-              border: '1px solid #CA0E0E'
-            }}
+            style={ButtonStyleCustom({ color: '#CA0E0E', border: '1px solid #CA0E0E' })}
             variant="outlined"
             size='small'
             fullWidth
             onClick={() => { HandlerClose() }}
           >Cancelar</Button>
           <Button
-            style={{
-              borderRadius: '12px',
-              fontFamily: 'Dosis',
-              textTransform: 'none',
-              fontSize: '1rem',
-              fontWeight: '600',
-              backgroundColor: 'rgb(14, 202, 101)',
-              marginLeft: '30px'
-            }}
+            style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginLeft: '30px' })}
             variant="contained"
             size='small'
             fullWidth
           >Gerar escala</Button>
-        </div>
+        </ButtonGroup>
       </Box>
     </Modal >
   )
