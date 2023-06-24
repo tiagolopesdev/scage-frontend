@@ -1,5 +1,6 @@
-import { Box, Button, ButtonGroup, Modal } from "@mui/material"
-
+import { Box, Button, ButtonGroup, Modal, TextField } from "@mui/material"
+import { DatePicker, TimePicker } from "@mui/x-date-pickers";
+import { useState } from "react";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -21,6 +22,8 @@ export const ModalDay = (props: IModalGenerationScale) => {
 
   const { openModal, openModalState } = props
 
+  const [selectedDate, setHandleDateChange] = useState(new Date());
+
   const HandlerClose = () => {
     openModalState(!openModal)
   }
@@ -34,6 +37,10 @@ export const ModalDay = (props: IModalGenerationScale) => {
     ...customStyle
   })
 
+  const HandlerDate = (event: Date) => {
+    setHandleDateChange(event)
+  }
+
   return (
     <Modal
       open={openModal}
@@ -42,21 +49,48 @@ export const ModalDay = (props: IModalGenerationScale) => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <ButtonGroup>
-          <Button
-            style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginLeft: '30px' })}
-            variant="contained"
-            size='small'
-            fullWidth
-          >Adicionar</Button>
-          <Button
-            style={ButtonStyleCustom({ color: '#CA0E0E', border: '1px solid #CA0E0E' })}
-            variant="outlined"
-            size='small'
-            fullWidth
-            onClick={() => { HandlerClose() }}
-          >Fechar</Button>
-        </ButtonGroup>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <TextField
+            label="Nome"
+            variant="standard"
+            id="standard-basic"
+            style={{ marginTop: '20px' }}
+          />
+          <div
+            style={{
+              display: 'flex',
+              marginTop: '40px'
+            }}
+          >
+            <DatePicker
+              label="Controlled picker"
+              value={selectedDate}
+              onChange={(newValue) => { }}
+              renderInput={(params) => <TextField style={{ width: '200px', marginRight: '10px' }} {...params} />}
+            />
+            <TimePicker
+              label="Basic time picker"
+              value={selectedDate}
+              onChange={() => { }}
+              renderInput={(params) => <TextField style={{ width: '200px', marginLeft: '10px' }} {...params} />}
+            />
+          </div>
+          <ButtonGroup style={{ marginTop: '40px' }}>
+            <Button
+              style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)' })}
+              variant="contained"
+              size='small'
+              fullWidth
+            >Adicionar</Button>
+            <Button
+              style={ButtonStyleCustom({ color: '#CA0E0E', border: '1px solid #CA0E0E' })}
+              variant="outlined"
+              size='small'
+              fullWidth
+              onClick={() => { HandlerClose() }}
+            >Fechar</Button>
+          </ButtonGroup>
+        </div>
       </Box>
     </Modal >
   )
