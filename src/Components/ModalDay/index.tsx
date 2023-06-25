@@ -2,6 +2,10 @@ import { Box, Button, ButtonGroup, Modal, TextField } from "@mui/material"
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { useState } from "react";
 import { ContainerElementsStyle, DateTimeGroupStyle } from "./style";
+import { Dayjs } from "dayjs";
+import { Icon } from "../Img";
+import SelectIcon from "../../Assets/icon_success_white.svg"
+import CloseIcon from "../../Assets/icon_user_delete.svg"
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -23,7 +27,8 @@ export const ModalDay = (props: IModalGenerationScale) => {
 
   const { openModal, openModalState } = props
 
-  const [selectedDate, setHandleDateChange] = useState(new Date());
+  const [selectedDate, setHandleDateChange] = useState<Dayjs | null>();
+  const [selectedTime, setHandleTimeChange] = useState<Dayjs | null>();
 
   const HandlerClose = () => {
     openModalState(!openModal)
@@ -35,12 +40,12 @@ export const ModalDay = (props: IModalGenerationScale) => {
     textTransform: 'none',
     fontSize: '1rem',
     fontWeight: '600',
+    padding: '5px 0px',
     ...customStyle
   })
 
-  const HandlerDate = (event: Date) => {
-    setHandleDateChange(event)
-  }
+  // console.log('Date ', dayjs(selectedDate).format('DD/MM/YYYY'))
+  // console.log('Time ', dayjs(selectedTime).format('h:mm A'))
 
   return (
     <Modal
@@ -59,32 +64,33 @@ export const ModalDay = (props: IModalGenerationScale) => {
           />
           <DateTimeGroupStyle>
             <DatePicker
-              label="Controlled picker"
+              inputFormat="DD/MM/YYYY"
+              label="Data do evento"
               value={selectedDate}
-              onChange={(newValue) => { }}
+              onChange={(newValue) => { setHandleDateChange(newValue) }}
               renderInput={(params) => <TextField style={{ width: '200px', marginRight: '10px' }} {...params} />}
-            />
+              />
             <TimePicker
-              label="Basic time picker"
-              value={selectedDate}
-              onChange={() => { }}
+              label="Hora do evento"
+              value={selectedTime}
+              onChange={(newValue) => { setHandleTimeChange(newValue) }}
               renderInput={(params) => <TextField style={{ width: '200px', marginLeft: '10px' }} {...params} />}
             />
           </DateTimeGroupStyle>
           <ButtonGroup style={{ marginTop: '40px' }}>
             <Button
-              style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)' })}
-              variant="contained"
+              style={ButtonStyleCustom({ marginRight: '10px', backgroundColor: 'rgb(14, 202, 101)', border: '1px solid rgb(14, 202, 101)' })}
+              variant="outlined"
               size='small'
               fullWidth
-            >Adicionar</Button>
+            ><Icon src={String(SelectIcon)} /></Button>
             <Button
-              style={ButtonStyleCustom({ color: '#CA0E0E', border: '1px solid #CA0E0E' })}
+              style={ButtonStyleCustom({ marginLeft: '10px', color: '#CA0E0E', border: '1px solid #CA0E0E' })}
               variant="outlined"
               size='small'
               fullWidth
               onClick={() => { HandlerClose() }}
-            >Fechar</Button>
+            ><Icon src={String(CloseIcon)} /></Button>
           </ButtonGroup>
         </ContainerElementsStyle>
       </Box>
