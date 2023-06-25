@@ -1,6 +1,7 @@
 import { Box, Button, ButtonGroup, Modal, TextField } from "@mui/material"
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { useState } from "react";
+import { ContainerElementsStyle, DateTimeGroupStyle } from "./style";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -49,19 +50,14 @@ export const ModalDay = (props: IModalGenerationScale) => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <ContainerElementsStyle>
           <TextField
             label="Nome"
             variant="standard"
             id="standard-basic"
             style={{ marginTop: '20px' }}
           />
-          <div
-            style={{
-              display: 'flex',
-              marginTop: '40px'
-            }}
-          >
+          <DateTimeGroupStyle>
             <DatePicker
               label="Controlled picker"
               value={selectedDate}
@@ -74,7 +70,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
               onChange={() => { }}
               renderInput={(params) => <TextField style={{ width: '200px', marginLeft: '10px' }} {...params} />}
             />
-          </div>
+          </DateTimeGroupStyle>
           <ButtonGroup style={{ marginTop: '40px' }}>
             <Button
               style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)' })}
@@ -90,7 +86,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
               onClick={() => { HandlerClose() }}
             >Fechar</Button>
           </ButtonGroup>
-        </div>
+        </ContainerElementsStyle>
       </Box>
     </Modal >
   )
