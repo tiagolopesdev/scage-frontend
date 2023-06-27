@@ -2,10 +2,11 @@ import { Box, Button, ButtonGroup, Modal, TextField } from "@mui/material"
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { useState } from "react";
 import { ContainerElementsStyle, DateTimeGroupStyle } from "./style";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { Icon } from "../Img";
 import SelectIcon from "../../Assets/icon_success_white.svg"
 import CloseIcon from "../../Assets/icon_user_delete.svg"
+import { IScaleMonth } from "../../@types/IScaleMonth";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -19,14 +20,17 @@ const style = {
 };
 
 interface IModalGenerationScale {
-  openModal: boolean;
-  openModalState: React.Dispatch<React.SetStateAction<boolean>>
+  openModal: boolean,
+  openModalState: React.Dispatch<React.SetStateAction<boolean>>,
+  stateDay: IScaleMonth[] | undefined,
+  manipulationDay: React.Dispatch<React.SetStateAction<IScaleMonth[] | undefined>>
 }
 
 export const ModalDay = (props: IModalGenerationScale) => {
 
-  const { openModal, openModalState } = props
+  const { openModal, openModalState, manipulationDay, stateDay } = props
 
+  const [eventName, setEventName] = useState('');
   const [selectedDate, setHandleDateChange] = useState<Dayjs | null>();
   const [selectedTime, setHandleTimeChange] = useState<Dayjs | null>();
 
@@ -44,9 +48,6 @@ export const ModalDay = (props: IModalGenerationScale) => {
     ...customStyle
   })
 
-  // console.log('Date ', dayjs(selectedDate).format('DD/MM/YYYY'))
-  // console.log('Time ', dayjs(selectedTime).format('h:mm A'))
-
   return (
     <Modal
       open={openModal}
@@ -60,6 +61,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
             label="Nome"
             variant="standard"
             id="standard-basic"
+            onChange={(event: any) => { setEventName(event.target.value) }}
             style={{ marginTop: '20px' }}
           />
           <DateTimeGroupStyle>
@@ -69,7 +71,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
               value={selectedDate}
               onChange={(newValue) => { setHandleDateChange(newValue) }}
               renderInput={(params) => <TextField style={{ width: '200px', marginRight: '10px' }} {...params} />}
-              />
+            />
             <TimePicker
               label="Hora do evento"
               value={selectedTime}
@@ -83,6 +85,19 @@ export const ModalDay = (props: IModalGenerationScale) => {
               variant="outlined"
               size='small'
               fullWidth
+              onClick={() => {
+                const newEventToInsert: IScaleMonth = {
+                  name: eventName,
+                  date: dayjs(selectedDate).format('DD/MM/YYYY'),
+                  time: dayjs(selectedTime).format('h:mm A')
+                }
+                if (stateDay !== undefined) {
+                  manipulationDay([...stateDay, newEventToInsert])
+                } else {
+                  manipulationDay([newEventToInsert])
+                }
+                HandlerClose()
+              }}
             ><Icon src={String(SelectIcon)} /></Button>
             <Button
               style={ButtonStyleCustom({ marginLeft: '10px', color: '#CA0E0E', border: '1px solid #CA0E0E' })}
