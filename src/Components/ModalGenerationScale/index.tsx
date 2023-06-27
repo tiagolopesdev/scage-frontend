@@ -55,6 +55,11 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     ...customStyle
   })
 
+  const DeleteDay = (dayToRemove: IScaleMonth) => {
+    const newListDay = scaleMonthList?.filter((item) => { return item !== dayToRemove });
+    setScaleMonthList(newListDay)
+  }
+
   return (
     <>
       <Modal
@@ -95,7 +100,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
                           <IconButton>
                             <Icon src={String(IconEdit)} />
                           </IconButton>
-                          <IconButton>
+                          <IconButton onClick={() => { DeleteDay(item) }}>
                             <Icon src={String(IconDelete)} />
                           </IconButton>
                         </TableCell>
