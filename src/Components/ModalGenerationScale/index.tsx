@@ -17,6 +17,7 @@ import IconDelete from '../../Assets/icon_trash.svg'
 import { ButtonGroup, ContainerNewDay } from "./style";
 import { ModalDay } from "../ModalDay";
 import { useState } from "react";
+import { IScaleMonth } from "../../@types/IScaleMonth";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -39,9 +40,10 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   const { openModal, openModalState } = props
 
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
+  const [scaleMonthList, setScaleMonthList] = useState<IScaleMonth[] | undefined>();
 
   const HandlerClose = () => {
-    openModalState(!openModal)
+    openModalState(!openModal) 
   }
 
   const ButtonStyleCustom = (customStyle: any) => ({
@@ -80,21 +82,27 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell component="th" scope="row">
-                    Missa dominical dsdsdsds dsdsdsd
-                  </TableCell>
-                  <TableCell align="center">00/00/000</TableCell>
-                  <TableCell align="center">00:00</TableCell>
-                  <TableCell align="right" style={{ padding: '0rem 0.5rem 0rem 0.5rem' }}>
-                    <IconButton>
-                      <Icon src={String(IconEdit)} />
-                    </IconButton>
-                    <IconButton>
-                      <Icon src={String(IconDelete)} />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
+                {
+                  scaleMonthList?.map((item, index) => {
+                    return (
+                      <TableRow id={index.toString()} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                        <TableCell component="th" scope="row">
+                          {item.name}
+                        </TableCell>
+                        <TableCell align="center">{item.date}</TableCell>
+                        <TableCell align="center">{item.time}</TableCell>
+                        <TableCell align="right" style={{ padding: '0rem 0.5rem 0rem 0.5rem' }}>
+                          <IconButton>
+                            <Icon src={String(IconEdit)} />
+                          </IconButton>
+                          <IconButton>
+                            <Icon src={String(IconDelete)} />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })
+                }
               </TableBody>
             </Table>
           </TableContainer>
@@ -114,12 +122,14 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             >Gerar escala</Button>
           </ButtonGroup>
         </Box>
-      </Modal >
+      </Modal>
       {
         openModalNewDay ?
           <ModalDay
             openModal={openModalNewDay}
             openModalState={setOpenModalNewDay}
+            stateDay={scaleMonthList}
+            manipulationDay={setScaleMonthList}
           /> : ''
       }
     </>
