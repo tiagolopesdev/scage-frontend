@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   IconButton,
   Modal,
   Paper,
@@ -16,7 +17,11 @@ import IconEdit from '../../Assets/icon_user_edit.svg'
 import IconDelete from '../../Assets/icon_trash.svg'
 import { ButtonGroup, ContainerNewDay } from "./style";
 import { ModalDay } from "../ModalDay";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { IUser } from "../../@types/IUser";
+import { getAllUsersService } from "../../Services/Users";
+import { GenerationPreviewScale } from "../../Services/Scale";
+import { IScaleMonthPreview } from "../../@types/IScaleMonthPreview";
 import { IScaleMonth } from "../../@types/IScaleMonth";
 
 const style = {
@@ -33,6 +38,7 @@ const style = {
 interface IModalGenerationScale {
   openModal: boolean;
   openModalState: React.Dispatch<React.SetStateAction<boolean>>
+  scalePreview: Dispatch<SetStateAction<IScaleMonth[] | undefined>>
 }
 
 export const ModalGenerationScale = (props: IModalGenerationScale) => {
@@ -40,11 +46,38 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   const { openModal, openModalState } = props
 
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
-  const [scaleMonthList, setScaleMonthList] = useState<IScaleMonth[] | undefined>();
-  const [dayToEdit, setDayToEdit] = useState<IScaleMonth | undefined>();
+  const [scaleMonthList, setScaleMonthList] = useState<IScaleMonthPreview[] | undefined>();
+  const [dayToEdit, setDayToEdit] = useState<IScaleMonthPreview | undefined>();
+  const [isGenerationScale, setIsGenerationScale] = useState(false)
 
   const HandlerClose = () => {
     openModalState(!openModal)
+  }
+
+  const GenerationScale = async () => {
+    try {
+      setIsGenerationScale(true)
+
+      let responseUserApi: IUser[] = await getAllUsersService();
+
+      const onlyUserId = responseUserApi.map((item) => { return item.id })
+
+      const onlyNameDay = scaleMonthList?.map((item) => { return item.name})
+
+      const test = {
+        users: onlyUserId,
+        days: onlyNameDay
+      }
+
+      const responseScalePreview = await GenerationPreviewScale(test);
+
+      console.log('Reponse ', responseScalePreview);
+
+      setIsGenerationScale(false)
+    } catch (error) {
+
+      setIsGenerationScale(false)
+    }
   }
 
   const ButtonStyleCustom = (customStyle: any) => ({
@@ -56,12 +89,12 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     ...customStyle
   })
 
-  const DeleteDay = (dayToRemove: IScaleMonth) => {
+  const DeleteDay = (dayToRemove: IScaleMonthPreview) => {
     const newListDay = scaleMonthList?.filter((item) => { return item !== dayToRemove });
     setScaleMonthList(newListDay)
   }
 
-  const EditDay = (day: IScaleMonth) => {
+  const EditDay = (day: IScaleMonthPreview) => {
     setDayToEdit(day);
     setOpenModalNewDay(true)
   }
@@ -131,7 +164,13 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
               variant="contained"
               size='small'
               fullWidth
-            >Gerar escala</Button>
+              onClick={() => { GenerationScale() }}
+            >
+              {isGenerationScale ?
+                <CircularProgress style={{ color: 'white', width: '20px', height: '20px' }} color="secondary" />
+                : 'Gerar escala'
+              }
+            </Button>
           </ButtonGroup>
         </Box>
       </Modal>
