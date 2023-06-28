@@ -6,7 +6,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { Icon } from "../Img";
 import SelectIcon from "../../Assets/icon_success_white.svg"
 import CloseIcon from "../../Assets/icon_user_delete.svg"
-import { IScaleMonth } from "../../@types/IScaleMonth";
+import { IScaleMonthPreview } from "../../@types/IScaleMonthPreview";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -22,10 +22,10 @@ const style = {
 interface IModalGenerationScale {
   openModal: boolean,
   openModalState: React.Dispatch<React.SetStateAction<boolean>>,
-  stateDay: IScaleMonth[] | undefined,
-  manipulationDay: React.Dispatch<React.SetStateAction<IScaleMonth[] | undefined>>
-  dayToEdit?: IScaleMonth,
-  setManipulationDay: React.Dispatch<React.SetStateAction<IScaleMonth | undefined>>
+  stateDay: IScaleMonthPreview[] | undefined,
+  manipulationDay: React.Dispatch<React.SetStateAction<IScaleMonthPreview[] | undefined>>
+  dayToEdit?: IScaleMonthPreview,
+  setManipulationDay: React.Dispatch<React.SetStateAction<IScaleMonthPreview | undefined>>
 }
 
 export const ModalDay = (props: IModalGenerationScale) => {
@@ -90,7 +90,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
               size='small'
               fullWidth
               onClick={() => {
-                const newEventToInsert: IScaleMonth = {
+                const newEventToInsert: IScaleMonthPreview = {
                   name: eventName,
                   date: dayjs(selectedDate).format('DD/MM/YYYY'),
                   time: dayjs(selectedTime).format('h:mm A')

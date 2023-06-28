@@ -6,10 +6,12 @@ import { ScroolCustom } from '../../Styles';
 import { ButtonGroupContainer, CardDayContainer } from './style';
 import { CSSProperties, useState } from 'react';
 import { ModalGenerationScale } from '../../Components/ModalGenerationScale';
+import { IScaleMonth } from '../../@types/IScaleMonth';
 
 export const RenderScale = () => {
 
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
+  const [scale, setScale] = useState<IScaleMonth[]>();
 
   const ButtonStyle = (backgroundColorProp: string): CSSProperties => ({
     borderRadius: '12px',
@@ -33,14 +35,13 @@ export const RenderScale = () => {
               flexWrap: 'wrap',
               right: '40%'
             }}
-          >
-            <CardDay />
-            <CardDay />
-            <CardDay />
-            <CardDay />
-            <CardDay />
-            <CardDay />
-          </ScroolCustom>
+          >{
+            scale?.map((item) =>  {
+              return <>
+                <CardDay />
+              </>
+            })
+          }</ScroolCustom>
         </CardDayContainer>
         <ButtonGroupContainer>
           <ButtonGroup
@@ -73,6 +74,7 @@ export const RenderScale = () => {
         <ModalGenerationScale 
           openModal={openModalGenerationScale}
           openModalState={setOpenModalGenerationScale}
+          scalePreview={setScale}
         /> : ''
       }
     </>
