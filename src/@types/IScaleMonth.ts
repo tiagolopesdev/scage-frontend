@@ -1,6 +1,7 @@
+import { IUser } from "./IUser";
 
 export interface IScaleMonth {
-  name: string,
-  date: string,
-  time: string
+  cameraOne: IUser,
+  cameraTwo: IUser,
+  cutDesk: IUser,
 }
