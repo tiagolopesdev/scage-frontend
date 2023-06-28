@@ -24,17 +24,20 @@ interface IModalGenerationScale {
   openModalState: React.Dispatch<React.SetStateAction<boolean>>,
   stateDay: IScaleMonth[] | undefined,
   manipulationDay: React.Dispatch<React.SetStateAction<IScaleMonth[] | undefined>>
+  dayToEdit?: IScaleMonth,
+  setManipulationDay: React.Dispatch<React.SetStateAction<IScaleMonth | undefined>>
 }
 
 export const ModalDay = (props: IModalGenerationScale) => {
 
-  const { openModal, openModalState, manipulationDay, stateDay } = props
+  const { openModal, openModalState, manipulationDay, dayToEdit, stateDay, setManipulationDay } = props
 
-  const [eventName, setEventName] = useState('');
-  const [selectedDate, setHandleDateChange] = useState<Dayjs | null>();
-  const [selectedTime, setHandleTimeChange] = useState<Dayjs | null>();
+  const [eventName, setEventName] = useState(dayToEdit ? dayToEdit.name : '');
+  const [selectedDate, setHandleDateChange] = useState<Dayjs | null>(dayToEdit ? dayjs(dayToEdit.date, 'DD/MM/YYYY') : null);
+  const [selectedTime, setHandleTimeChange] = useState<Dayjs | null>(dayToEdit ? dayjs(dayToEdit.time, 'h:mm A') : null);
 
   const HandlerClose = () => {
+    if (dayToEdit) setManipulationDay(undefined)
     openModalState(!openModal)
   }
 
@@ -61,6 +64,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
             label="Nome"
             variant="standard"
             id="standard-basic"
+            value={eventName}
             onChange={(event: any) => { setEventName(event.target.value) }}
             style={{ marginTop: '20px' }}
           />
@@ -92,7 +96,15 @@ export const ModalDay = (props: IModalGenerationScale) => {
                   time: dayjs(selectedTime).format('h:mm A')
                 }
                 if (stateDay !== undefined) {
-                  manipulationDay([...stateDay, newEventToInsert])
+                  if (dayToEdit) {
+                    const day = stateDay.filter((item) => { return item !== dayToEdit })
+
+                    day.push(newEventToInsert)
+
+                    manipulationDay(day)
+                  } else {
+                    manipulationDay([...stateDay, newEventToInsert])
+                  }
                 } else {
                   manipulationDay([newEventToInsert])
                 }
