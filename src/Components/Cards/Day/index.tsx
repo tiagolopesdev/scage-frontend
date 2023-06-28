@@ -37,8 +37,6 @@ export const CardDay = () => {
     borderRadius: '10px',
   })
 
-  console.log('Element -> ', elements[2])
-
   return (
     <Card style={{ minWidth: '200px', minHeight: '250px', margin: '1%' }}>
       <CardContent style={{
