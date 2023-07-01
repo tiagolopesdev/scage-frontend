@@ -5,28 +5,19 @@ import DeskIcon from '../../../Assets/desk_icon.svg'
 import { Icon } from "../../Img"
 import { Reorder, useDragControls } from "framer-motion"
 import { useState } from "react"
-
-const GroupMock = [
-  {
-    name: 'Fulano A',
-    id: 1
-  },
-  {
-    name: 'Fulano B',
-    id: 2
-  },
-  {
-    name: 'Fulano C',
-    id: 3
-  }
-]
+import { IScaleDay } from "../../../@types/IScaleDay"
+import { IUser } from "../../../@types/IUser"
 
 
-export const CardDay = () => {
+interface ICardDay {
+  day: IScaleDay
+}
+
+export const CardDay = ({ day }: ICardDay) => {
 
   const controls = useDragControls()
 
-  const [elements, setElements] = useState(GroupMock);
+  const [elements, setElements] = useState<IUser[]>(day.peoples);
 
   const StylePeoplesContent = ({
     display: 'flex',
@@ -50,7 +41,7 @@ export const CardDay = () => {
             fontWeight: 'bold'
           }}
         >
-          Nome missa
+          {day?.event.name}
         </Typography>
         <Reorder.Group values={elements}
           onReorder={setElements}
