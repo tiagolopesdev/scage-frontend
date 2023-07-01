@@ -17,12 +17,12 @@ import IconEdit from '../../Assets/icon_user_edit.svg'
 import IconDelete from '../../Assets/icon_trash.svg'
 import { ButtonGroup, ContainerNewDay } from "./style";
 import { ModalDay } from "../ModalDay";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { IUser } from "../../@types/IUser";
 import { getAllUsersService } from "../../Services/Users";
 import { GenerationPreviewScale } from "../../Services/Scale";
 import { IScaleMonthPreview } from "../../@types/IScaleMonthPreview";
-import { IScaleMonth } from "../../@types/IScaleMonth";
+import { IScaleDay } from "../../@types/IScaleDay";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -36,14 +36,14 @@ const style = {
 };
 
 interface IModalGenerationScale {
-  openModal: boolean;
-  openModalState: React.Dispatch<React.SetStateAction<boolean>>
-  scalePreview: Dispatch<SetStateAction<IScaleMonth[] | undefined>>
+  openModal: boolean,
+  openModalState: React.Dispatch<React.SetStateAction<boolean>>,
+  setScalePreview: React.Dispatch<React.SetStateAction<IScaleDay[]>>
 }
 
 export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
-  const { openModal, openModalState } = props
+  const { openModal, openModalState, setScalePreview } = props
 
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
   const [scaleMonthList, setScaleMonthList] = useState<IScaleMonthPreview[] | undefined>();
@@ -58,24 +58,45 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     try {
       setIsGenerationScale(true)
 
+      if (!scaleMonthList) return 
+
       let responseUserApi: IUser[] = await getAllUsersService();
 
       const onlyUserId = responseUserApi.map((item) => { return item.id })
 
-      const onlyNameDay = scaleMonthList?.map((item) => { return item.name})
+      const onlyNameDay = scaleMonthList.map((item) => { return item.name })
 
-      const test = {
+      const scalePreviewToSend = {
         users: onlyUserId,
         days: onlyNameDay
       }
 
-      const responseScalePreview = await GenerationPreviewScale(test);
+      const responseScalePreviewApi = await GenerationPreviewScale(scalePreviewToSend);
 
-      console.log('Reponse ', responseScalePreview);
+      let scaleReturn: IScaleDay[] = [];
+      let scalePreview: IUser[] = [];
+
+      responseScalePreviewApi.map((item: any, index: number) => {
+        scalePreview.push(item.cameraOne)
+        scalePreview.push(item.cameraTwo)
+        scalePreview.push(item.cutDesk)
+
+        scaleReturn.push(
+          {
+            event: scaleMonthList[index] as IScaleMonthPreview,
+            peoples: scalePreview
+          }
+        )
+        scalePreview = []
+      })
+
+      setScalePreview(scaleReturn)
 
       setIsGenerationScale(false)
-    } catch (error) {
 
+      HandlerClose()
+    } catch (error) {
+      //TODO -> Colocar o toast
       setIsGenerationScale(false)
     }
   }
