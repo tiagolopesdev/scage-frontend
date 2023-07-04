@@ -23,6 +23,8 @@ import { getAllUsersService } from "../../Services/Users";
 import { GenerationPreviewScale } from "../../Services/Scale";
 import { IScaleMonthPreview } from "../../@types/IScaleMonthPreview";
 import { IScaleDay } from "../../@types/IScaleDay";
+import { CustomToast } from "../CustomToast";
+import { Toaster } from "react-hot-toast";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -58,7 +60,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     try {
       setIsGenerationScale(true)
 
-      if (!scaleMonthList) return 
+      if (!scaleMonthList) return
 
       let responseUserApi: IUser[] = await getAllUsersService();
 
@@ -96,7 +98,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
       HandlerClose()
     } catch (error) {
-      //TODO -> Colocar o toast
+      CustomToast({ duration: 2000, message: 'Não foi possível obter a pré-visualização das escalas', isError: true })
       setIsGenerationScale(false)
     }
   }
@@ -193,6 +195,10 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
               }
             </Button>
           </ButtonGroup>
+          <Toaster
+            position="bottom-center"
+            reverseOrder={false}
+          />
         </Box>
       </Modal>
       {
