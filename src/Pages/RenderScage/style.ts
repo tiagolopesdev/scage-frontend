@@ -9,7 +9,7 @@ export const ButtonGroupContainer = styled.div`
 `;
 
 export const CardDayContainer = styled.div`
-  margin: 1%;
+  margin: 1% 31% 0% 0%;
   position: fixed;
   left: 0;
   height: 38rem;

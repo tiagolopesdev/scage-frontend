@@ -33,7 +33,9 @@ export const RenderScale = () => {
               margin: '0% 25rem 2% 2%',
               display: 'flex',
               flexWrap: 'wrap',
-              right: '40%'
+              right: '40%',
+              minWidth: '98%',
+              maxHeight: '87%'
             }}
           >
             {
