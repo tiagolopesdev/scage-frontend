@@ -7,7 +7,7 @@ import { Reorder, useDragControls } from "framer-motion"
 import { useState } from "react"
 import { IScaleDay } from "../../../@types/IScaleDay"
 import { IUser } from "../../../@types/IUser"
-import { NamePeopleStyle } from "./style"
+import { IconSelectUserStyle, InformationPeopleContainer, NamePeopleStyle } from "./style"
 
 
 interface ICardDay {
@@ -61,13 +61,13 @@ export const CardDay = ({ day }: ICardDay) => {
               >
                 <span>
                   <div style={StylePeoplesContent} onPointerDown={(e) => controls.start(e)}>
-                    <div style={{ display: 'flex', width: '100%' }}>
+                    <InformationPeopleContainer>
                       <Icon src={index === 2 ? String(DeskIcon) : String(CameraIcon)} style={{ width: '25px' }} />
                       <NamePeopleStyle>{item.name}</NamePeopleStyle>
-                    </div>
-                    <div style={{ width: '10%' }}>
+                    </InformationPeopleContainer>
+                    <IconSelectUserStyle>
                       <Icon src={String(SelectNewUserIcon)} />
-                    </div>
+                    </IconSelectUserStyle>
                   </div>
                 </span>
               </Reorder.Item>
