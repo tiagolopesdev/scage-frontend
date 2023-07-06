@@ -3,7 +3,7 @@ import { CardDay } from '../../Components/Cards/Day/index';
 import { NavBar } from '../../Components/Navbar';
 import { UserListFloating } from '../../Components/Users/user-list-floating';
 import { ScroolCustom } from '../../Styles';
-import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle } from './style';
+import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, TextStyle } from './style';
 import { CSSProperties, useState } from 'react';
 import { ModalGenerationScale } from '../../Components/ModalGenerationScale';
 import { IScaleDay } from '../../@types/IScaleDay';
@@ -28,13 +28,9 @@ export const RenderScale = () => {
   const existScale = () => {
     return scale.length <= 0 ?
       <NotFoundContainerStyle>
-        <h3 style={{ fontFamily: 'Dosis', color: '#606060' }}>
-          Uma escala ainda não foi selecionada para ser exibida
-        </h3>
+        <TextStyle size={15}>Uma escala ainda não foi selecionada para ser exibida</TextStyle>
         <Icon src={String(ScaleNotFoundIcon)} style={{ width: '400px' }} />
-        <h2 style={{ fontFamily: 'Dosis', color: '#606060' }}>
-          Acesse-a na side bar de escalas
-        </h2>
+        <TextStyle size={18}>Acesse-a na side bar de escalas</TextStyle>
       </NotFoundContainerStyle> :
       <CardDayContainer>
         <ScroolCustom

@@ -1,5 +1,15 @@
 import styled from "styled-components";
 
+interface ISizeText {
+  size: number;
+}
+
+export const TextStyle = styled.p<ISizeText>`
+  font-size: ${(props) => props.size}pt;
+  font-family: Dosis; 
+  color: #606060;
+  font-weight: 600;
+`
 
 export const NotFoundContainerStyle = styled.div`
   display: flex; 
