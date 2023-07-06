@@ -92,6 +92,7 @@ export const UserListFloating = () => {
         {users.map((user) => {
           return <>
             <User
+              key={user.id}
               user={user}
               setUserWasManipuled={setUserWasManipuled}
               onDelete={deleteUser}

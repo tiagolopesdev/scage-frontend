@@ -39,8 +39,8 @@ export const RenderScale = () => {
             }}
           >
             {
-              scale.map((item: IScaleDay) => {                
-                return <CardDay day={item}/>
+              scale.map((item: IScaleDay, index: number) => {                
+                return <CardDay key={index} day={item}/>
               })
             }
           </ScroolCustom>
