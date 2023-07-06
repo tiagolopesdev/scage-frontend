@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+
+export const NotFoundContainerStyle = styled.div`
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  margin-right: 25%;
+`
+
 export const ButtonGroupContainer = styled.div`
   position: absolute;
   bottom: 0px;

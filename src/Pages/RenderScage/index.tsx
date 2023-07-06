@@ -3,10 +3,12 @@ import { CardDay } from '../../Components/Cards/Day/index';
 import { NavBar } from '../../Components/Navbar';
 import { UserListFloating } from '../../Components/Users/user-list-floating';
 import { ScroolCustom } from '../../Styles';
-import { ButtonGroupContainer, CardDayContainer } from './style';
+import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle } from './style';
 import { CSSProperties, useState } from 'react';
 import { ModalGenerationScale } from '../../Components/ModalGenerationScale';
 import { IScaleDay } from '../../@types/IScaleDay';
+import { Icon } from '../../Components/Img';
+import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 
 export const RenderScale = () => {
 
@@ -23,28 +25,44 @@ export const RenderScale = () => {
     margin: '0% 2% 0% 3%'
   })
 
+  const existScale = () => {
+    return scale.length <= 0 ?
+      <NotFoundContainerStyle>
+        <h3 style={{ fontFamily: 'Dosis', color: '#606060' }}>
+          Uma escala ainda não foi selecionada para ser exibida
+        </h3>
+        <Icon src={String(ScaleNotFoundIcon)} style={{ width: '400px' }} />
+        <h2 style={{ fontFamily: 'Dosis', color: '#606060' }}>
+          Acesse-a na side bar de escalas
+        </h2>
+      </NotFoundContainerStyle> :
+      <CardDayContainer>
+        <ScroolCustom
+          style={{
+            margin: '0% 25rem 2% 2%',
+            display: 'flex',
+            flexWrap: 'wrap',
+            right: '40%',
+            minWidth: '98%',
+            maxHeight: '87%'
+          }}
+        >
+          {
+            scale.length < 0 ?
+              '' :
+              scale.map((item: IScaleDay, index: number) => {
+                return <CardDay key={index} day={item} />
+              })
+          }
+        </ScroolCustom>
+      </CardDayContainer>
+  }
+
   return (
     <>
       <NavBar />
       <div>
-        <CardDayContainer>
-          <ScroolCustom
-            style={{
-              margin: '0% 25rem 2% 2%',
-              display: 'flex',
-              flexWrap: 'wrap',
-              right: '40%',
-              minWidth: '98%',
-              maxHeight: '87%'
-            }}
-          >
-            {
-              scale.map((item: IScaleDay, index: number) => {                
-                return <CardDay key={index} day={item}/>
-              })
-            }
-          </ScroolCustom>
-        </CardDayContainer>
+        {existScale()}
         <ButtonGroupContainer>
           <ButtonGroup
             style={{ padding: '15px 0px 20px 0px', minWidth: '60%' }}
