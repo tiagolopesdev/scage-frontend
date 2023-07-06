@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Typography } from "@mui/material"
+import { Button, Card, CardContent, Chip, Typography } from "@mui/material"
 import SelectNewUserIcon from '../../../Assets/render_user.svg'
 import CameraIcon from '../../../Assets/camera_icon.svg'
 import DeskIcon from '../../../Assets/desk_icon.svg'
@@ -24,9 +24,12 @@ export const CardDay = ({ day }: ICardDay) => {
   const controls = useDragControls()
 
   const [elements, setElements] = useState<IUser[]>(day.peoples);
+  const [dataTimeFormated] = useState(`${day.event.date} - ${day.event.time}`)
+
+  console.log('Dau ', day.event.date)
 
   return (
-    <Card style={{ width: '280px', height: '280px', margin: '1%' }}>
+    <Card style={{ width: '280px', height: '300px', margin: '1%' }}>
       <CardContent style={{
         display: 'flex',
         flexDirection: 'column',
@@ -40,6 +43,7 @@ export const CardDay = ({ day }: ICardDay) => {
         >
           {day?.event.name}
         </Typography>
+        <Chip style={{ width: '80%', height: '25px' }} label={dataTimeFormated} color="success" variant="outlined" />
         <Reorder.Group values={elements}
           onReorder={setElements}
           style={{
