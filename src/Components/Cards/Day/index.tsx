@@ -1,46 +1,33 @@
-import { Button, Card, CardContent, Typography } from "@mui/material"
+import { Button, Card, CardContent, Chip, Typography } from "@mui/material"
 import SelectNewUserIcon from '../../../Assets/render_user.svg'
 import CameraIcon from '../../../Assets/camera_icon.svg'
 import DeskIcon from '../../../Assets/desk_icon.svg'
 import { Icon } from "../../Img"
 import { Reorder, useDragControls } from "framer-motion"
 import { useState } from "react"
-
-const GroupMock = [
-  {
-    name: 'Fulano A',
-    id: 1
-  },
-  {
-    name: 'Fulano B',
-    id: 2
-  },
-  {
-    name: 'Fulano C',
-    id: 3
-  }
-]
+import { IScaleDay } from "../../../@types/IScaleDay"
+import { IUser } from "../../../@types/IUser"
+import {
+  IconSelectUserStyle,
+  InformationPeopleContainer,
+  NamePeopleStyle,
+  PeopleContainer
+} from "./style"
 
 
-export const CardDay = () => {
+interface ICardDay {
+  day: IScaleDay
+}
+
+export const CardDay = ({ day }: ICardDay) => {
 
   const controls = useDragControls()
 
-  const [elements, setElements] = useState(GroupMock);
-
-  const StylePeoplesContent = ({
-    display: 'flex',
-    margin: '5px 0px 5px 0px',
-    padding: '5px 8px 5px 10px',
-    alignItems: 'center',
-    backgroundColor: '#D9D9D9',
-    borderRadius: '10px',
-  })
-
-  console.log('Element -> ', elements[2])
+  const [elements, setElements] = useState<IUser[]>(day.peoples);
+  const [dataTimeFormated] = useState(`${day.event.date} - ${day.event.time}`)
 
   return (
-    <Card style={{ minWidth: '200px', minHeight: '250px', margin: '1%' }}>
+    <Card style={{ width: '280px', height: '300px', margin: '1%' }}>
       <CardContent style={{
         display: 'flex',
         flexDirection: 'column',
@@ -52,8 +39,9 @@ export const CardDay = () => {
             fontWeight: 'bold'
           }}
         >
-          Nome missa
+          {day?.event.name}
         </Typography>
+        <Chip style={{ width: '80%', height: '25px' }} label={dataTimeFormated} color="success" variant="outlined" />
         <Reorder.Group values={elements}
           onReorder={setElements}
           style={{
@@ -63,17 +51,16 @@ export const CardDay = () => {
         >
           {
             elements.map((item, index) => (
-              <Reorder.Item
-                value={item}
-                key={item.id}
-              >
-                <span>
-                  <div style={StylePeoplesContent} onPointerDown={(e) => controls.start(e)}>
-                    <Icon src={index === 2 ? String(DeskIcon) : String(CameraIcon)} style={{ width: '18px' }} />
-                    <h2 style={{ margin: '0px 40px 0px 10px', fontFamily: 'Dosis' }} >{item.name}</h2>
+              <Reorder.Item value={item} key={item.id} >
+                <PeopleContainer onPointerDown={(e) => controls.start(e)}>
+                  <InformationPeopleContainer>
+                    <Icon src={index === 2 ? String(DeskIcon) : String(CameraIcon)} style={{ width: '25px' }} />
+                    <NamePeopleStyle>{item.name}</NamePeopleStyle>
+                  </InformationPeopleContainer>
+                  <IconSelectUserStyle>
                     <Icon src={String(SelectNewUserIcon)} />
-                  </div>
-                </span>
+                  </IconSelectUserStyle>
+                </PeopleContainer>
               </Reorder.Item>
             ))
           }
