@@ -26,8 +26,6 @@ export const CardDay = ({ day }: ICardDay) => {
   const [elements, setElements] = useState<IUser[]>(day.peoples);
   const [dataTimeFormated] = useState(`${day.event.date} - ${day.event.time}`)
 
-  console.log('Dau ', day.event.date)
-
   return (
     <Card style={{ width: '280px', height: '300px', margin: '1%' }}>
       <CardContent style={{
