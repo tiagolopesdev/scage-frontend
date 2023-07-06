@@ -21,15 +21,17 @@ export const CardDay = ({ day }: ICardDay) => {
 
   const StylePeoplesContent = ({
     display: 'flex',
-    margin: '5px 0px 5px 0px',
+    margin: '5px 0px',
     padding: '5px 8px 5px 10px',
     alignItems: 'center',
-    backgroundColor: '#D9D9D9',
+    backgroundColor: 'rgb(217, 217, 217)',
     borderRadius: '10px',
+    width: '90%'
   })
 
+
   return (
-    <Card style={{ minWidth: '200px', minHeight: '250px', margin: '1%' }}>
+    <Card style={{ width: '280px', height: '280px', margin: '1%' }}>
       <CardContent style={{
         display: 'flex',
         flexDirection: 'column',
@@ -58,9 +60,22 @@ export const CardDay = ({ day }: ICardDay) => {
               >
                 <span>
                   <div style={StylePeoplesContent} onPointerDown={(e) => controls.start(e)}>
-                    <Icon src={index === 2 ? String(DeskIcon) : String(CameraIcon)} style={{ width: '18px' }} />
-                    <h2 style={{ margin: '0px 40px 0px 10px', fontFamily: 'Dosis' }} >{item.name}</h2>
-                    <Icon src={String(SelectNewUserIcon)} />
+                    <div style={{ display: 'flex', width: '100%' }}>
+                      <Icon src={index === 2 ? String(DeskIcon) : String(CameraIcon)} style={{ width: '25px' }} />
+                      <h2 style={{
+                        margin: '0px 40px 0px 10px',
+                        fontFamily: 'Dosis',
+                        overflow: 'hidden',
+                        display: '-webkit-box',
+                        WebkitLineClamp: '1',
+                        WebkitBoxOrient: 'vertical',
+                        width: '100%',
+                      }}
+                      >{item.name}</h2>
+                    </div>
+                    <div style={{ width: '10%' }}>
+                      <Icon src={String(SelectNewUserIcon)} />
+                    </div>
                   </div>
                 </span>
               </Reorder.Item>
