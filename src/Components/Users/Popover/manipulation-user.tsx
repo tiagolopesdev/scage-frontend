@@ -8,6 +8,8 @@ import { Dispatch, useState } from 'react';
 import { createUser, updateUser } from '../../../Services/Users';
 import { Toaster } from 'react-hot-toast';
 import { CustomToast } from '../../CustomToast';
+import IconError from '../../../Assets/icon_error.svg'
+import IconSuccess from '../../../Assets/icon_success.svg'
 
 interface IManipulationUserProps {
   id: string | undefined,
@@ -50,7 +52,7 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
       CustomToast({
         duration: 2000,
         message: responseApi,
-        isError: false
+        icon: String(IconSuccess)
       });
       
       setTimeout(() => {
@@ -61,7 +63,7 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
       CustomToast({
         duration: 2000,
         message: error,
-        isError: true
+        icon: String(IconError)
       });
     }
   }

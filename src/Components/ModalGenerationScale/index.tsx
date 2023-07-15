@@ -25,6 +25,7 @@ import { IScaleMonthPreview } from "../../@types/IScaleMonthPreview";
 import { IScaleDay } from "../../@types/IScaleDay";
 import { CustomToast } from "../CustomToast";
 import { Toaster } from "react-hot-toast";
+import IconError from '../../Assets/icon_error.svg'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -98,7 +99,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
       HandlerClose()
     } catch (error) {
-      CustomToast({ duration: 2000, message: 'Não foi possível obter a pré-visualização das escalas', isError: true })
+      CustomToast({ duration: 2000, message: 'Não foi possível obter a pré-visualização das escalas', icon: String(IconError) })
       setIsGenerationScale(false)
     }
   }

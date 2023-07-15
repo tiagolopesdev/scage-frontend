@@ -6,18 +6,16 @@ import { TextStyle, ToastContainer } from "./style"
 interface ICustomToast {
   message: string,
   duration: number,
-  isError: boolean
+  icon: string
 }
 
 export const CustomToast = (props: ICustomToast) => {
 
-  const { duration, isError, message } = props
-
-  const typeIconDisplay = isError ? String(iconError) : String(iconSuccess);
+  const { duration, icon, message } = props
 
   return toast.custom(
     <ToastContainer>
-      <img src={typeIconDisplay}
+      <img src={icon}
         style={{ width: '25px', marginLeft: '15px' }}
         alt={message}
       />

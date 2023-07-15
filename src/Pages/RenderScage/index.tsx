@@ -9,6 +9,9 @@ import { ModalGenerationScale } from '../../Components/ModalGenerationScale';
 import { IScaleDay } from '../../@types/IScaleDay';
 import { Icon } from '../../Components/Img';
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
+import { CustomToast } from '../../Components/CustomToast';
+import { Toaster } from 'react-hot-toast';
+import WarningIcon from '../../Assets/icon_warning.svg'
 
 export const RenderScale = () => {
 
@@ -71,6 +74,14 @@ export const RenderScale = () => {
               fullWidth
             >Gerar nova escala</Button>
             <Button
+              onClick={() => {
+                scale.length <= 0 ?
+                  CustomToast({
+                    duration: 2000,
+                    icon: String(WarningIcon),
+                    message: 'Uma escala ainda não foi selecionada'
+                  }) : console.log('dsds')
+              }}
               style={ButtonStyle('rgb(14, 202, 101)')}
               variant="contained"
               size='small'
@@ -93,6 +104,10 @@ export const RenderScale = () => {
           setScalePreview={setScale}
         /> : ''
       }
+      <Toaster
+        position="bottom-center"
+        reverseOrder={false}
+      />
     </>
   );
 }

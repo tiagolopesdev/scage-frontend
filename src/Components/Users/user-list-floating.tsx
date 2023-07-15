@@ -12,6 +12,7 @@ import { FilterUser } from "./Popover/filter-user"
 import { CustomToast } from "../CustomToast"
 import toast from "react-hot-toast"
 import { ScroolCustom } from "../../Styles/index"
+import IconError from '../../Assets/icon_error.svg'
 
 
 export const UserListFloating = () => {
@@ -51,7 +52,7 @@ export const UserListFloating = () => {
     } catch (exception) {
       CustomToast({
         duration: 2000,
-        isError: true,
+        icon: String(IconError),
         message: 'Não foi possível obter usuários'
       })
     }
