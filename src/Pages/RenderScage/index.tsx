@@ -25,7 +25,7 @@ export const RenderScale = () => {
     fontSize: '1rem',
     fontWeight: '600',
     backgroundColor: backgroundColorProp,
-    margin: '0% 2% 0% 3%'
+    margin: '0% 1% 0% 3%'
   })
 
   const existScale = () => {
@@ -72,7 +72,14 @@ export const RenderScale = () => {
               variant="contained"
               size='small'
               fullWidth
-            >Gerar nova escala</Button>
+            >Gerar preview da escala</Button>
+            <Button
+              onClick={() => { setOpenModalGenerationScale(!openModalGenerationScale) }}
+              style={ButtonStyle('rgb(14, 202, 101)')}
+              variant="contained"
+              size='small'
+              fullWidth
+            >Salvar</Button>
             <Button
               onClick={() => {
                 scale.length <= 0 ?
@@ -92,7 +99,7 @@ export const RenderScale = () => {
               variant="contained"
               size='small'
               fullWidth
-            >Exportar escala em PDF</Button>
+            >Exportar em PDF</Button>
           </ButtonGroup>
         </ButtonGroupContainer>
       </div>
