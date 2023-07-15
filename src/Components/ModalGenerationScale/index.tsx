@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Box,
   Button,
   CircularProgress,
@@ -10,7 +11,8 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
+  TextField
 } from "@mui/material";
 import { Icon } from "../Img";
 import IconEdit from '../../Assets/icon_user_edit.svg'
@@ -26,6 +28,8 @@ import { IScaleDay } from "../../@types/IScaleDay";
 import { CustomToast } from "../CustomToast";
 import { Toaster } from "react-hot-toast";
 import IconError from '../../Assets/icon_error.svg'
+import { DatePicker } from "@mui/x-date-pickers";
+import { Dayjs } from "dayjs";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -52,6 +56,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   const [scaleMonthList, setScaleMonthList] = useState<IScaleMonthPreview[] | undefined>();
   const [dayToEdit, setDayToEdit] = useState<IScaleMonthPreview | undefined>();
   const [isGenerationScale, setIsGenerationScale] = useState(false)
+  const [selectedDate, setHandleDateChange] = useState<Dayjs | null>();
 
   const HandlerClose = () => {
     openModalState(!openModal)
@@ -123,6 +128,21 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     setOpenModalNewDay(true)
   }
 
+  const months = [
+    { label: 'Janeiro' },
+    { label: 'Fevereiro' },
+    { label: 'Março' },
+    { label: 'Abril' },
+    { label: 'Maio' },
+    { label: "Junho" },
+    { label: 'Julho' },
+    { label: 'Agosto' },
+    { label: 'Setembro' },
+    { label: 'Outubro' },
+    { label: 'Novembro' },
+    { label: 'Dezembro' }
+  ]
+
   return (
     <>
       <Modal
@@ -132,6 +152,29 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <div style={{ display: 'flex', margin: '4% 2%' }}>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={months}
+              sx={{ width: 250 }}
+              renderInput={(params) => <TextField {...params} label="Mês" />}
+            />
+            <DatePicker
+              inputFormat="DD/MM/YYYY"
+              label="Inicio do mês"
+              value={selectedDate}
+              onChange={(newValue) => { setHandleDateChange(newValue) }}
+              renderInput={(params) => <TextField style={{ width: '200px', marginRight: '10px' }} {...params} />}
+            />
+            <DatePicker
+              inputFormat="DD/MM/YYYY"
+              label="Fim do mês"
+              value={selectedDate}
+              onChange={(newValue) => { setHandleDateChange(newValue) }}
+              renderInput={(params) => <TextField style={{ width: '200px', marginRight: '10px' }} {...params} />}
+            />
+          </div>
           <ContainerNewDay>
             <Button
               size='small'
