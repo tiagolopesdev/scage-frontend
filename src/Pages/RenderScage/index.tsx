@@ -18,6 +18,31 @@ export const RenderScale = () => {
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
   const [scale, setScale] = useState<IScaleDay[]>([]);
 
+  console.log('Scale ', scale)
+
+  // const saveScale = async () => {
+  //   try {
+
+  //     const objectToSend = {
+  //       "name": "string",
+  //       "start": "2023-07-15T17:40:51.982Z",
+  //       "end": "2023-07-15T17:40:51.982Z",
+  //       "days": [
+  //         {
+  //           "name": "string",
+  //           "dateTime": "2023-07-15T17:40:51.982Z",
+  //           "cameraOne": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  //           "cameraTwo": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  //           "cutDesk": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  //         }
+  //       ]
+  //     }
+
+  //   } catch (error) {
+
+  //   }
+  // }
+
   const ButtonStyle = (backgroundColorProp: string): CSSProperties => ({
     borderRadius: '12px',
     fontFamily: 'Dosis',
@@ -74,7 +99,14 @@ export const RenderScale = () => {
               fullWidth
             >Gerar preview da escala</Button>
             <Button
-              onClick={() => { setOpenModalGenerationScale(!openModalGenerationScale) }}
+              onClick={() => {
+                scale.length <= 0 ?
+                  CustomToast({
+                    duration: 2000,
+                    icon: String(WarningIcon),
+                    message: 'Uma escala ainda não foi selecionada'
+                  }) : console.log('dsds')
+              }}
               style={ButtonStyle('rgb(14, 202, 101)')}
               variant="contained"
               size='small'
@@ -95,6 +127,14 @@ export const RenderScale = () => {
               fullWidth
             >Adicionar novo dia</Button>
             <Button
+              onClick={() => {
+                scale.length <= 0 ?
+                  CustomToast({
+                    duration: 2000,
+                    icon: String(WarningIcon),
+                    message: 'Uma escala ainda não foi selecionada'
+                  }) : console.log('dsds')
+              }}
               style={ButtonStyle('#30B2DB')}
               variant="contained"
               size='small'
