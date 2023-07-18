@@ -53,7 +53,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   const { openModal, openModalState, setScalePreview } = props
 
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
-  const [scaleMonthList, setScaleMonthList] = useState<IScaleMonthPreview[] | undefined>();
+  const [daysList, setDaysList] = useState<IScaleMonthPreview[] | undefined>();
   const [dayToEdit, setDayToEdit] = useState<IScaleMonthPreview | undefined>();
   const [isGenerationScale, setIsGenerationScale] = useState(false)
   const [selectedDate, setHandleDateChange] = useState<Dayjs | null>();
@@ -66,13 +66,13 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     try {
       setIsGenerationScale(true)
 
-      if (!scaleMonthList) return
+      if (!daysList) return
 
       let responseUserApi: IUser[] = await getAllUsersService();
 
       const onlyUserId = responseUserApi.map((item) => { return item.id })
 
-      const onlyNameDay = scaleMonthList.map((item) => { return item.name })
+      const onlyNameDay = daysList.map((item) => { return item.name })
 
       const scalePreviewToSend = {
         users: onlyUserId,
@@ -91,7 +91,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
         scaleReturn.push(
           {
-            event: scaleMonthList[index] as IScaleMonthPreview,
+            event: daysList[index] as IScaleMonthPreview,
             peoples: scalePreview
           }
         )
@@ -119,8 +119,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   })
 
   const DeleteDay = (dayToRemove: IScaleMonthPreview) => {
-    const newListDay = scaleMonthList?.filter((item) => { return item !== dayToRemove });
-    setScaleMonthList(newListDay)
+    const newListDay = daysList?.filter((item) => { return item !== dayToRemove });
+    setDaysList(newListDay)
   }
 
   const EditDay = (day: IScaleMonthPreview) => {
@@ -158,7 +158,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
               id="combo-box-demo"
               options={months}
               sx={{ width: 250 }}
-              renderInput={(params) => <TextField {...params} label="Mês" />}
+              renderInput={(params) => <TextField {...params} label="Mês" />}              
             />
             <DatePicker
               inputFormat="DD/MM/YYYY"
@@ -195,7 +195,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
               </TableHead>
               <TableBody>
                 {
-                  scaleMonthList?.map((item, index) => {
+                  daysList?.map((item, index) => {
                     return (
                       <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
                         <TableCell component="th" scope="row">
@@ -252,8 +252,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             openModalState={setOpenModalNewDay}
             dayToEdit={dayToEdit}
             setManipulationDay={setDayToEdit}
-            manipulationDay={setScaleMonthList}
-            stateDay={scaleMonthList}
+            manipulationDay={setDaysList}
+            stateDay={daysList}
           /> : ''
       }
     </>
