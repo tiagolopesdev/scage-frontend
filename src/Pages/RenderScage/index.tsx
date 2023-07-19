@@ -12,36 +12,37 @@ import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 import { CustomToast } from '../../Components/CustomToast';
 import { Toaster } from 'react-hot-toast';
 import WarningIcon from '../../Assets/icon_warning.svg'
+import { IScaleMonth } from '../../@types/IScaleMonth';
 
 export const RenderScale = () => {
 
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
-  const [scale, setScale] = useState<IScaleDay[]>([]);
+  const [scale, setScale] = useState<IScaleMonth>();
 
   console.log('Scale ', scale)
 
-  // const saveScale = async () => {
-  //   try {
+  const saveScale = async () => {
+    try {
 
-  //     const objectToSend = {
-  //       "name": "string",
-  //       "start": "2023-07-15T17:40:51.982Z",
-  //       "end": "2023-07-15T17:40:51.982Z",
-  //       "days": [
-  //         {
-  //           "name": "string",
-  //           "dateTime": "2023-07-15T17:40:51.982Z",
-  //           "cameraOne": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  //           "cameraTwo": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  //           "cutDesk": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-  //         }
-  //       ]
-  //     }
+      // const objectToSend: IScaleMonth = {
+      //   name: "string",
+      //   start: "2023-07-15T17:40:51.982Z",
+      //   end: "2023-07-15T17:40:51.982Z",
+      //   days: [
+      //     {
+      //       name: "string",
+      //       dateTime: "2023-07-15T17:40:51.982Z",
+      //       cameraOne: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      //       cameraTwo: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      //       cutDesk: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      //     }
+      //   ]
+      // }
 
-  //   } catch (error) {
+    } catch (error) {
 
-  //   }
-  // }
+    }
+  }
 
   const ButtonStyle = (backgroundColorProp: string): CSSProperties => ({
     borderRadius: '12px',
@@ -54,7 +55,7 @@ export const RenderScale = () => {
   })
 
   const existScale = () => {
-    return scale.length <= 0 ?
+    return scale?.days.length as number <= 0 ?
       <NotFoundContainerStyle>
         <TextStyle size={15}>Uma escala ainda não foi selecionada para ser exibida</TextStyle>
         <Icon src={String(ScaleNotFoundIcon)} style={{ width: '400px' }} />
@@ -71,13 +72,13 @@ export const RenderScale = () => {
             maxHeight: '87%'
           }}
         >
-          {
-            scale.length < 0 ?
+          {/* {
+            scale?.days.length as number < 0 ?
               '' :
-              scale.map((item: IScaleDay, index: number) => {
+              scale?.days.map((item: IScaleDay, index: number) => {
                 return <CardDay key={index} day={item} />
               })
-          }
+          } */}
         </ScroolCustom>
       </CardDayContainer>
   }
@@ -100,7 +101,7 @@ export const RenderScale = () => {
             >Gerar preview da escala</Button>
             <Button
               onClick={() => {
-                scale.length <= 0 ?
+                scale?.days.length as number <= 0 ?
                   CustomToast({
                     duration: 2000,
                     icon: String(WarningIcon),
@@ -114,7 +115,7 @@ export const RenderScale = () => {
             >Salvar</Button>
             <Button
               onClick={() => {
-                scale.length <= 0 ?
+                scale?.days.length as number <= 0 ?
                   CustomToast({
                     duration: 2000,
                     icon: String(WarningIcon),
@@ -128,7 +129,7 @@ export const RenderScale = () => {
             >Adicionar novo dia</Button>
             <Button
               onClick={() => {
-                scale.length <= 0 ?
+                scale?.days.length as number <= 0 ?
                   CustomToast({
                     duration: 2000,
                     icon: String(WarningIcon),
