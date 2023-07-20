@@ -4,9 +4,9 @@ import CameraIcon from '../../../Assets/camera_icon.svg'
 import DeskIcon from '../../../Assets/desk_icon.svg'
 import { Icon } from "../../Img"
 import { Reorder, useDragControls } from "framer-motion"
-import { useState } from "react"
-import { IScaleDay } from "../../../@types/IScaleDay"
+import { useEffect, useState } from "react"
 import { IUser } from "../../../@types/IUser"
+import { IDay } from "../../../@types/IScaleMonth"
 import {
   IconSelectUserStyle,
   InformationPeopleContainer,
@@ -16,15 +16,25 @@ import {
 
 
 interface ICardDay {
-  day: IScaleDay
+  day: IDay
 }
 
 export const CardDay = ({ day }: ICardDay) => {
 
   const controls = useDragControls()
 
-  const [elements, setElements] = useState<IUser[]>(day.peoples);
-  const [dataTimeFormated] = useState(`${day.event.date} - ${day.event.time}`)
+  const [elements, setElements] = useState<IUser[]>([]);
+  const [dataTimeFormated] = useState(`${day.dateTime}`)
+
+  useEffect(() => {
+    let elementsToList: IUser[] = []
+
+    elementsToList.push(day.cameraOne)
+    elementsToList.push(day.cameraTwo)
+    elementsToList.push(day.cutDesk)
+
+    setElements(elementsToList)
+  }, [])
 
   return (
     <Card style={{ width: '280px', height: '300px', margin: '1%' }}>
@@ -39,7 +49,7 @@ export const CardDay = ({ day }: ICardDay) => {
             fontWeight: 'bold'
           }}
         >
-          {day?.event.name}
+          {day.name}
         </Typography>
         <Chip style={{ width: '80%', height: '25px' }} label={dataTimeFormated} color="success" variant="outlined" />
         <Reorder.Group values={elements}

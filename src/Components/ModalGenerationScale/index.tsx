@@ -88,15 +88,10 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
       const responseScalePreviewApi = await GenerationPreviewScale(scalePreviewToSend);
 
-      let scaleReturn: IDay[] = [];
-      let scalePreview: IUser[] = [];
+      let daysToReturn: IDay[] = [];
 
       responseScalePreviewApi.map((item: any, index: number) => {
-        scalePreview.push(item.cameraOne)
-        scalePreview.push(item.cameraTwo)
-        scalePreview.push(item.cutDesk)
-
-        scaleReturn.push(
+        daysToReturn.push(
           {
             cameraOne: item.cameraOne,
             cameraTwo: item.cameraTwo,
@@ -105,12 +100,16 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             name: daysList[index].name
           }
         )
-        scalePreview = []
       })
 
-      setScaleMonth({...scaleMonth, days: scaleReturn})
-
       setIsGenerationScale(false)
+
+      setScalePreview({
+        name: scaleMonth.name,
+        end: scaleMonth.end,
+        start: scaleMonth.start,
+        days: daysToReturn
+      })
 
       HandlerClose()
     } catch (error) {
@@ -180,7 +179,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
                 setSelectedStartDate(newValue)
               }}
               renderInput={(params) => <TextField style={{ width: '200px', marginRight: '10px' }} {...params} />}
-              />
+            />
             <DatePicker
               inputFormat="DD/MM/YYYY"
               label="Fim do mês"

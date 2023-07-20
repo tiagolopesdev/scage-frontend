@@ -12,14 +12,12 @@ import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 import { CustomToast } from '../../Components/CustomToast';
 import { Toaster } from 'react-hot-toast';
 import WarningIcon from '../../Assets/icon_warning.svg'
-import { IScaleMonth } from '../../@types/IScaleMonth';
+import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
 
 export const RenderScale = () => {
 
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
   const [scale, setScale] = useState<IScaleMonth>();
-
-  console.log('Scale ', scale)
 
   const saveScale = async () => {
     try {
@@ -55,7 +53,7 @@ export const RenderScale = () => {
   })
 
   const existScale = () => {
-    return scale?.days.length as number <= 0 ?
+    return scale === undefined ?
       <NotFoundContainerStyle>
         <TextStyle size={15}>Uma escala ainda não foi selecionada para ser exibida</TextStyle>
         <Icon src={String(ScaleNotFoundIcon)} style={{ width: '400px' }} />
@@ -72,13 +70,13 @@ export const RenderScale = () => {
             maxHeight: '87%'
           }}
         >
-          {/* {
+          {
             scale?.days.length as number < 0 ?
               '' :
-              scale?.days.map((item: IScaleDay, index: number) => {
+              scale?.days.map((item: IDay, index: number) => {
                 return <CardDay key={index} day={item} />
               })
-          } */}
+          }
         </ScroolCustom>
       </CardDayContainer>
   }
