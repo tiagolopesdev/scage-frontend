@@ -28,7 +28,7 @@ import { CustomToast } from "../CustomToast";
 import { Toaster } from "react-hot-toast";
 import IconError from '../../Assets/icon_error.svg'
 import { DatePicker } from "@mui/x-date-pickers";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import { IDay, IScaleMonth } from "../../@types/IScaleMonth";
 
 const style = {
@@ -90,6 +90,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
       let daysToReturn: IDay[] = [];
 
+      console.log('DAys ', daysList)
+
       responseScalePreviewApi.map((item: any, index: number) => {
         daysToReturn.push(
           {
@@ -106,12 +108,12 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
       setScalePreview({
         name: scaleMonth.name,
-        end: scaleMonth.end,
-        start: scaleMonth.start,
+        end: selectedEndDate?.format('YYYY-MM-DD') as string, 
+        start: selectedStartDate?.format('YYYY-MM-DD') as string,
         days: daysToReturn
       })
 
-      HandlerClose()
+      // HandlerClose()
     } catch (error) {
       CustomToast({ duration: 2000, message: 'Não foi possível obter a pré-visualização das escalas', icon: String(IconError) })
       setIsGenerationScale(false)
@@ -174,20 +176,14 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
               inputFormat="DD/MM/YYYY"
               label="Inicio do mês"
               value={selectedStartDate}
-              onChange={(newValue) => {
-                setScaleMonth({ ...scaleMonth, start: dayjs(newValue).format('DD/MM/YYYY') })
-                setSelectedStartDate(newValue)
-              }}
+              onChange={(newValue) => { setSelectedStartDate(newValue) }}
               renderInput={(params) => <TextField style={{ width: '200px', marginRight: '10px' }} {...params} />}
             />
             <DatePicker
               inputFormat="DD/MM/YYYY"
               label="Fim do mês"
               value={selectedEndDate}
-              onChange={(newValue) => {
-                setScaleMonth({ ...scaleMonth, end: dayjs(newValue).format('DD/MM/YYYY') })
-                setSelectedEndDate(newValue)
-              }}
+              onChange={(newValue) => { setSelectedEndDate(newValue) }}
               renderInput={(params) => <TextField style={{ width: '200px', marginRight: '10px' }} {...params} />}
             />
           </div>

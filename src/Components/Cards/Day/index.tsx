@@ -29,9 +29,9 @@ export const CardDay = ({ day }: ICardDay) => {
   useEffect(() => {
     let elementsToList: IUser[] = []
 
-    elementsToList.push(day.cameraOne)
-    elementsToList.push(day.cameraTwo)
-    elementsToList.push(day.cutDesk)
+    elementsToList.push(day.cameraOne as IUser)
+    elementsToList.push(day.cameraTwo as IUser)
+    elementsToList.push(day.cutDesk as IUser)
 
     setElements(elementsToList)
   }, [])

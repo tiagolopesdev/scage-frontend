@@ -13,29 +13,43 @@ import { CustomToast } from '../../Components/CustomToast';
 import { Toaster } from 'react-hot-toast';
 import WarningIcon from '../../Assets/icon_warning.svg'
 import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
+import { IUser } from '../../@types/IUser';
+import dayjs from 'dayjs';
 
 export const RenderScale = () => {
 
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
   const [scale, setScale] = useState<IScaleMonth>();
 
+  console.log('Scale ', scale)
+
   const saveScale = async () => {
     try {
 
-      // const objectToSend: IScaleMonth = {
-      //   name: "string",
-      //   start: "2023-07-15T17:40:51.982Z",
-      //   end: "2023-07-15T17:40:51.982Z",
-      //   days: [
-      //     {
-      //       name: "string",
-      //       dateTime: "2023-07-15T17:40:51.982Z",
-      //       cameraOne: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      //       cameraTwo: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      //       cutDesk: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-      //     }
-      //   ]
-      // }
+      if (!scale) return
+
+      const filterOnlyIdUsers: IDay[] = scale.days.map((day) => {
+        return {
+          name: day.name,
+          dateTime: day.dateTime,
+          cameraOne: day.cameraOne.id,
+          cameraTwo: day.cameraTwo.id,
+          cutDesk: day.cutDesk.id
+        }
+      })
+
+      console.log('ENd ', scale.end)
+      console.log('Start ', scale.start)
+
+      const objectToSend: IScaleMonth = {
+        name: scale.name,
+        start: scale.start,
+        end: scale.end,
+        days: filterOnlyIdUsers
+      }
+
+      console.log('Send 1', scale.end)
+      console.log('Send 2', objectToSend)
 
     } catch (error) {
 
@@ -104,7 +118,7 @@ export const RenderScale = () => {
                     duration: 2000,
                     icon: String(WarningIcon),
                     message: 'Uma escala ainda não foi selecionada'
-                  }) : console.log('dsds')
+                  }) : saveScale()
               }}
               style={ButtonStyle('rgb(14, 202, 101)')}
               variant="contained"
