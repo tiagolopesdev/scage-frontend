@@ -4,9 +4,9 @@ import { IUser } from "./IUser"
 export interface IDay {
   name: string
   dateTime: string
-  cameraOne: IUser
-  cameraTwo: IUser
-  cutDesk: IUser
+  cameraOne: any
+  cameraTwo: any
+  cutDesk: any
 }
 
 export interface IScaleMonth {
