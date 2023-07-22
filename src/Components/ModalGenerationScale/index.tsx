@@ -90,15 +90,13 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
       let daysToReturn: IDay[] = [];
 
-      console.log('DAys ', daysList)
-
       responseScalePreviewApi.map((item: any, index: number) => {
         daysToReturn.push(
           {
             cameraOne: item.cameraOne,
             cameraTwo: item.cameraTwo,
             cutDesk: item.cutDesk,
-            dateTime: `${daysList[index].date} ${daysList[index].time}`,
+            dateTime: `${daysList[index].dateTime}Z`,
             name: daysList[index].name
           }
         )
@@ -113,7 +111,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
         days: daysToReturn
       })
 
-      // HandlerClose()
+      HandlerClose()
     } catch (error) {
       CustomToast({ duration: 2000, message: 'Não foi possível obter a pré-visualização das escalas', icon: String(IconError) })
       setIsGenerationScale(false)

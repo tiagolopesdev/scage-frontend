@@ -6,22 +6,18 @@ import { ScroolCustom } from '../../Styles';
 import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, TextStyle } from './style';
 import { CSSProperties, useState } from 'react';
 import { ModalGenerationScale } from '../../Components/ModalGenerationScale';
-import { IScaleDay } from '../../@types/IScaleDay';
 import { Icon } from '../../Components/Img';
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 import { CustomToast } from '../../Components/CustomToast';
 import { Toaster } from 'react-hot-toast';
 import WarningIcon from '../../Assets/icon_warning.svg'
 import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
-import { IUser } from '../../@types/IUser';
-import dayjs from 'dayjs';
 
 export const RenderScale = () => {
 
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
   const [scale, setScale] = useState<IScaleMonth>();
 
-  console.log('Scale ', scale)
 
   const saveScale = async () => {
     try {
@@ -38,18 +34,12 @@ export const RenderScale = () => {
         }
       })
 
-      console.log('ENd ', scale.end)
-      console.log('Start ', scale.start)
-
       const objectToSend: IScaleMonth = {
         name: scale.name,
         start: scale.start,
         end: scale.end,
         days: filterOnlyIdUsers
       }
-
-      console.log('Send 1', scale.end)
-      console.log('Send 2', objectToSend)
 
     } catch (error) {
 

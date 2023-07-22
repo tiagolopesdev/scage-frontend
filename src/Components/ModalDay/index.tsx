@@ -35,6 +35,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
   const [eventName, setEventName] = useState(dayToEdit ? dayToEdit.name : '');
   const [selectedDate, setHandleDateChange] = useState<Dayjs | null>(dayToEdit ? dayjs(dayToEdit.date, 'DD/MM/YYYY') : null);
   const [selectedTime, setHandleTimeChange] = useState<Dayjs | null>(dayToEdit ? dayjs(dayToEdit.time, 'h:mm A') : null);
+  const [selectedDateTime, setSelectedDateTime] = useState<Dayjs>(dayjs(new Date()))
 
   const HandlerClose = () => {
     if (dayToEdit) setManipulationDay(undefined)
@@ -50,7 +51,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
     padding: '5px 0px',
     ...customStyle
   })
-
+  
   return (
     <Modal
       open={openModal}
@@ -73,13 +74,33 @@ export const ModalDay = (props: IModalGenerationScale) => {
               inputFormat="DD/MM/YYYY"
               label="Data do evento"
               value={selectedDate}
-              onChange={(newValue) => { setHandleDateChange(newValue) }}
+              onChange={(newValue) => {
+                if (!newValue) return
+
+                const newDate = selectedDateTime
+                  .set('date', newValue?.get('date'))
+                  .set('month', newValue?.get('month'))
+                  .set('year', newValue?.get('year'))
+
+                setSelectedDateTime(newDate)
+                setHandleDateChange(newValue)
+              }}
               renderInput={(params) => <TextField style={{ width: '200px', marginRight: '10px' }} {...params} />}
             />
             <TimePicker
               label="Hora do evento"
               value={selectedTime}
-              onChange={(newValue) => { setHandleTimeChange(newValue) }}
+              onChange={(newValue) => {
+                if (!newValue) return
+
+                const newHour = selectedDateTime
+                  .set('hour', newValue?.get('hour'))
+                  .set('minute', newValue?.get('minute'))
+                  .set('second', newValue?.get('second'))
+
+                setSelectedDateTime(newHour)
+                setHandleTimeChange(newValue)
+              }}
               renderInput={(params) => <TextField style={{ width: '200px', marginLeft: '10px' }} {...params} />}
             />
           </DateTimeGroupStyle>
@@ -93,7 +114,8 @@ export const ModalDay = (props: IModalGenerationScale) => {
                 const newEventToInsert: IScaleMonthPreview = {
                   name: eventName,
                   date: dayjs(selectedDate).format('DD/MM/YYYY'),
-                  time: dayjs(selectedTime).format('h:mm A')
+                  time: dayjs(selectedTime).format('h:mm A'),
+                  dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss')
                 }
                 if (stateDay !== undefined) {
                   if (dayToEdit) {
