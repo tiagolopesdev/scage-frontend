@@ -12,6 +12,9 @@ import { CustomToast } from '../../Components/CustomToast';
 import { Toaster } from 'react-hot-toast';
 import WarningIcon from '../../Assets/icon_warning.svg'
 import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
+import { SaveScaleService } from '../../Services/Scale';
+import IconError from '../../Assets/icon_error.svg'
+import IconSuccess from '../../Assets/icon_success.svg'
 
 export const RenderScale = () => {
 
@@ -41,8 +44,12 @@ export const RenderScale = () => {
         days: filterOnlyIdUsers
       }
 
-    } catch (error) {
+      await SaveScaleService(objectToSend)
 
+      CustomToast({ duration: 2000, message: 'Escala salva com sucesso', icon: String(IconSuccess) })
+
+    } catch (error) {
+      CustomToast({ duration: 2000, message: 'Não foi possível salvar a escala', icon: String(IconError) })
     }
   }
 
