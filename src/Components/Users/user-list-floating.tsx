@@ -91,14 +91,13 @@ export const UserListFloating = () => {
     if (users.length > 0) {
       return <>
         {users.map((user) => {
-          return <>
+          return <div key={user.id}>
             <User
-              key={user.id}
               user={user}
               setUserWasManipuled={setUserWasManipuled}
               onDelete={deleteUser}
             />
-          </>
+          </div>
         })}
       </>
     } else {
@@ -115,18 +114,14 @@ export const UserListFloating = () => {
           label="Digite o nome do servo"
           onChange={(event: any) => { setNameToFilter(event.target.value) }}
         />
-        <IconButton
-          onClick={(event: any) => { handleClick(event, false) }}
-        >
+        <IconButton onClick={(event: any) => { handleClick(event, false) }} >
           <Icon src={String(IconFilter)} />
         </IconButton>
       </Search>
       <BadgeSizeFixed>
         {sexFilter ?
           <Chip
-            style={{
-              marginTop: '10px'
-            }}
+            style={{ marginTop: '10px' }}
             label={sexFilter}
             onDelete={() => { setSexFilter('') }} /> :
           ''

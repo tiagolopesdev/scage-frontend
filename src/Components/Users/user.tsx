@@ -6,6 +6,7 @@ import { Card, CardActions, CardContent, IconButton, Typography } from "@mui/mat
 import { IUser } from "../../@types/IUser"
 import { ManipulationUser } from "./Popover/manipulation-user"
 import { Dispatch, useState } from "react"
+import { GroupFieldStyle } from "./style"
 
 interface IUsersProps {
   user: IUser,
@@ -45,7 +46,7 @@ export const User = (usersProps: IUsersProps) => {
           }}
         >
           <Icon src={String(IconUser)} style={{ margin: '0px 20px 0px 10px', width: '3rem' }} />
-          <div style={{ width: '100%' }} >
+          <GroupFieldStyle>
             <Typography
               variant="h6"
               style={{
@@ -64,16 +65,16 @@ export const User = (usersProps: IUsersProps) => {
             >
               {user.email}
             </Typography>
-          </div>
+          </GroupFieldStyle>
           <CardActions>
             <IconButton
               aria-describedby={id}
-              onClick={handleClick}
+              onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                handleClick(event)
+                setUserManipulation(user)
+              }}
             >
-              <Icon
-                src={String(IconUserEdit)}
-                onClick={() => { setUserManipulation(user) }}
-              />
+              <Icon src={String(IconUserEdit)} />
             </IconButton>
             <IconButton
               aria-describedby={id}
