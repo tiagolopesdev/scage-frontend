@@ -1,5 +1,10 @@
 import styled from "styled-components";
 
+
+export const GroupFieldStyle = styled.div`
+  width: 100%;
+`
+
 export const BadgeSizeFixed = styled.div`
   height: 7%;
 `
