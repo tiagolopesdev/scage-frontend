@@ -7,6 +7,8 @@ import { Icon } from "../Img";
 import SelectIcon from "../../Assets/icon_success_white.svg"
 import CloseIcon from "../../Assets/icon_user_delete.svg"
 import { IScaleMonthPreview } from "../../@types/IScaleMonthPreview";
+import IconWarning from '../../Assets/icon_warning.svg'
+import { CustomToast } from "../CustomToast";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -51,7 +53,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
     padding: '5px 0px',
     ...customStyle
   })
-  
+
   return (
     <Modal
       open={openModal}
@@ -75,7 +77,10 @@ export const ModalDay = (props: IModalGenerationScale) => {
               label="Data do evento"
               value={selectedDate}
               onChange={(newValue) => {
-                if (!newValue) return
+                if (!newValue) {
+                  setHandleDateChange(null)
+                  return
+                }
 
                 const newDate = selectedDateTime
                   .set('date', newValue?.get('date'))
@@ -91,7 +96,10 @@ export const ModalDay = (props: IModalGenerationScale) => {
               label="Hora do evento"
               value={selectedTime}
               onChange={(newValue) => {
-                if (!newValue) return
+                if (!newValue) {
+                  setHandleTimeChange(null)
+                  return
+                }
 
                 const newHour = selectedDateTime
                   .set('hour', newValue?.get('hour'))
@@ -111,6 +119,10 @@ export const ModalDay = (props: IModalGenerationScale) => {
               size='small'
               fullWidth
               onClick={() => {
+                if (!eventName || !selectedDate?.format('DD/MM/YYYY') || !selectedTime?.format('h:mm A')) {
+                  CustomToast({ duration: 2000, message: 'Preencha todos os campos', icon: String(IconWarning) })
+                  return
+                }
                 const newEventToInsert: IScaleMonthPreview = {
                   name: eventName,
                   date: dayjs(selectedDate).format('DD/MM/YYYY'),
