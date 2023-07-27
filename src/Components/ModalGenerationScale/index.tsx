@@ -167,6 +167,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
               id="combo-box-demo"
               options={months}
               sx={{ width: 250 }}
+              isOptionEqualToValue={(option, value) => value.label === option.label}
               renderInput={(params) => <TextField {...params} label="Mês" />}
               onChange={(event: any) => { setScaleMonth({ ...scaleMonth, name: event.target.innerText as string }) }}
             />
