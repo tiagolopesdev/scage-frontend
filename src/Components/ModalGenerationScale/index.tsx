@@ -176,7 +176,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
               label="Inicio do mês"
               value={selectedStartDate}
               onChange={(newValue) => { setSelectedStartDate(newValue) }}
-              renderInput={(params) => <TextField style={{ width: '200px', marginRight: '10px' }} {...params} />}
+              renderInput={(params) => <TextField style={{ width: '200px', margin: '0px 10px' }} {...params} />}
             />
             <DatePicker
               inputFormat="DD/MM/YYYY"
