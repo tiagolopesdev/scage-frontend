@@ -1,16 +1,16 @@
 
 
-export enum Months {
-  JANUARY = 'Janeiro',
-  FEBRUARY = 'Fevereiro',
-  MARCH = 'Março',
-  APRIL = 'Abril',
-  MAY = 'Março',
-  JUNE = 'Junho',
-  JULY = 'Julho',
-  AUGUST = 'Agosto',
-  SEPTEMBER = 'Setembro',
-  OCTOBER = 'Outubro',
-  NOVEMBER = 'Novembro',
-  DECEMBER = 'Dezembro'
-}
+export const Months = [
+  { label: 'Janeiro' },
+  { label: 'Fevereiro' },
+  { label: 'Março' },
+  { label: 'Abril' },
+  { label: 'Maio' },
+  { label: "Junho" },
+  { label: 'Julho' },
+  { label: 'Agosto' },
+  { label: 'Setembro' },
+  { label: 'Outubro' },
+  { label: 'Novembro' },
+  { label: 'Dezembro' }
+]

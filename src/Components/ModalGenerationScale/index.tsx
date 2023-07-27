@@ -30,6 +30,7 @@ import IconError from '../../Assets/icon_error.svg'
 import { DatePicker } from "@mui/x-date-pickers";
 import { Dayjs } from "dayjs";
 import { IDay, IScaleMonth } from "../../@types/IScaleMonth";
+import { Months } from "../../@types/Months";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -137,21 +138,6 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     setOpenModalNewDay(true)
   }
 
-  const months = [
-    { label: 'Janeiro' },
-    { label: 'Fevereiro' },
-    { label: 'Março' },
-    { label: 'Abril' },
-    { label: 'Maio' },
-    { label: "Junho" },
-    { label: 'Julho' },
-    { label: 'Agosto' },
-    { label: 'Setembro' },
-    { label: 'Outubro' },
-    { label: 'Novembro' },
-    { label: 'Dezembro' }
-  ]
-
   return (
     <>
       <Modal
@@ -165,7 +151,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={months}
+              options={Months}
               sx={{ width: 250 }}
               isOptionEqualToValue={(option, value) => value.label === option.label}
               renderInput={(params) => <TextField {...params} label="Mês" />}
