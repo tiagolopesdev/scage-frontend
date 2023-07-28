@@ -31,6 +31,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { Dayjs } from "dayjs";
 import { IDay, IScaleMonth } from "../../@types/IScaleMonth";
 import { Months } from "../../@types/Months";
+import IconWarning from '../../Assets/icon_warning.svg'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -74,7 +75,11 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     try {
       setIsGenerationScale(true)
 
-      if (!daysList) return
+      if (!daysList || !scaleMonth.name || !selectedEndDate?.format('DD/MM/YYYY') || !selectedStartDate?.format('DD/MM/YYYY')) {
+        CustomToast({ duration: 2000, message: 'Preencha todos os campos', icon: String(IconWarning) })
+        setIsGenerationScale(false)
+        return
+      }
 
       let responseUserApi: IUser[] = await getAllUsersService();
 
