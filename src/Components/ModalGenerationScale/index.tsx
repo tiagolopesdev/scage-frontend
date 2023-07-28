@@ -24,12 +24,14 @@ import { IUser } from "../../@types/IUser";
 import { getAllUsersService } from "../../Services/Users";
 import { GenerationPreviewScale } from "../../Services/Scale";
 import { IScaleMonthPreview } from "../../@types/IScaleMonthPreview";
-import { IScaleDay } from "../../@types/IScaleDay";
 import { CustomToast } from "../CustomToast";
 import { Toaster } from "react-hot-toast";
 import IconError from '../../Assets/icon_error.svg'
 import { DatePicker } from "@mui/x-date-pickers";
 import { Dayjs } from "dayjs";
+import { IDay, IScaleMonth } from "../../@types/IScaleMonth";
+import { Months } from "../../@types/Months";
+import IconWarning from '../../Assets/icon_warning.svg'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -45,7 +47,7 @@ const style = {
 interface IModalGenerationScale {
   openModal: boolean,
   openModalState: React.Dispatch<React.SetStateAction<boolean>>,
-  setScalePreview: React.Dispatch<React.SetStateAction<IScaleDay[]>>
+  setScalePreview: React.Dispatch<React.SetStateAction<IScaleMonth | undefined>>
 }
 
 export const ModalGenerationScale = (props: IModalGenerationScale) => {
@@ -53,10 +55,17 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   const { openModal, openModalState, setScalePreview } = props
 
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
-  const [scaleMonthList, setScaleMonthList] = useState<IScaleMonthPreview[] | undefined>();
+  const [daysList, setDaysList] = useState<IScaleMonthPreview[] | undefined>();
   const [dayToEdit, setDayToEdit] = useState<IScaleMonthPreview | undefined>();
   const [isGenerationScale, setIsGenerationScale] = useState(false)
-  const [selectedDate, setHandleDateChange] = useState<Dayjs | null>();
+  const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<Dayjs | null>(null);
+  const [scaleMonth, setScaleMonth] = useState<IScaleMonth>({
+    name: '',
+    end: '',
+    start: '',
+    days: []
+  })
 
   const HandlerClose = () => {
     openModalState(!openModal)
@@ -66,13 +75,17 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     try {
       setIsGenerationScale(true)
 
-      if (!scaleMonthList) return
+      if (!daysList || !scaleMonth.name || !selectedEndDate?.format('DD/MM/YYYY') || !selectedStartDate?.format('DD/MM/YYYY')) {
+        CustomToast({ duration: 2000, message: 'Preencha todos os campos', icon: String(IconWarning) })
+        setIsGenerationScale(false)
+        return
+      }
 
       let responseUserApi: IUser[] = await getAllUsersService();
 
       const onlyUserId = responseUserApi.map((item) => { return item.id })
 
-      const onlyNameDay = scaleMonthList.map((item) => { return item.name })
+      const onlyNameDay = daysList.map((item) => { return item.name })
 
       const scalePreviewToSend = {
         users: onlyUserId,
@@ -81,26 +94,28 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
       const responseScalePreviewApi = await GenerationPreviewScale(scalePreviewToSend);
 
-      let scaleReturn: IScaleDay[] = [];
-      let scalePreview: IUser[] = [];
+      let daysToReturn: IDay[] = [];
 
       responseScalePreviewApi.map((item: any, index: number) => {
-        scalePreview.push(item.cameraOne)
-        scalePreview.push(item.cameraTwo)
-        scalePreview.push(item.cutDesk)
-
-        scaleReturn.push(
+        daysToReturn.push(
           {
-            event: scaleMonthList[index] as IScaleMonthPreview,
-            peoples: scalePreview
+            cameraOne: item.cameraOne,
+            cameraTwo: item.cameraTwo,
+            cutDesk: item.cutDesk,
+            dateTime: `${daysList[index].dateTime}Z`,
+            name: daysList[index].name
           }
         )
-        scalePreview = []
       })
 
-      setScalePreview(scaleReturn)
-
       setIsGenerationScale(false)
+
+      setScalePreview({
+        name: scaleMonth.name,
+        end: selectedEndDate?.format('YYYY-MM-DD') as string, 
+        start: selectedStartDate?.format('YYYY-MM-DD') as string,
+        days: daysToReturn
+      })
 
       HandlerClose()
     } catch (error) {
@@ -119,29 +134,14 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   })
 
   const DeleteDay = (dayToRemove: IScaleMonthPreview) => {
-    const newListDay = scaleMonthList?.filter((item) => { return item !== dayToRemove });
-    setScaleMonthList(newListDay)
+    const newListDay = daysList?.filter((item) => { return item !== dayToRemove });
+    setDaysList(newListDay)
   }
 
   const EditDay = (day: IScaleMonthPreview) => {
     setDayToEdit(day);
     setOpenModalNewDay(true)
   }
-
-  const months = [
-    { label: 'Janeiro' },
-    { label: 'Fevereiro' },
-    { label: 'Março' },
-    { label: 'Abril' },
-    { label: 'Maio' },
-    { label: "Junho" },
-    { label: 'Julho' },
-    { label: 'Agosto' },
-    { label: 'Setembro' },
-    { label: 'Outubro' },
-    { label: 'Novembro' },
-    { label: 'Dezembro' }
-  ]
 
   return (
     <>
@@ -156,22 +156,24 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={months}
+              options={Months}
               sx={{ width: 250 }}
+              isOptionEqualToValue={(option, value) => value.label === option.label}
               renderInput={(params) => <TextField {...params} label="Mês" />}
+              onChange={(event: any) => { setScaleMonth({ ...scaleMonth, name: event.target.innerText as string }) }}
             />
             <DatePicker
               inputFormat="DD/MM/YYYY"
               label="Inicio do mês"
-              value={selectedDate}
-              onChange={(newValue) => { setHandleDateChange(newValue) }}
-              renderInput={(params) => <TextField style={{ width: '200px', marginRight: '10px' }} {...params} />}
+              value={selectedStartDate}
+              onChange={(newValue) => { setSelectedStartDate(newValue) }}
+              renderInput={(params) => <TextField style={{ width: '200px', margin: '0px 10px' }} {...params} />}
             />
             <DatePicker
               inputFormat="DD/MM/YYYY"
               label="Fim do mês"
-              value={selectedDate}
-              onChange={(newValue) => { setHandleDateChange(newValue) }}
+              value={selectedEndDate}
+              onChange={(newValue) => { setSelectedEndDate(newValue) }}
               renderInput={(params) => <TextField style={{ width: '200px', marginRight: '10px' }} {...params} />}
             />
           </div>
@@ -195,7 +197,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
               </TableHead>
               <TableBody>
                 {
-                  scaleMonthList?.map((item, index) => {
+                  daysList?.map((item, index) => {
                     return (
                       <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
                         <TableCell component="th" scope="row">
@@ -252,8 +254,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             openModalState={setOpenModalNewDay}
             dayToEdit={dayToEdit}
             setManipulationDay={setDayToEdit}
-            manipulationDay={setScaleMonthList}
-            stateDay={scaleMonthList}
+            manipulationDay={setDaysList}
+            stateDay={daysList}
           /> : ''
       }
     </>

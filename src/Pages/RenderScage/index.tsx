@@ -6,42 +6,52 @@ import { ScroolCustom } from '../../Styles';
 import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, TextStyle } from './style';
 import { CSSProperties, useState } from 'react';
 import { ModalGenerationScale } from '../../Components/ModalGenerationScale';
-import { IScaleDay } from '../../@types/IScaleDay';
 import { Icon } from '../../Components/Img';
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 import { CustomToast } from '../../Components/CustomToast';
 import { Toaster } from 'react-hot-toast';
 import WarningIcon from '../../Assets/icon_warning.svg'
+import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
+import { SaveScaleService } from '../../Services/Scale';
+import IconError from '../../Assets/icon_error.svg'
+import IconSuccess from '../../Assets/icon_success.svg'
 
 export const RenderScale = () => {
 
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
-  const [scale, setScale] = useState<IScaleDay[]>([]);
+  const [scale, setScale] = useState<IScaleMonth>();
 
-  console.log('Scale ', scale)
 
-  // const saveScale = async () => {
-  //   try {
+  const saveScale = async () => {
+    try {
 
-  //     const objectToSend = {
-  //       "name": "string",
-  //       "start": "2023-07-15T17:40:51.982Z",
-  //       "end": "2023-07-15T17:40:51.982Z",
-  //       "days": [
-  //         {
-  //           "name": "string",
-  //           "dateTime": "2023-07-15T17:40:51.982Z",
-  //           "cameraOne": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  //           "cameraTwo": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  //           "cutDesk": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-  //         }
-  //       ]
-  //     }
+      if (!scale) return
 
-  //   } catch (error) {
+      const filterOnlyIdUsers: IDay[] = scale.days.map((day) => {
+        return {
+          name: day.name,
+          dateTime: day.dateTime,
+          cameraOne: day.cameraOne.id,
+          cameraTwo: day.cameraTwo.id,
+          cutDesk: day.cutDesk.id
+        }
+      })
 
-  //   }
-  // }
+      const objectToSend: IScaleMonth = {
+        name: scale.name,
+        start: scale.start,
+        end: scale.end,
+        days: filterOnlyIdUsers
+      }
+
+      await SaveScaleService(objectToSend)
+
+      CustomToast({ duration: 2000, message: 'Escala salva com sucesso', icon: String(IconSuccess) })
+
+    } catch (error) {
+      CustomToast({ duration: 2000, message: 'Não foi possível salvar a escala', icon: String(IconError) })
+    }
+  }
 
   const ButtonStyle = (backgroundColorProp: string): CSSProperties => ({
     borderRadius: '12px',
@@ -54,7 +64,7 @@ export const RenderScale = () => {
   })
 
   const existScale = () => {
-    return scale.length <= 0 ?
+    return scale === undefined ?
       <NotFoundContainerStyle>
         <TextStyle size={15}>Uma escala ainda não foi selecionada para ser exibida</TextStyle>
         <Icon src={String(ScaleNotFoundIcon)} style={{ width: '400px' }} />
@@ -72,9 +82,9 @@ export const RenderScale = () => {
           }}
         >
           {
-            scale.length < 0 ?
+            scale?.days.length as number < 0 ?
               '' :
-              scale.map((item: IScaleDay, index: number) => {
+              scale?.days.map((item: IDay, index: number) => {
                 return <CardDay key={index} day={item} />
               })
           }
@@ -100,12 +110,12 @@ export const RenderScale = () => {
             >Gerar preview da escala</Button>
             <Button
               onClick={() => {
-                scale.length <= 0 ?
+                scale?.days.length as number <= 0 ?
                   CustomToast({
                     duration: 2000,
                     icon: String(WarningIcon),
                     message: 'Uma escala ainda não foi selecionada'
-                  }) : console.log('dsds')
+                  }) : saveScale()
               }}
               style={ButtonStyle('rgb(14, 202, 101)')}
               variant="contained"
@@ -114,7 +124,7 @@ export const RenderScale = () => {
             >Salvar</Button>
             <Button
               onClick={() => {
-                scale.length <= 0 ?
+                scale?.days.length as number <= 0 ?
                   CustomToast({
                     duration: 2000,
                     icon: String(WarningIcon),
@@ -128,7 +138,7 @@ export const RenderScale = () => {
             >Adicionar novo dia</Button>
             <Button
               onClick={() => {
-                scale.length <= 0 ?
+                scale?.days.length as number <= 0 ?
                   CustomToast({
                     duration: 2000,
                     icon: String(WarningIcon),
