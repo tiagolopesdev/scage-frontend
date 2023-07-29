@@ -1,4 +1,4 @@
-import { Button, ButtonGroup } from '@mui/material';
+import { Box, Button, ButtonGroup, Drawer, IconButton, Tab, Tabs, styled } from '@mui/material';
 import { CardDay } from '../../Components/Cards/Day/index';
 import { NavBar } from '../../Components/Navbar';
 import { UserListFloating } from '../../Components/Users/user-list-floating';
@@ -15,11 +15,26 @@ import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
 import { SaveScaleService } from '../../Services/Scale';
 import IconError from '../../Assets/icon_error.svg'
 import IconSuccess from '../../Assets/icon_success.svg'
+import IconClose from '../../Assets/icon_user_delete.svg'
+
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
 
 export const RenderScale = () => {
 
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
   const [scale, setScale] = useState<IScaleMonth>();
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
 
   const saveScale = async () => {
@@ -95,6 +110,36 @@ export const RenderScale = () => {
   return (
     <>
       <NavBar />
+      <button onClick={() => { setOpen(!open) }} >Open</button>
+      <Drawer
+        variant='persistent'
+        open={open}
+        anchor='right'
+        onClose={() => { setOpen(false) }}
+      >
+        <div style={{ padding: '15px' }}>
+          <IconButton>
+            <Icon src={String(IconClose)}/>
+          </IconButton>
+          <button onClick={() => { setOpen(!open) }} >Close</button>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+              <Tab label="Item One" {...a11yProps(0)} />
+              <Tab label="Item Two" {...a11yProps(1)} />
+              <Tab label="Item Three" {...a11yProps(2)} />
+            </Tabs>
+          </Box>
+          {/* <CustomTabPanel value={value} index={0}>
+          Item One
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          Item Two
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+          Item Three
+        </CustomTabPanel> */}
+        </div>
+      </Drawer>
       <div>
         {existScale()}
         <ButtonGroupContainer>
@@ -153,7 +198,8 @@ export const RenderScale = () => {
           </ButtonGroup>
         </ButtonGroupContainer>
       </div>
-      <UserListFloating />
+
+      {/* <UserListFloating /> */}
       {openModalGenerationScale ?
         <ModalGenerationScale
           openModal={openModalGenerationScale}
