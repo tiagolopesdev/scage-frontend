@@ -15,7 +15,7 @@ import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
 import { SaveScaleService } from '../../Services/Scale';
 import IconError from '../../Assets/icon_error.svg'
 import IconSuccess from '../../Assets/icon_success.svg'
-import IconClose from '../../Assets/icon_user_delete.svg'
+import IconClose from '../../Assets/icon_error_outlined.svg'
 
 
 function a11yProps(index: number) {
@@ -29,7 +29,7 @@ export const RenderScale = () => {
 
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
   const [scale, setScale] = useState<IScaleMonth>();
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -109,19 +109,18 @@ export const RenderScale = () => {
 
   return (
     <>
-      <NavBar />
-      <button onClick={() => { setOpen(!open) }} >Open</button>
+      <NavBar setOpenMenu={setIsOpen} isOpenMenu={isOpen}/>
       <Drawer
         variant='persistent'
-        open={open}
+        open={isOpen}
         anchor='right'
-        onClose={() => { setOpen(false) }}
+        onClose={() => { setIsOpen(false) }}
+        style={{  }}
       >
         <div style={{ padding: '15px' }}>
-          <IconButton>
+          <IconButton onClick={() => { setIsOpen(!isOpen) }} color='error'>
             <Icon src={String(IconClose)}/>
           </IconButton>
-          <button onClick={() => { setOpen(!open) }} >Close</button>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
               <Tab label="Item One" {...a11yProps(0)} />
