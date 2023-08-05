@@ -1,4 +1,13 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+
+
+export const ContainerHamburguer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 5%;
+`
 
 export const Title = styled.h4`
   font-family: Dosis;
@@ -6,6 +15,7 @@ export const Title = styled.h4`
   font-weight: 100;
   margin: inherit;
   font-size: xx-large;
+  margin-left: 5%;
 `
 
 export const Container = styled.div`
