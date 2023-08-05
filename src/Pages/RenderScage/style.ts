@@ -1,5 +1,18 @@
 import styled from "styled-components";
 
+
+export const SidebarContainer = styled.div`
+  background-color: #d1d1d1;
+  height: 100%;
+  position: fixed;
+  min-width: 380px;
+  top: 4rem;
+  right: 0;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+`;
+
 interface ISizeText {
   size: number;
 }

@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Drawer, IconButton, Tab, Tabs, styled } from '@mui/material';
+import { Box, Button, ButtonGroup, Tab, Tabs } from '@mui/material';
 import { CardDay } from '../../Components/Cards/Day/index';
 import { NavBar } from '../../Components/Navbar';
 import { UserListFloating } from '../../Components/Users/user-list-floating';
@@ -15,7 +15,7 @@ import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
 import { SaveScaleService } from '../../Services/Scale';
 import IconError from '../../Assets/icon_error.svg'
 import IconSuccess from '../../Assets/icon_success.svg'
-import IconClose from '../../Assets/icon_error_outlined.svg'
+import { SidebarContainer } from './style';
 
 
 function a11yProps(index: number) {
@@ -23,6 +23,32 @@ function a11yProps(index: number) {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
   };
+}
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
 }
 
 export const RenderScale = () => {
@@ -109,36 +135,7 @@ export const RenderScale = () => {
 
   return (
     <>
-      <NavBar setOpenMenu={setIsOpen} isOpenMenu={isOpen}/>
-      <Drawer
-        variant='persistent'
-        open={isOpen}
-        anchor='right'
-        onClose={() => { setIsOpen(false) }}
-        style={{  }}
-      >
-        <div style={{ padding: '15px' }}>
-          <IconButton onClick={() => { setIsOpen(!isOpen) }} color='error'>
-            <Icon src={String(IconClose)}/>
-          </IconButton>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-              <Tab label="Item One" {...a11yProps(0)} />
-              <Tab label="Item Two" {...a11yProps(1)} />
-              <Tab label="Item Three" {...a11yProps(2)} />
-            </Tabs>
-          </Box>
-          {/* <CustomTabPanel value={value} index={0}>
-          Item One
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          Item Two
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          Item Three
-        </CustomTabPanel> */}
-        </div>
-      </Drawer>
+      <NavBar />
       <div>
         {existScale()}
         <ButtonGroupContainer>
@@ -197,8 +194,24 @@ export const RenderScale = () => {
           </ButtonGroup>
         </ButtonGroupContainer>
       </div>
-
-      {/* <UserListFloating /> */}
+      <SidebarContainer>
+        <Box sx={{ borderColor: 'divider', justifyContent: 'space-between' }}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tab label="Servos" {...a11yProps(0)} />
+            <Tab label="Escalas" {...a11yProps(2)} onClick={() => { setValue(1) }} />
+            <Tab label="Estatísticas" {...a11yProps(1)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          <UserListFloating />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          Item Two
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+          Item Three
+        </CustomTabPanel>
+      </SidebarContainer>
       {openModalGenerationScale ?
         <ModalGenerationScale
           openModal={openModalGenerationScale}
