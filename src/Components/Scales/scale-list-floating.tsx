@@ -1,11 +1,10 @@
-import { BadgeSizeFixed, ContainerUserList, Search } from "./style"
+import { BadgeSizeFixed, ContainerUserList, ContainerComboBoxStyle } from "./style"
 import { Input } from "../Input"
-import { Button, Chip, IconButton, Skeleton } from "@mui/material"
+import { Autocomplete, Button, Chip, IconButton, Skeleton, TextField } from "@mui/material"
 import IconFilter from "../../Assets/filter_search.svg"
 import { Icon } from "../Img"
 import { Scale } from "./scale"
 import { useEffect, useState } from "react"
-import { getAllUsersByFiltersService, getAllUsersService, updateUser } from "../../Services/Users"
 import { IUser } from "../../@types/IUser"
 import { CustomToast } from "../CustomToast"
 import toast from "react-hot-toast"
@@ -13,6 +12,7 @@ import { ScroolCustom } from "../../Styles/index"
 import IconError from '../../Assets/icon_error.svg'
 import { GetSingleScales } from "../../Services/Scale"
 import { ISingleScale } from "../../@types/ISingleScale"
+import { Months } from "../../@types/Months"
 
 
 export const ScaleListFloating = () => {
@@ -21,6 +21,7 @@ export const ScaleListFloating = () => {
   const [nameToFilter, setNameToFilter] = useState('');
   const [sexFilter, setSexFilter] = useState('');
   const [userWasManipuled, setUserWasManipuled] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState('')
 
   const [anchorManipulationPopover, setAnchorManipulationPopover] = useState<HTMLButtonElement | null>(null);
   const openManipulationPopover = Boolean(anchorManipulationPopover);
@@ -58,8 +59,6 @@ export const ScaleListFloating = () => {
     }
   }
 
-  console.log('Scales -> ', scales)
-
   useEffect(() => {
     managementFindScales()
     if (userWasManipuled) setUserWasManipuled(false)
@@ -83,27 +82,20 @@ export const ScaleListFloating = () => {
 
   return (
     <ContainerUserList>
-      <Search>
-        <Input
-          label="Digite o nome do servo"
-          onChange={(event: any) => { setNameToFilter(event.target.value) }}
+      <ContainerComboBoxStyle>
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={Months}
+          sx={{ width: 300 }}
+          isOptionEqualToValue={(option, value) => value.label === option.label}
+          renderInput={(params) => <TextField {...params} label="Selecione o mês" />}
+          onChange={(event: any) => { setSelectedMonth(event.target.innerText) }}
         />
-        <IconButton onClick={(event: any) => { handleClick(event, false) }} >
-          <Icon src={String(IconFilter)} />
-        </IconButton>
-      </Search>
-      <BadgeSizeFixed>
-        {sexFilter ?
-          <Chip
-            style={{ marginTop: '10px' }}
-            label={sexFilter}
-            onDelete={() => { setSexFilter('') }} /> :
-          ''
-        }
-      </BadgeSizeFixed>
+      </ContainerComboBoxStyle>
       <ScroolCustom
         style={{
-          marginTop: '1%',
+          marginTop: '8%',
           maxHeight: '51.5%',
           paddingRight: '2%'
         }}

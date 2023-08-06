@@ -26,7 +26,8 @@ export const BadgeSizeFixed = styled.div`
   height: 7%;
 `
 
-export const Search = styled.div`
+export const ContainerComboBoxStyle = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
