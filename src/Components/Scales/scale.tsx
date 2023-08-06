@@ -1,23 +1,20 @@
 import { Icon } from "../Img"
 import CalendarIcon from "../../Assets/icon-calendar.svg"
 import { Badge, Card, CardActions, CardContent, IconButton, Typography } from "@mui/material"
-import { IUser } from "../../@types/IUser"
-import { Dispatch, useState } from "react"
+import { useState } from "react"
 import { ContainerBadgeStyle, GroupFieldStyle } from "./style"
 import EyeScaleIcon from '../../Assets/icon_eye_scale.svg'
+import { ISingleScale } from "../../@types/ISingleScale"
 
 interface IUsersProps {
-  user?: IUser,
-  setUserWasManipuled: Dispatch<React.SetStateAction<boolean>>,
-  onDelete: (user: IUser) => Promise<void>
+  scale?: ISingleScale
 }
 
-export const Scale = (usersProps: IUsersProps) => {
+export const Scale = (scalesProps: IUsersProps) => {
 
-  const { user, setUserWasManipuled, onDelete } = usersProps;
+  const { scale } = scalesProps;
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [userManipulation, setUserManipulation] = useState<IUser>();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -27,7 +24,7 @@ export const Scale = (usersProps: IUsersProps) => {
   const id = open ? 'simple-popover' : undefined;
 
   return (
-    <>
+    <div id={id}>
       <Card
         style={{
           borderRadius: '15px',
@@ -45,7 +42,7 @@ export const Scale = (usersProps: IUsersProps) => {
         >
           <Icon src={String(CalendarIcon)} style={{ margin: '0px 20px 0px 10px', width: '2rem' }} />
           <GroupFieldStyle>
-            <div>
+            <div style={{ width: '100%' }}>
               <Typography
                 variant="h6"
                 style={{
@@ -54,23 +51,23 @@ export const Scale = (usersProps: IUsersProps) => {
                   fontSize: 'x-large',
                   lineHeight: '1.1'
                 }}
-              >Dezembro</Typography>
+              >{scale?.name}</Typography>
               <Typography
                 variant="body2"
                 style={{
                   fontFamily: 'Dosis',
-                  fontWeight: '600'
+                  fontWeight: '600',
                 }}
               >
-                10 transmissões
+                {`${scale?.transmissions} transmissões`}
               </Typography>
             </div>
             <ContainerBadgeStyle>
               <Badge
                 style={{ width: '100%' }}
-                badgeContent={'Concluído'}
-                color="primary"
-              />              
+                badgeContent={scale?.status === 'IN_PROGRESS' ? 'Em progresso' : 'Concluído'}
+                color={scale?.status === 'IN_PROGRESS' ? 'primary' : 'success'}
+              />
             </ContainerBadgeStyle>
           </GroupFieldStyle>
           <CardActions style={{
@@ -82,7 +79,7 @@ export const Scale = (usersProps: IUsersProps) => {
               aria-describedby={id}
               onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                 handleClick(event)
-                setUserManipulation(user)
+                // setUserManipulation(user)
               }}
             >
               <Icon style={{ width: '25px' }} src={String(EyeScaleIcon)} />
@@ -90,6 +87,6 @@ export const Scale = (usersProps: IUsersProps) => {
           </CardActions>
         </CardContent>
       </Card>
-    </>
+    </div>
   )
 }

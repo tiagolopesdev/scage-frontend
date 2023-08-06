@@ -11,11 +11,13 @@ import { CustomToast } from "../CustomToast"
 import toast from "react-hot-toast"
 import { ScroolCustom } from "../../Styles/index"
 import IconError from '../../Assets/icon_error.svg'
+import { GetSingleScales } from "../../Services/Scale"
+import { ISingleScale } from "../../@types/ISingleScale"
 
 
 export const ScaleListFloating = () => {
 
-  const [users, setUsers] = useState<IUser[]>([]);
+  const [scales, setScales] = useState<ISingleScale[]>([]);
   const [nameToFilter, setNameToFilter] = useState('');
   const [sexFilter, setSexFilter] = useState('');
   const [userWasManipuled, setUserWasManipuled] = useState(false);
@@ -34,18 +36,18 @@ export const ScaleListFloating = () => {
       setAnchorFilterPopover(event.currentTarget);
   };
 
-  const managementFindUsers = async () => {
+  const managementFindScales = async () => {
     try {
 
-      let responseApi: IUser[] = [];
+      let responseApi: ISingleScale[] = [];
 
       if (nameToFilter === '' && sexFilter === '') {
-        responseApi = await getAllUsersService();
+        responseApi = await GetSingleScales();
       } else {
-        responseApi = await getAllUsersByFiltersService(nameToFilter, sexFilter)
+        // responseApi = await getAllScalesByFiltersService(nameToFilter, sexFilter)
       }
 
-      setUsers(responseApi);
+      setScales(responseApi);
 
     } catch (exception) {
       CustomToast({
@@ -56,58 +58,27 @@ export const ScaleListFloating = () => {
     }
   }
 
+  console.log('Scales -> ', scales)
+
   useEffect(() => {
-    managementFindUsers()
+    managementFindScales()
     if (userWasManipuled) setUserWasManipuled(false)
   }, [nameToFilter, userWasManipuled, sexFilter])
 
-  const deleteUser = async (user: IUser) => {
-    try {
-
-      const userToEdit: IUser = {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        sex: user.sex,
-        isEnable: false,
-      }
-
-      const responseApi = await updateUser(userToEdit);
-
-      toast.success(responseApi)
-
-      setAnchorManipulationPopover(null)
-      setUserWasManipuled(true);
-
-    } catch (error: any) {
-      toast.error(error)
-    }
-  }
-
-
   const managerUserRender = () => {
-    return <Scale
-      // user={user}
-      setUserWasManipuled={setUserWasManipuled}
-      onDelete={deleteUser}
-    />
-    // if (users.length > 0) {
-    //   return <>
-    //     {users.map((user) => {
-    //       return <div key={user.id}>
-    //         <Scale
-    //           user={user}
-    //           setUserWasManipuled={setUserWasManipuled}
-    //           onDelete={deleteUser}
-    //         />
-    //       </div>
-    //     })}
-    //   </>
-    // } else {
-    //   return (
-    //     <Skeleton variant="rounded" width={330} height='100%' />
-    //   )
-    // }
+    if (scales.length > 0) {
+      return <>
+        {scales.map((scale) => {
+          return <div key={scale.id}>
+            <Scale scale={scale} />
+          </div>
+        })}
+      </>
+    } else {
+      return (
+        <Skeleton variant="rounded" width={330} height='100%' />
+      )
+    }
   }
 
   return (

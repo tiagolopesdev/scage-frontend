@@ -16,7 +16,7 @@ import { SaveScaleService } from '../../Services/Scale';
 import IconError from '../../Assets/icon_error.svg'
 import IconSuccess from '../../Assets/icon_success.svg'
 import { SidebarContainer } from './style';
-import { ScaleListFloating } from '../../Components/Scales';
+import { ScaleListFloating } from '../../Components/Scales/scale-list-floating';
 
 
 function a11yProps(index: number) {
