@@ -3,7 +3,7 @@ import CalendarIcon from "../../Assets/icon-calendar.svg"
 import { Badge, Card, CardActions, CardContent, IconButton, Typography } from "@mui/material"
 import { IUser } from "../../@types/IUser"
 import { Dispatch, useState } from "react"
-import { GroupFieldStyle } from "./style"
+import { ContainerBadgeStyle, GroupFieldStyle } from "./style"
 import EyeScaleIcon from '../../Assets/icon_eye_scale.svg'
 
 interface IUsersProps {
@@ -65,13 +65,13 @@ export const Scale = (usersProps: IUsersProps) => {
                 10 transmissões
               </Typography>
             </div>
-            <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
+            <ContainerBadgeStyle>
               <Badge
                 style={{ width: '100%' }}
                 badgeContent={'Concluído'}
                 color="primary"
-              />
-            </div>
+              />              
+            </ContainerBadgeStyle>
           </GroupFieldStyle>
           <CardActions style={{
             width: '50%',
