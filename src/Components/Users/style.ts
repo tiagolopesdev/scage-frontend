@@ -1,6 +1,15 @@
 import styled from "styled-components";
 
 
+export const ContainerUserList = styled.div`
+  height: 100%;
+  position: fixed;
+  width: 380px;
+  top: 8.5rem;
+  right: 0;
+  padding: 15px;
+`
+
 export const GroupFieldStyle = styled.div`
   width: 100%;
 `
@@ -12,14 +21,4 @@ export const BadgeSizeFixed = styled.div`
 export const Search = styled.div`
   display: flex;
   align-items: center;
-`;
-
-export const SidebarContainer = styled.div`
-  background-color: #d1d1d1;
-  height: 100%;
-  position: fixed;
-  width: 350px;
-  top: 4rem;
-  right: 0;
-  padding: 30px;
 `;

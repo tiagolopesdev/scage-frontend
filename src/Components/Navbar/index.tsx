@@ -1,4 +1,4 @@
-import { Container, Title} from "./style"
+import { Container, Title } from "./style"
 
 
 export const NavBar = () => {
@@ -6,6 +6,6 @@ export const NavBar = () => {
   return (
     <Container>
       <Title>Pascom</Title>
-    </Container>    
+    </Container>
   )
 }

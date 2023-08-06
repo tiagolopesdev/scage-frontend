@@ -1,4 +1,4 @@
-import { BadgeSizeFixed, Search, SidebarContainer } from "./style"
+import { BadgeSizeFixed, ContainerUserList, Search } from "./style"
 import { Input } from "../Input"
 import { Button, Chip, IconButton, Skeleton } from "@mui/material"
 import IconFilter from "../../Assets/filter_search.svg"
@@ -108,7 +108,7 @@ export const UserListFloating = () => {
   }
 
   return (
-    <SidebarContainer>
+    <ContainerUserList>
       <Search>
         <Input
           label="Digite o nome do servo"
@@ -129,8 +129,8 @@ export const UserListFloating = () => {
       </BadgeSizeFixed>
       <ScroolCustom
         style={{
-          marginTop: '5%',
-          height: '58%',
+          marginTop: '1%',
+          maxHeight: '51.5%',
           paddingRight: '2%'
         }}
       >
@@ -172,6 +172,6 @@ export const UserListFloating = () => {
             setSexSelected={setSexFilter}
           /> : ''
       }
-    </SidebarContainer >
+    </ContainerUserList>
   )
 }
