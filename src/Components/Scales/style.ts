@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
 
+export const ContainerBadgeStyle = styled.div`
+  width: 100%; 
+  display: flex; 
+  justify-content: flex-end;
+`
+
 export const ContainerUserList = styled.div`
   height: 100%;
   position: fixed;
