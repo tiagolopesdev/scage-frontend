@@ -125,7 +125,7 @@ export const UserListFloating = () => {
             onDelete={() => { setSexFilter('') }} /> :
           ''
         }
-      </BadgeSizeFixed>
+      </BadgeSizeFixed> 
       <ScroolCustom
         style={{
           marginTop: '1%',

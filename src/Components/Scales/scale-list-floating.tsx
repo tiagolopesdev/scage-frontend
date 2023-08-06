@@ -1,13 +1,8 @@
-import { BadgeSizeFixed, ContainerUserList, ContainerComboBoxStyle } from "./style"
-import { Input } from "../Input"
-import { Autocomplete, Button, Chip, IconButton, Skeleton, TextField } from "@mui/material"
-import IconFilter from "../../Assets/filter_search.svg"
-import { Icon } from "../Img"
+import { ContainerUserList, ContainerComboBoxStyle } from "./style"
+import { Autocomplete, Skeleton, TextField } from "@mui/material"
 import { Scale } from "./scale"
 import { useEffect, useState } from "react"
-import { IUser } from "../../@types/IUser"
 import { CustomToast } from "../CustomToast"
-import toast from "react-hot-toast"
 import { ScroolCustom } from "../../Styles/index"
 import IconError from '../../Assets/icon_error.svg'
 import { GetSingleScales } from "../../Services/Scale"
@@ -64,7 +59,7 @@ export const ScaleListFloating = () => {
     if (userWasManipuled) setUserWasManipuled(false)
   }, [nameToFilter, userWasManipuled, sexFilter])
 
-  const managerUserRender = () => {
+  const managerScaleRender = () => {
     if (scales.length > 0) {
       return <>
         {scales.map((scale) => {
@@ -75,7 +70,7 @@ export const ScaleListFloating = () => {
       </>
     } else {
       return (
-        <Skeleton variant="rounded" width={330} height='100%' />
+        <Skeleton variant="rounded" width={360} height='50rem' />
       )
     }
   }
@@ -96,11 +91,11 @@ export const ScaleListFloating = () => {
       <ScroolCustom
         style={{
           marginTop: '8%',
-          maxHeight: '51.5%',
+          maxHeight: '55.5%',
           paddingRight: '2%'
         }}
       >
-        {managerUserRender()}
+        {managerScaleRender()}
       </ScroolCustom>
     </ContainerUserList>
   )
