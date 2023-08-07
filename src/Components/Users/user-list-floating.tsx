@@ -86,7 +86,6 @@ export const UserListFloating = () => {
     }
   }
 
-
   const managerUserRender = () => {
     if (users.length > 0) {
       return <>
@@ -102,7 +101,7 @@ export const UserListFloating = () => {
       </>
     } else {
       return (
-        <Skeleton variant="rounded" width={330} height='100%' />
+        <Skeleton variant="rounded" width={360} height='50rem' />
       )
     }
   }
@@ -126,7 +125,7 @@ export const UserListFloating = () => {
             onDelete={() => { setSexFilter('') }} /> :
           ''
         }
-      </BadgeSizeFixed>
+      </BadgeSizeFixed> 
       <ScroolCustom
         style={{
           marginTop: '1%',

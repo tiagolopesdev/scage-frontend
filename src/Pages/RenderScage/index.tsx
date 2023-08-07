@@ -16,6 +16,7 @@ import { SaveScaleService } from '../../Services/Scale';
 import IconError from '../../Assets/icon_error.svg'
 import IconSuccess from '../../Assets/icon_success.svg'
 import { SidebarContainer } from './style';
+import { ScaleListFloating } from '../../Components/Scales/scale-list-floating';
 
 
 function a11yProps(index: number) {
@@ -204,7 +205,7 @@ export const RenderScale = () => {
           <UserListFloating />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          Item Two
+          <ScaleListFloating />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
           Item Three
