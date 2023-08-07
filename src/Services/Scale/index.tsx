@@ -2,10 +2,10 @@ import { IScaleMonth } from "../../@types/IScaleMonth"
 import { scaleChannel } from "../Bases/api"
 
 
-export const GetSingleScales = () => {
-  return scaleChannel.get('api/Scale/singleScales')
+export const GetSingleScales = (filter?: string) => {
+  return scaleChannel.get('api/Scale/singleScales', { params: { filter } })
     .then((response) => response.data.data)
-    .catch((error) => error)
+    .catch((error) => error)  
 }
 
 export const SaveScaleService = (scale: IScaleMonth) => {

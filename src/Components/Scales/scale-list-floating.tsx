@@ -13,35 +13,13 @@ import { Months } from "../../@types/Months"
 export const ScaleListFloating = () => {
 
   const [scales, setScales] = useState<ISingleScale[]>([]);
-  const [nameToFilter, setNameToFilter] = useState('');
-  const [sexFilter, setSexFilter] = useState('');
-  const [userWasManipuled, setUserWasManipuled] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState('')
-
-  const [anchorManipulationPopover, setAnchorManipulationPopover] = useState<HTMLButtonElement | null>(null);
-  const openManipulationPopover = Boolean(anchorManipulationPopover);
-  const idManipulation = openManipulationPopover ? 'simple-popover-manipulation' : undefined;
-
-  const [anchorFilterPopover, setAnchorFilterPopover] = useState<HTMLButtonElement | null>(null);
-  const openFilterPopover = Boolean(anchorFilterPopover);
-  const idFilter = openFilterPopover ? 'simple-popover-filter' : undefined;
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>, popoverManipulation: boolean) => {
-    popoverManipulation ?
-      setAnchorManipulationPopover(event.currentTarget) :
-      setAnchorFilterPopover(event.currentTarget);
-  };
 
   const managementFindScales = async () => {
     try {
-
-      let responseApi: ISingleScale[] = [];
-
-      if (nameToFilter === '' && sexFilter === '') {
-        responseApi = await GetSingleScales();
-      } else {
-        // responseApi = await getAllScalesByFiltersService(nameToFilter, sexFilter)
-      }
+      const responseApi = selectedMonth === '' ?
+        await GetSingleScales() :
+        await GetSingleScales(selectedMonth)
 
       setScales(responseApi);
 
@@ -49,25 +27,24 @@ export const ScaleListFloating = () => {
       CustomToast({
         duration: 2000,
         icon: String(IconError),
-        message: 'Não foi possível obter usuários'
+        message: 'Não foi possível obter escalas'
       })
     }
   }
 
   useEffect(() => {
     managementFindScales()
-    if (userWasManipuled) setUserWasManipuled(false)
-  }, [nameToFilter, userWasManipuled, sexFilter])
+  }, [selectedMonth])
 
   const managerScaleRender = () => {
     if (scales.length > 0) {
-      return <>
+      return <div id="group-scales-single">
         {scales.map((scale) => {
           return <div key={scale.id}>
             <Scale scale={scale} />
           </div>
         })}
-      </>
+      </div>
     } else {
       return (
         <Skeleton variant="rounded" width={360} height='50rem' />
