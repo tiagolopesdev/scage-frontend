@@ -132,6 +132,15 @@ export const RenderScale = () => {
       </CardDayContainer>
   }
 
+  const messageError = (functionProp: any) => {
+    return !scale?.days || scale?.days.length as number <= 0 ?
+      CustomToast({
+        duration: 2000,
+        icon: String(WarningIcon),
+        message: 'Uma escala ainda não foi selecionada'
+      }) : functionProp
+  }
+
   return (
     <>
       <NavBar />
@@ -149,42 +158,21 @@ export const RenderScale = () => {
               fullWidth
             >Gerar preview da escala</Button>
             <Button
-              onClick={() => {
-                scale?.days.length as number <= 0 ?
-                  CustomToast({
-                    duration: 2000,
-                    icon: String(WarningIcon),
-                    message: 'Uma escala ainda não foi selecionada'
-                  }) : saveScale()
-              }}
+              onClick={() => { messageError(saveScale()) }}
               style={ButtonStyle('rgb(14, 202, 101)')}
               variant="contained"
               size='small'
               fullWidth
             >Salvar</Button>
             <Button
-              onClick={() => {
-                scale?.days.length as number <= 0 ?
-                  CustomToast({
-                    duration: 2000,
-                    icon: String(WarningIcon),
-                    message: 'Uma escala ainda não foi selecionada'
-                  }) : console.log('dsds')
-              }}
+              onClick={() => { messageError('') }}
               style={ButtonStyle('rgb(14, 202, 101)')}
               variant="contained"
               size='small'
               fullWidth
             >Adicionar novo dia</Button>
             <Button
-              onClick={() => {
-                scale?.days.length as number <= 0 ?
-                  CustomToast({
-                    duration: 2000,
-                    icon: String(WarningIcon),
-                    message: 'Uma escala ainda não foi selecionada'
-                  }) : console.log('dsds')
-              }}
+              onClick={() => { messageError('') }}
               style={ButtonStyle('#30B2DB')}
               variant="contained"
               size='small'
