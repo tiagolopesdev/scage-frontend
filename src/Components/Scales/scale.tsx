@@ -1,10 +1,11 @@
 import { Icon } from "../Img"
 import CalendarIcon from "../../Assets/icon-calendar.svg"
 import { Badge, Card, CardActions, CardContent, IconButton, Typography } from "@mui/material"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { ContainerBadgeStyle, GroupFieldStyle } from "./style"
 import EyeScaleIcon from '../../Assets/icon_eye_scale.svg'
 import { ISingleScale } from "../../@types/ISingleScale"
+import { ScaleContext } from "../../Context/scale"
 
 interface IUsersProps {
   scale?: ISingleScale
@@ -15,10 +16,7 @@ export const Scale = (scalesProps: IUsersProps) => {
   const { scale } = scalesProps;
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const { setScaleId } = useContext(ScaleContext);
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
@@ -77,9 +75,8 @@ export const Scale = (scalesProps: IUsersProps) => {
           }}>
             <IconButton
               aria-describedby={id}
-              onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                handleClick(event)
-                // setUserManipulation(user)
+              onClick={(event: any) => {
+                setScaleId(scale?.id as string)
               }}
             >
               <Icon style={{ width: '25px' }} src={String(EyeScaleIcon)} />

@@ -4,7 +4,7 @@ import { NavBar } from '../../Components/Navbar';
 import { UserListFloating } from '../../Components/Users/user-list-floating';
 import { ScroolCustom } from '../../Styles';
 import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, TextStyle } from './style';
-import { CSSProperties, useState } from 'react';
+import { CSSProperties, useContext, useEffect, useState } from 'react';
 import { ModalGenerationScale } from '../../Components/ModalGenerationScale';
 import { Icon } from '../../Components/Img';
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
@@ -12,11 +12,12 @@ import { CustomToast } from '../../Components/CustomToast';
 import { Toaster } from 'react-hot-toast';
 import WarningIcon from '../../Assets/icon_warning.svg'
 import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
-import { SaveScaleService } from '../../Services/Scale';
+import { GetScale, SaveScaleService } from '../../Services/Scale';
 import IconError from '../../Assets/icon_error.svg'
 import IconSuccess from '../../Assets/icon_success.svg'
 import { SidebarContainer } from './style';
 import { ScaleListFloating } from '../../Components/Scales/scale-list-floating';
+import { ScaleContext } from '../../Context/scale';
 
 
 function a11yProps(index: number) {
@@ -54,6 +55,8 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export const RenderScale = () => {
 
+  const { scaleId } = useContext(ScaleContext);
+
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
   const [scale, setScale] = useState<IScaleMonth>();
   const [value, setValue] = useState(0);
@@ -61,6 +64,21 @@ export const RenderScale = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const getScale = async () => {
+    try {
+      
+      const responseApi = await GetScale(scaleId)
+
+      setScale(responseApi)
+
+    } catch (error) {      
+    }
+  }
+
+  useEffect(() => {
+    if (scaleId) getScale()
+  }, [scaleId])
 
   const saveScale = async () => {
     try {
