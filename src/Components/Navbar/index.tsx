@@ -5,12 +5,12 @@ import { ScaleContext } from "../../Context/scale";
 
 export const NavBar = () => {
 
-  const { scale } = useContext(ScaleContext);
+  const { scaleContext } = useContext(ScaleContext);
 
   return (
     <Container>
       {
-        scale?.name ?
+        scaleContext?.name ?
           <ReferencyMonthNameStyle>
             <p style={{ color: '#FFFFFF', fontFamily: 'Dosis' }}>Escala referente à </p>
             <p style={{
@@ -18,7 +18,7 @@ export const NavBar = () => {
               marginLeft: '6px',
               fontWeight: 'bold',
               fontFamily: 'Dosis'
-            }}>{scale?.name}</p>
+            }}>{scaleContext?.name}</p>
           </ReferencyMonthNameStyle> : ""
       }
       {/* <div style={{ display: 'flex', justifyContent: 'center' }}>

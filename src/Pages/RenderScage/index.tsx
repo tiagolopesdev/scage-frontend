@@ -12,7 +12,7 @@ import { CustomToast } from '../../Components/CustomToast';
 import { Toaster } from 'react-hot-toast';
 import WarningIcon from '../../Assets/icon_warning.svg'
 import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
-import { GetScale, SaveScaleService } from '../../Services/Scale';
+import { SaveScaleService } from '../../Services/Scale';
 import IconError from '../../Assets/icon_error.svg'
 import IconSuccess from '../../Assets/icon_success.svg'
 import { SidebarContainer } from './style';
@@ -55,7 +55,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export const RenderScale = () => {
 
-  const { scaleId } = useContext(ScaleContext);
+  const { scaleContext } = useContext(ScaleContext);
 
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
   const [scale, setScale] = useState<IScaleMonth>();
@@ -65,20 +65,9 @@ export const RenderScale = () => {
     setValue(newValue);
   };
 
-  const getScale = async () => {
-    try {
-      
-      const responseApi = await GetScale(scaleId)
-
-      setScale(responseApi)
-
-    } catch (error) {      
-    }
-  }
-
   useEffect(() => {
-    if (scaleId) getScale()
-  }, [scaleId])
+    if (scaleContext) setScale(scaleContext)
+  }, [scaleContext])
 
   const saveScale = async () => {
     try {
