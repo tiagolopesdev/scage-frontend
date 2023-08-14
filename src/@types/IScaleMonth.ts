@@ -8,6 +8,7 @@ export interface IDay {
 }
 
 export interface IScaleMonth {
+  id?: string
   name: string
   start: string
   end: string
