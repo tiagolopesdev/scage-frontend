@@ -6,6 +6,7 @@ import { ContainerBadgeStyle, GroupFieldStyle } from "./style"
 import EyeScaleIcon from '../../Assets/icon_eye_scale.svg'
 import { ISingleScale } from "../../@types/ISingleScale"
 import { ScaleContext } from "../../Context/scale"
+import dayjs from "dayjs"
 
 interface IUsersProps {
   scale?: ISingleScale
@@ -17,6 +18,7 @@ export const Scale = (scalesProps: IUsersProps) => {
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const { setScaleId } = useContext(ScaleContext);
+  const [isProgress] = useState(dayjs().isBefore(dayjs(scalesProps.scale?.end, 'YYYY-MM-DD')))
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
@@ -63,8 +65,8 @@ export const Scale = (scalesProps: IUsersProps) => {
             <ContainerBadgeStyle>
               <Badge
                 style={{ width: '100%' }}
-                badgeContent={scale?.status === 'IN_PROGRESS' ? 'Em progresso' : 'Concluído'}
-                color={scale?.status === 'IN_PROGRESS' ? 'primary' : 'success'}
+                badgeContent={isProgress ? 'Em progresso' : 'Concluída'}
+                color={isProgress ? 'primary' : 'success'}
               />
             </ContainerBadgeStyle>
           </GroupFieldStyle>
