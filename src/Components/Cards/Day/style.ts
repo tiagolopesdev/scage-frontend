@@ -17,10 +17,13 @@ export const PeopleContainer = styled.div`
   display: flex;
   margin: 5px 0px;
   padding: 5px 8px 5px 10px;
+  -webkit-box-align: center;
   align-items: center;
   background-color: rgb(217, 217, 217);
-  border-radius: 10px;
+  border-radius: 5px 10px 10px 5px;
   width: 90%;
+  border-left-color: #3E9CF3;
+  border-left-style: solid;
 `
 
 export const InformationPeopleContainer = styled.div`
