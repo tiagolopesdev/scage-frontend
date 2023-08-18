@@ -1,5 +1,5 @@
 import { ContainerUserList, ContainerComboBoxStyle } from "./style"
-import { Autocomplete, Skeleton, TextField } from "@mui/material"
+import { Alert, Autocomplete, TextField } from "@mui/material"
 import { Scale } from "./scale"
 import { useEffect, useState } from "react"
 import { CustomToast } from "../CustomToast"
@@ -14,6 +14,7 @@ export const ScaleListFloating = () => {
 
   const [scales, setScales] = useState<ISingleScale[]>([]);
   const [selectedMonth, setSelectedMonth] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const managementFindScales = async () => {
     try {
@@ -22,7 +23,7 @@ export const ScaleListFloating = () => {
         await GetSingleScales(selectedMonth)
 
       setScales(responseApi);
-
+      setIsLoading(responseApi.response && responseApi.response.status === 400 ? true : false)
     } catch (exception) {
       CustomToast({
         duration: 2000,
@@ -37,19 +38,14 @@ export const ScaleListFloating = () => {
   }, [selectedMonth])
 
   const managerScaleRender = () => {
-    if (scales.length > 0) {
-      return <div id="group-scales-single">
+    return !isLoading ?
+      <div id="group-scales-single">
         {scales.map((scale) => {
           return <div key={scale.id}>
             <Scale scale={scale} />
           </div>
         })}
-      </div>
-    } else {
-      return (
-        <Skeleton variant="rounded" width={360} height='50rem' />
-      )
-    }
+      </div> : <Alert severity="info">Escala de <strong>{selectedMonth}</strong> não encontrada</Alert>
   }
 
   return (

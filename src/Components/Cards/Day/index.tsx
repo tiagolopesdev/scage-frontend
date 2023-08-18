@@ -10,6 +10,7 @@ import { IDay } from "../../../@types/IScaleMonth"
 import {
   IconSelectUserStyle,
   InformationPeopleContainer,
+  NameDayStyle,
   NamePeopleStyle,
   PeopleContainer
 } from "./style"
@@ -43,14 +44,9 @@ export const CardDay = ({ day }: ICardDay) => {
         flexDirection: 'column',
         alignItems: 'center'
       }} >
-        <Typography gutterBottom variant="h5" component="div" color='#005AAC'
-          style={{
-            fontFamily: 'Dosis',
-            fontWeight: 'bold'
-          }}
-        >
+        <NameDayStyle>
           {day.name}
-        </Typography>
+        </NameDayStyle>
         <Chip style={{ width: '80%', height: '25px' }} label={dataTimeFormated} color="success" variant="outlined" />
         <Reorder.Group values={elements}
           onReorder={setElements}
@@ -91,6 +87,6 @@ export const CardDay = ({ day }: ICardDay) => {
           fullWidth
         >Salvar</Button>
       </CardContent>
-    </Card>
+    </Card >
   )
 }

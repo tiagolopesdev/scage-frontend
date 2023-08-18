@@ -1,12 +1,16 @@
 import styled from "styled-components";
 
 
-export const ContainerHamburguer = styled.div`
-  width: 100%;
-  height: 100%;
+export const ReferencyMonthNameStyle = styled.div`
+  margin-left: 2%;
+  border: 1px solid white;
+  border-radius: 15px;
+  min-width: 200px;
+  height: 40px;
   display: flex;
-  justify-content: flex-end;
-  margin-right: 5%;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0px 15px;
 `
 
 export const Title = styled.h4`
@@ -23,6 +27,5 @@ export const Container = styled.div`
   width: 100%;
   min-height: 4rem;
   display: flex;
-  justify-content: center;
   align-items: center;
 `;

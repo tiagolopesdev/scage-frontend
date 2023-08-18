@@ -4,7 +4,7 @@ import { NavBar } from '../../Components/Navbar';
 import { UserListFloating } from '../../Components/Users/user-list-floating';
 import { ScroolCustom } from '../../Styles';
 import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, TextStyle } from './style';
-import { CSSProperties, useState } from 'react';
+import { CSSProperties, useContext, useEffect, useState } from 'react';
 import { ModalGenerationScale } from '../../Components/ModalGenerationScale';
 import { Icon } from '../../Components/Img';
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
@@ -17,6 +17,7 @@ import IconError from '../../Assets/icon_error.svg'
 import IconSuccess from '../../Assets/icon_success.svg'
 import { SidebarContainer } from './style';
 import { ScaleListFloating } from '../../Components/Scales/scale-list-floating';
+import { ScaleContext } from '../../Context/scale';
 
 
 function a11yProps(index: number) {
@@ -54,6 +55,8 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export const RenderScale = () => {
 
+  const { scaleContext } = useContext(ScaleContext);
+
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
   const [scale, setScale] = useState<IScaleMonth>();
   const [value, setValue] = useState(0);
@@ -61,6 +64,10 @@ export const RenderScale = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    if (scaleContext) setScale(scaleContext)
+  }, [scaleContext])
 
   const saveScale = async () => {
     try {
@@ -141,43 +148,27 @@ export const RenderScale = () => {
       }) : functionProp
   }
 
+  const buttons = (onClick: () => void, style: CSSProperties, text: string) => {
+    return <Button
+      onClick={onClick}
+      style={style}
+      variant="contained"
+      size='small'
+      fullWidth
+    >{text}</Button>
+  }
+
   return (
     <>
       <NavBar />
       <div>
         {existScale()}
         <ButtonGroupContainer>
-          <ButtonGroup
-            style={{ padding: '15px 0px 20px 0px', minWidth: '60%' }}
-          >
-            <Button
-              onClick={() => { setOpenModalGenerationScale(!openModalGenerationScale) }}
-              style={ButtonStyle('rgb(14, 202, 101)')}
-              variant="contained"
-              size='small'
-              fullWidth
-            >Gerar preview da escala</Button>
-            <Button
-              onClick={() => { messageError(saveScale()) }}
-              style={ButtonStyle('rgb(14, 202, 101)')}
-              variant="contained"
-              size='small'
-              fullWidth
-            >Salvar</Button>
-            <Button
-              onClick={() => { messageError('') }}
-              style={ButtonStyle('rgb(14, 202, 101)')}
-              variant="contained"
-              size='small'
-              fullWidth
-            >Adicionar novo dia</Button>
-            <Button
-              onClick={() => { messageError('') }}
-              style={ButtonStyle('#30B2DB')}
-              variant="contained"
-              size='small'
-              fullWidth
-            >Exportar em PDF</Button>
+          <ButtonGroup style={{ padding: '15px 0px 20px 0px', minWidth: '60%' }} >
+            {buttons(() => { setOpenModalGenerationScale(!openModalGenerationScale) }, ButtonStyle('rgb(14, 202, 101)'), "Gerar preview da escala")}
+            {buttons(() => { messageError(saveScale()) }, ButtonStyle('rgb(14, 202, 101)'), "Salvar")}
+            {buttons(() => { messageError('') }, ButtonStyle('rgb(14, 202, 101)'), "Adicionar novo dia")}
+            {buttons(() => { messageError('') }, ButtonStyle('#30B2DB'), "Exportar em PDF")}
           </ButtonGroup>
         </ButtonGroupContainer>
       </div>
@@ -206,10 +197,7 @@ export const RenderScale = () => {
           setScalePreview={setScale}
         /> : ''
       }
-      <Toaster
-        position="bottom-center"
-        reverseOrder={false}
-      />
+      <Toaster position="bottom-center" reverseOrder={false} />
     </>
   );
 }
