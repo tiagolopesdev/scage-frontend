@@ -4,6 +4,7 @@ import { Reorder, useDragControls } from "framer-motion"
 import { useEffect, useState } from "react"
 import { IUser } from "../../../@types/IUser"
 import { IDay } from "../../../@types/IScaleMonth"
+import dayjs from "dayjs"
 
 import {
   GroupButtonsStyle,
@@ -27,9 +28,8 @@ interface ICardDay {
 export const CardDay = ({ day }: ICardDay) => {
 
   const controls = useDragControls()
-
   const [elements, setElements] = useState<IUser[]>([]);
-  const [dataTimeFormated] = useState(`${day.dateTime}`)
+  const [dataTimeFormated] = useState(`Dia ${dayjs(day.dateTime).format('DD/MM/YYYY')} às ${dayjs(day.dateTime).format('HH:mm')}`)
 
   useEffect(() => {
     let elementsToList: IUser[] = []
@@ -66,7 +66,17 @@ export const CardDay = ({ day }: ICardDay) => {
         <NameDayStyle>
           {day.name}
         </NameDayStyle>
-        <Chip style={{ width: '80%', height: '25px' }} label={dataTimeFormated} color="success" variant="outlined" />
+        <Chip style={{
+          width: '80%',
+          height: '19px',
+          backgroundColor: "rgb(14, 202, 101)",
+          color: 'white',
+          border: '0px'
+        }}
+          label={dataTimeFormated}
+          color="success"
+          variant="outlined"
+        />
         <Reorder.Group values={elements} onReorder={setElements}
           style={{ listStyle: "none", paddingInlineStart: "0px" }}
         >
