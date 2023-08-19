@@ -20,6 +20,8 @@ import IconReloadPeople from "../../../Assets/icon_refresh.svg"
 import SelectNewUserIcon from '../../../Assets/render_user.svg'
 import CameraIcon from '../../../Assets/camera_icon.svg'
 import DeskIcon from '../../../Assets/desk_icon.svg'
+import { ModalDay } from "../../ModalDay"
+import { IScaleMonthPreview } from "../../../@types/IScaleMonthPreview"
 
 interface ICardDay {
   day: IDay
@@ -28,6 +30,10 @@ interface ICardDay {
 export const CardDay = ({ day }: ICardDay) => {
 
   const controls = useDragControls()
+  
+  const [daysList, setDaysList] = useState<IScaleMonthPreview[] | undefined>();
+  const [dayToEdit, setDayToEdit] = useState<IScaleMonthPreview | undefined>();
+  const [openModalNewDay, setOpenModalNewDay] = useState(false);
   const [elements, setElements] = useState<IUser[]>([]);
   const [dataTimeFormated] = useState(`Dia ${dayjs(day.dateTime).format('DD/MM/YYYY')} às ${dayjs(day.dateTime).format('HH:mm')}`)
 
@@ -98,10 +104,21 @@ export const CardDay = ({ day }: ICardDay) => {
         </Reorder.Group>
         <GroupButtonsStyle>
           {ButtonActions(false, String(IconReloadPeople), () => { }, { backgroundColor: 'rgb(14, 202, 101)' })}
-          {ButtonActions(false, String(PeopleEditIconWhite), () => { }, { backgroundColor: '#0966BB' })}
+          {ButtonActions(false, String(PeopleEditIconWhite), () => { setOpenModalNewDay(!openModalNewDay) }, { backgroundColor: '#0966BB' })}
           {ButtonActions(true, String(PeopleDeleteIconWhite), () => { }, { border: '1px solid rgba(211, 47, 47, 0.5)' })}
         </GroupButtonsStyle>
       </CardContent>
+      {
+        openModalNewDay ?
+          <ModalDay
+            openModal={openModalNewDay}
+            openModalState={setOpenModalNewDay}
+            dayToEdit={day}
+            setManipulationDay={setDayToEdit}
+            manipulationDay={setDaysList}
+            stateDay={undefined}
+          /> : ''
+      }
     </Card >
   )
 }
