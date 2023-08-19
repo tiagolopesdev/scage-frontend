@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
 
+export const GroupButtonsStyle = styled.div`
+  display: flex; 
+  width: 100%;
+`
+
 export const NameDayStyle = styled.h5`
   font-family: Dosis;
   font-size: 16pt;
