@@ -1,20 +1,24 @@
-import { Button, Card, CardContent, Chip, Typography } from "@mui/material"
-import SelectNewUserIcon from '../../../Assets/render_user.svg'
-import CameraIcon from '../../../Assets/camera_icon.svg'
-import DeskIcon from '../../../Assets/desk_icon.svg'
+import { Button, Card, CardContent, Chip } from "@mui/material"
 import { Icon } from "../../Img"
 import { Reorder, useDragControls } from "framer-motion"
 import { useEffect, useState } from "react"
 import { IUser } from "../../../@types/IUser"
 import { IDay } from "../../../@types/IScaleMonth"
+
 import {
+  GroupButtonsStyle,
   IconSelectUserStyle,
   InformationPeopleContainer,
   NameDayStyle,
   NamePeopleStyle,
   PeopleContainer
 } from "./style"
-
+import PeopleDeleteIconWhite from "../../../Assets/icon_user_delete.svg"
+import PeopleEditIconWhite from "../../../Assets/icon_edit_day.svg"
+import IconReloadPeople from "../../../Assets/icon_refresh.svg"
+import SelectNewUserIcon from '../../../Assets/render_user.svg'
+import CameraIcon from '../../../Assets/camera_icon.svg'
+import DeskIcon from '../../../Assets/desk_icon.svg'
 
 interface ICardDay {
   day: IDay
@@ -37,8 +41,23 @@ export const CardDay = ({ day }: ICardDay) => {
     setElements(elementsToList)
   }, [])
 
+  const ButtonActions = (isOutlined: boolean, iconToDisplay: string, onClick: () => void, customStyle?: any) => {
+    return <Button
+      style={{
+        borderRadius: '15px',
+        padding: '2px',
+        margin: '0px 5px',
+        ...customStyle
+      }}
+      variant={isOutlined ? 'outlined' : 'contained'}
+      size='small'
+      onClick={onClick}
+      fullWidth
+    ><Icon src={iconToDisplay} /></Button>
+  }
+
   return (
-    <Card style={{ width: '280px', height: '300px', margin: '1%' }}>
+    <Card style={{ width: '280px', height: '310px', margin: '1%' }}>
       <CardContent style={{
         display: 'flex',
         flexDirection: 'column',
@@ -48,12 +67,8 @@ export const CardDay = ({ day }: ICardDay) => {
           {day.name}
         </NameDayStyle>
         <Chip style={{ width: '80%', height: '25px' }} label={dataTimeFormated} color="success" variant="outlined" />
-        <Reorder.Group values={elements}
-          onReorder={setElements}
-          style={{
-            listStyle: "none",
-            paddingInlineStart: "0px"
-          }}
+        <Reorder.Group values={elements} onReorder={setElements}
+          style={{ listStyle: "none", paddingInlineStart: "0px" }}
         >
           {
             elements.map((item, index) => (
@@ -71,21 +86,11 @@ export const CardDay = ({ day }: ICardDay) => {
             ))
           }
         </Reorder.Group>
-        <Button
-          style={{
-            backgroundColor: 'rgb(14, 202, 101)',
-            borderRadius: '15px',
-            fontFamily: 'Dosis',
-            textTransform: 'none',
-            fontSize: '1rem',
-            fontWeight: '600',
-            padding: '0px',
-          }}
-          variant="contained"
-          size='small'
-          onClick={() => { }}
-          fullWidth
-        >Salvar</Button>
+        <GroupButtonsStyle>
+          {ButtonActions(false, String(IconReloadPeople), () => { }, { backgroundColor: 'rgb(14, 202, 101)' })}
+          {ButtonActions(false, String(PeopleEditIconWhite), () => { }, { backgroundColor: '#0966BB' })}
+          {ButtonActions(true, String(PeopleDeleteIconWhite), () => { }, { border: '1px solid rgba(211, 47, 47, 0.5)' })}
+        </GroupButtonsStyle>
       </CardContent>
     </Card >
   )
