@@ -1,10 +1,11 @@
+import { IUser } from "./IUser"
 
 export interface IDay {
   name: string
   dateTime: string
-  cameraOne: any
-  cameraTwo: any
-  cutDesk: any
+  cameraOne?: IUser
+  cameraTwo?: IUser
+  cutDesk?: IUser
 }
 
 export interface IScaleMonth {

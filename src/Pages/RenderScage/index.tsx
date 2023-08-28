@@ -74,26 +74,26 @@ export const RenderScale = () => {
 
       if (!scale) return
 
-      const filterOnlyIdUsers: IDay[] = scale.days.map((day) => {
-        return {
-          name: day.name,
-          dateTime: day.dateTime,
-          cameraOne: day.cameraOne.id,
-          cameraTwo: day.cameraTwo.id,
-          cutDesk: day.cutDesk.id
-        }
-      })
+      // const filterOnlyIdUsers: IDay[] = scale.days.map((day) => {
+      //   return {
+      //     name: day.name,
+      //     dateTime: day.dateTime,
+      //     cameraOne: day.cameraOne.id,
+      //     cameraTwo: day.cameraTwo.id,
+      //     cutDesk: day.cutDesk.id
+      //   }
+      // })
 
-      const objectToSend: IScaleMonth = {
-        name: scale.name,
-        start: scale.start,
-        end: scale.end,
-        days: filterOnlyIdUsers
-      }
+      // const objectToSend: IScaleMonth = {
+      //   name: scale.name,
+      //   start: scale.start,
+      //   end: scale.end,
+      //   days: filterOnlyIdUsers
+      // }
 
-      await SaveScaleService(objectToSend)
+      // await SaveScaleService(objectToSend)
 
-      CustomToast({ duration: 2000, message: 'Escala salva com sucesso', icon: String(IconSuccess) })
+      // CustomToast({ duration: 2000, message: 'Escala salva com sucesso', icon: String(IconSuccess) })
 
     } catch (error) {
       CustomToast({ duration: 2000, message: 'Não foi possível salvar a escala', icon: String(IconError) })

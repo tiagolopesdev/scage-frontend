@@ -19,7 +19,7 @@ import IconEdit from '../../Assets/icon_user_edit.svg'
 import IconDelete from '../../Assets/icon_trash.svg'
 import { ButtonGroup, ContainerNewDay } from "./style";
 import { ModalDay } from "../ModalDay";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IUser } from "../../@types/IUser";
 import { getAllUsersService } from "../../Services/Users";
 import { GenerationPreviewScale } from "../../Services/Scale";
@@ -28,7 +28,7 @@ import { CustomToast } from "../CustomToast";
 import { Toaster } from "react-hot-toast";
 import IconError from '../../Assets/icon_error.svg'
 import { DatePicker } from "@mui/x-date-pickers";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { IDay, IScaleMonth } from "../../@types/IScaleMonth";
 import { Months } from "../../@types/Months";
 import IconWarning from '../../Assets/icon_warning.svg'
@@ -55,8 +55,20 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   const { openModal, openModalState, setScalePreview } = props
 
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
-  const [daysList, setDaysList] = useState<IScaleMonthPreview[] | undefined>();
-  const [dayToEdit, setDayToEdit] = useState<IScaleMonthPreview | undefined>();
+  const [daysList, setDaysList] = useState<IDay[]>([]);
+  const initialStateUser: IUser = {
+    email: '',
+    name: '',
+    sex: ''
+  }
+  const initialStateDay: IDay = {
+    name: '',
+    dateTime: '',
+    cameraOne: initialStateUser,
+    cameraTwo: initialStateUser,
+    cutDesk: initialStateUser
+  }
+  const [dayToEdit, setDayToEdit] = useState<IDay>(initialStateDay);
   const [isGenerationScale, setIsGenerationScale] = useState(false)
   const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<Dayjs | null>(null);
@@ -65,7 +77,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     end: '',
     start: '',
     days: []
-  })
+  })  
 
   const HandlerClose = () => {
     openModalState(!openModal)
@@ -112,7 +124,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
       setScalePreview({
         name: scaleMonth.name,
-        end: selectedEndDate?.format('YYYY-MM-DD') as string, 
+        end: selectedEndDate?.format('YYYY-MM-DD') as string,
         start: selectedStartDate?.format('YYYY-MM-DD') as string,
         days: daysToReturn
       })
@@ -138,10 +150,26 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     setDaysList(newListDay)
   }
 
-  const EditDay = (day: IScaleMonthPreview) => {
+  const EditDay = (day: IDay) => {
     setDayToEdit(day);
     setOpenModalNewDay(true)
   }
+
+  useEffect(() => {
+    if (dayToEdit !== initialStateDay) {
+
+      const existDay = daysList.find((itemFounded) => { return itemFounded === dayToEdit })
+
+      console.log('Exist -> ', existDay)
+
+      daysList.length === 0 ? 
+        setDaysList([dayToEdit]) : 
+        setDaysList([...daysList, ...[dayToEdit]])
+    }
+    // setDayToEdit(initialStateDay)
+  }, [dayToEdit])
+
+  console.log('List days ', daysList)
 
   return (
     <>
@@ -203,8 +231,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
                         <TableCell component="th" scope="row">
                           {item.name}
                         </TableCell>
-                        <TableCell align="center">{item.date}</TableCell>
-                        <TableCell align="center">{item.time}</TableCell>
+                        <TableCell align="center">{dayjs(item.dateTime).format('DD/MM/YYYY')}</TableCell>
+                        <TableCell align="center">{dayjs(item.dateTime).format('hh:mm:ss')}</TableCell>
                         <TableCell align="right" style={{ padding: '0rem 0.5rem 0rem 0.5rem' }}>
                           <IconButton onClick={() => { EditDay(item) }}>
                             <Icon src={String(IconEdit)} />
@@ -251,11 +279,9 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
         openModalNewDay ?
           <ModalDay
             openModal={openModalNewDay}
-            openModalState={setOpenModalNewDay}
-            dayToEdit={dayToEdit}
+            setOpenModal={setOpenModalNewDay}
+            manipulationDay={dayToEdit}
             setManipulationDay={setDayToEdit}
-            manipulationDay={setDaysList}
-            stateDay={daysList}
           /> : ''
       }
     </>

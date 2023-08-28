@@ -32,7 +32,7 @@ export const CardDay = ({ day }: ICardDay) => {
   const controls = useDragControls()
   
   const [daysList, setDaysList] = useState<IScaleMonthPreview[] | undefined>();
-  const [dayToEdit, setDayToEdit] = useState<IScaleMonthPreview | undefined>();
+  const [dayToEdit, setDayToEdit] = useState<IDay>(day);
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
   const [elements, setElements] = useState<IUser[]>([]);
   const [dataTimeFormated] = useState(`Dia ${dayjs(day.dateTime).format('DD/MM/YYYY')} às ${dayjs(day.dateTime).format('HH:mm')}`)
@@ -112,11 +112,11 @@ export const CardDay = ({ day }: ICardDay) => {
         openModalNewDay ?
           <ModalDay
             openModal={openModalNewDay}
-            openModalState={setOpenModalNewDay}
+            setOpenModal={setOpenModalNewDay}
             dayToEdit={day}
             setManipulationDay={setDayToEdit}
-            manipulationDay={setDaysList}
-            stateDay={undefined}
+            // manipulationDay={setDaysList}
+            // stateDay={undefined}
           /> : ''
       }
     </Card >

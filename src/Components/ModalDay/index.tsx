@@ -9,6 +9,7 @@ import CloseIcon from "../../Assets/icon_user_delete.svg"
 import { IScaleMonthPreview } from "../../@types/IScaleMonthPreview";
 import IconWarning from '../../Assets/icon_warning.svg'
 import { CustomToast } from "../CustomToast";
+import { IDay } from "../../@types/IScaleMonth";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -23,23 +24,23 @@ const style = {
 
 interface IModalGenerationScale {
   openModal: boolean,
-  openModalState: React.Dispatch<React.SetStateAction<boolean>>,
-  stateDay: IScaleMonthPreview[] | undefined,
-  manipulationDay: React.Dispatch<React.SetStateAction<IScaleMonthPreview[] | undefined>>
-  dayToEdit?: IScaleMonthPreview,
-  setManipulationDay: React.Dispatch<React.SetStateAction<IScaleMonthPreview | undefined>>
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>,
+  manipulationDay: IDay,
+  setManipulationDay: React.Dispatch<React.SetStateAction<IDay>>
 }
 
 export const ModalDay = (props: IModalGenerationScale) => {
 
-  const { openModal, openModalState, manipulationDay, dayToEdit, stateDay, setManipulationDay } = props
+  const { openModal, setOpenModal, manipulationDay, setManipulationDay } = props
 
-  const [eventName, setEventName] = useState(dayToEdit ? dayToEdit.name : '');
-  const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | null>(dayToEdit?.dateTime ? dayjs(dayToEdit?.dateTime) : null)
+  const [eventName, setEventName] = useState(manipulationDay ? manipulationDay.name : '');
+  const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | null>(manipulationDay?.dateTime ? dayjs(manipulationDay?.dateTime) : null)
+
+
 
   const HandlerClose = () => {
-    if (dayToEdit) setManipulationDay(undefined)
-    openModalState(!openModal)
+    // if (manipulationDay) setManipulationDay(undefined)
+    setOpenModal(!openModal)
   }
 
   const ButtonStyleCustom = (customStyle: any) => ({
@@ -78,7 +79,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
                 newValue ? setSelectedDateTime(newValue) : setSelectedDateTime(newValue)
               }}
               renderInput={(params) => <TextField style={{ width: '200px', marginRight: '10px' }} {...params} />}
-              />
+            />
             <TimePicker
               label="Hora do evento"
               value={selectedDateTime}
@@ -99,25 +100,41 @@ export const ModalDay = (props: IModalGenerationScale) => {
                   CustomToast({ duration: 2000, message: 'Preencha todos os campos', icon: String(IconWarning) })
                   return
                 }
-                const newEventToInsert: IScaleMonthPreview = {
-                  name: eventName,
-                  date: dayjs(selectedDateTime).format('DD/MM/YYYY'),
-                  time: dayjs(selectedDateTime).format('h:mm A'),
-                  dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss')
-                }
-                if (stateDay !== undefined) {
-                  if (dayToEdit) {
-                    const day = stateDay.filter((item) => { return item !== dayToEdit })
 
-                    day.push(newEventToInsert)
-
-                    manipulationDay(day)
-                  } else {
-                    manipulationDay([...stateDay, newEventToInsert])
-                  }
+                if (manipulationDay !== undefined) {
+                  setManipulationDay({
+                    name: eventName,
+                    dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
+                    cameraOne: manipulationDay.cameraOne,
+                    cameraTwo: manipulationDay.cameraTwo,
+                    cutDesk: manipulationDay.cutDesk
+                  })
                 } else {
-                  manipulationDay([newEventToInsert])
+                  setManipulationDay({
+                    name: eventName,
+                    dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss')
+                  })
                 }
+
+                // const newEventToInsert: IScaleMonthPreview = {
+                //   name: eventName,
+                //   date: dayjs(selectedDateTime).format('DD/MM/YYYY'),
+                //   time: dayjs(selectedDateTime).format('h:mm A'),
+                //   dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss')
+                // }
+                // if (manipulationDay !== undefined) {
+                //   if (manipulationDay) {
+                //     const day = stateDay.filter((item) => { return item !== manipulationDay })
+
+                //     day.push(newEventToInsert)
+
+                //     manipulationDay(day)
+                //   } else {
+                //     manipulationDay([...stateDay, newEventToInsert])
+                //   }
+                // } else {
+                //   manipulationDay([newEventToInsert])
+                // }
                 HandlerClose()
               }}
             ><Icon src={String(SelectIcon)} /></Button>
