@@ -113,7 +113,7 @@ export const CardDay = ({ day }: ICardDay) => {
           <ModalDay
             openModal={openModalNewDay}
             setOpenModal={setOpenModalNewDay}
-            dayToEdit={day}
+            manipulationDay={day}
             setManipulationDay={setDayToEdit}
             // manipulationDay={setDaysList}
             // stateDay={undefined}
