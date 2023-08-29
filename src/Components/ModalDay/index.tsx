@@ -27,11 +27,13 @@ interface IModalGenerationScale {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>,
   manipulationDay: IDay,
   setManipulationDay: React.Dispatch<React.SetStateAction<IDay>>
+  listManipulationDay: IDay[]
+  setListManipulationDay: React.Dispatch<React.SetStateAction<IDay[]>>
 }
 
 export const ModalDay = (props: IModalGenerationScale) => {
 
-  const { openModal, setOpenModal, manipulationDay, setManipulationDay } = props
+  const { openModal, setOpenModal, manipulationDay, setManipulationDay, listManipulationDay, setListManipulationDay } = props
 
   const [eventName, setEventName] = useState(manipulationDay ? manipulationDay.name : '');
   const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | null>(manipulationDay?.dateTime ? dayjs(manipulationDay?.dateTime) : null)
@@ -101,7 +103,18 @@ export const ModalDay = (props: IModalGenerationScale) => {
                   return
                 }
 
-                if (manipulationDay !== undefined) {
+                console.log('Mani ', manipulationDay)
+
+                if (manipulationDay.name !== '' && manipulationDay.dateTime !== '') {
+                  // if (manipulationDay) {
+                  const day = listManipulationDay.filter((item) => { return item !== manipulationDay })
+
+                  //     day.push(newEventToInsert)
+
+                  //     manipulationDay(day)
+                  //   } else {
+                  //     manipulationDay([...stateDay, newEventToInsert])
+                  //   }
                   setManipulationDay({
                     name: eventName,
                     dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
@@ -110,10 +123,11 @@ export const ModalDay = (props: IModalGenerationScale) => {
                     cutDesk: manipulationDay.cutDesk
                   })
                 } else {
-                  setManipulationDay({
+                  setListManipulationDay([{
                     name: eventName,
                     dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss')
-                  })
+                  }])
+                  console.log('New element')
                 }
 
                 // const newEventToInsert: IScaleMonthPreview = {

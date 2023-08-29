@@ -77,7 +77,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     end: '',
     start: '',
     days: []
-  })  
+  })
 
   const HandlerClose = () => {
     openModalState(!openModal)
@@ -155,21 +155,34 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     setOpenModalNewDay(true)
   }
 
+  const listDays = () => {
+    return daysList?.map((item, index) => {
+      return (
+        <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+          <TableCell component="th" scope="row">
+            {item.name}
+          </TableCell>
+          <TableCell align="center">{dayjs(item.dateTime).format('DD/MM/YYYY')}</TableCell>
+          <TableCell align="center">{dayjs(item.dateTime).format('hh:mm:ss')}</TableCell>
+          <TableCell align="right" style={{ padding: '0rem 0.5rem 0rem 0.5rem' }}>
+            <IconButton onClick={() => {
+              EditDay(item)
+            }}>
+              <Icon src={String(IconEdit)} />
+            </IconButton>
+            <IconButton onClick={() => { DeleteDay(item) }}>
+              <Icon src={String(IconDelete)} />
+            </IconButton>
+          </TableCell>
+        </TableRow>
+      )
+    })
+  }
+
   useEffect(() => {
-    if (dayToEdit !== initialStateDay) {
+    listDays()
+  }, [daysList])
 
-      const existDay = daysList.find((itemFounded) => { return itemFounded === dayToEdit })
-
-      console.log('Exist -> ', existDay)
-
-      daysList.length === 0 ? 
-        setDaysList([dayToEdit]) : 
-        setDaysList([...daysList, ...[dayToEdit]])
-    }
-    // setDayToEdit(initialStateDay)
-  }, [dayToEdit])
-
-  console.log('List days ', daysList)
 
   return (
     <>
@@ -224,27 +237,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {
-                  daysList?.map((item, index) => {
-                    return (
-                      <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                        <TableCell component="th" scope="row">
-                          {item.name}
-                        </TableCell>
-                        <TableCell align="center">{dayjs(item.dateTime).format('DD/MM/YYYY')}</TableCell>
-                        <TableCell align="center">{dayjs(item.dateTime).format('hh:mm:ss')}</TableCell>
-                        <TableCell align="right" style={{ padding: '0rem 0.5rem 0rem 0.5rem' }}>
-                          <IconButton onClick={() => { EditDay(item) }}>
-                            <Icon src={String(IconEdit)} />
-                          </IconButton>
-                          <IconButton onClick={() => { DeleteDay(item) }}>
-                            <Icon src={String(IconDelete)} />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    )
-                  })
-                }
+                { listDays() }
               </TableBody>
             </Table>
           </TableContainer>
@@ -282,6 +275,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             setOpenModal={setOpenModalNewDay}
             manipulationDay={dayToEdit}
             setManipulationDay={setDayToEdit}
+            listManipulationDay={daysList}
+            setListManipulationDay={setDaysList}
           /> : ''
       }
     </>
