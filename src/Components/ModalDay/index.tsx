@@ -1,15 +1,16 @@
 import { Box, Button, ButtonGroup, Modal, TextField } from "@mui/material"
+import { initialStateDay } from "../../@types/InitialStateDay";
+import { IDay } from "../../@types/IScaleMonth";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
-import { useState } from "react";
-import { ContainerElementsStyle, DateTimeGroupStyle } from "./style";
+import { CustomToast } from "../CustomToast";
 import dayjs, { Dayjs } from "dayjs";
+import { useState } from "react";
 import { Icon } from "../Img";
+
+import { ContainerElementsStyle, DateTimeGroupStyle } from "./style";
 import SelectIcon from "../../Assets/icon_success_white.svg"
 import CloseIcon from "../../Assets/icon_user_delete.svg"
-import { IScaleMonthPreview } from "../../@types/IScaleMonthPreview";
 import IconWarning from '../../Assets/icon_warning.svg'
-import { CustomToast } from "../CustomToast";
-import { IDay } from "../../@types/IScaleMonth";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -33,15 +34,13 @@ interface IModalGenerationScale {
 
 export const ModalDay = (props: IModalGenerationScale) => {
 
-  const { openModal, setOpenModal, manipulationDay, setManipulationDay, listManipulationDay, setListManipulationDay } = props
-
+  const { openModal, setOpenModal, manipulationDay, setManipulationDay, listManipulationDay, setListManipulationDay } = props  
+  
   const [eventName, setEventName] = useState(manipulationDay ? manipulationDay.name : '');
   const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | null>(manipulationDay?.dateTime ? dayjs(manipulationDay?.dateTime) : null)
 
-
-
   const HandlerClose = () => {
-    // if (manipulationDay) setManipulationDay(undefined)
+    setManipulationDay(initialStateDay)
     setOpenModal(!openModal)
   }
 
@@ -100,55 +99,27 @@ export const ModalDay = (props: IModalGenerationScale) => {
               onClick={() => {
                 if (!eventName || !selectedDateTime?.format('DD/MM/YYYY') || !selectedDateTime?.format('h:mm A')) {
                   CustomToast({ duration: 2000, message: 'Preencha todos os campos', icon: String(IconWarning) })
-                  return
-                }
-
-                console.log('Mani ', manipulationDay)
-
-                if (manipulationDay.name !== '' && manipulationDay.dateTime !== '') {
-                  // if (manipulationDay) {
-                  const day = listManipulationDay.filter((item) => { return item !== manipulationDay })
-
-                  //     day.push(newEventToInsert)
-
-                  //     manipulationDay(day)
-                  //   } else {
-                  //     manipulationDay([...stateDay, newEventToInsert])
-                  //   }
-                  setManipulationDay({
-                    name: eventName,
-                    dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
-                    cameraOne: manipulationDay.cameraOne,
-                    cameraTwo: manipulationDay.cameraTwo,
-                    cutDesk: manipulationDay.cutDesk
-                  })
                 } else {
-                  setListManipulationDay([{
-                    name: eventName,
-                    dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss')
-                  }])
-                  console.log('New element')
+                  const elementExist = listManipulationDay.find((item: IDay) => { return item === manipulationDay });
+                  if (elementExist) {
+                    const day = listManipulationDay.filter((item) => { return item !== manipulationDay })
+                    setListManipulationDay([...day, ...[{
+                      name: eventName,
+                      dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
+                      cameraOne: manipulationDay.cameraOne,
+                      cameraTwo: manipulationDay.cameraTwo,
+                      cutDesk: manipulationDay.cutDesk
+                    }]])
+                  } else {
+                    setListManipulationDay([...listManipulationDay, ...[{
+                      name: eventName,
+                      dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
+                      cameraOne: manipulationDay.cameraOne,
+                      cameraTwo: manipulationDay.cameraTwo,
+                      cutDesk: manipulationDay.cutDesk
+                    }]])
+                  }
                 }
-
-                // const newEventToInsert: IScaleMonthPreview = {
-                //   name: eventName,
-                //   date: dayjs(selectedDateTime).format('DD/MM/YYYY'),
-                //   time: dayjs(selectedDateTime).format('h:mm A'),
-                //   dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss')
-                // }
-                // if (manipulationDay !== undefined) {
-                //   if (manipulationDay) {
-                //     const day = stateDay.filter((item) => { return item !== manipulationDay })
-
-                //     day.push(newEventToInsert)
-
-                //     manipulationDay(day)
-                //   } else {
-                //     manipulationDay([...stateDay, newEventToInsert])
-                //   }
-                // } else {
-                //   manipulationDay([newEventToInsert])
-                // }
                 HandlerClose()
               }}
             ><Icon src={String(SelectIcon)} /></Button>

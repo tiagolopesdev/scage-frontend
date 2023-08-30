@@ -32,6 +32,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { IDay, IScaleMonth } from "../../@types/IScaleMonth";
 import { Months } from "../../@types/Months";
 import IconWarning from '../../Assets/icon_warning.svg'
+import { initialStateDay } from "../../@types/InitialStateDay";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -56,18 +57,6 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
   const [daysList, setDaysList] = useState<IDay[]>([]);
-  const initialStateUser: IUser = {
-    email: '',
-    name: '',
-    sex: ''
-  }
-  const initialStateDay: IDay = {
-    name: '',
-    dateTime: '',
-    cameraOne: initialStateUser,
-    cameraTwo: initialStateUser,
-    cutDesk: initialStateUser
-  }
   const [dayToEdit, setDayToEdit] = useState<IDay>(initialStateDay);
   const [isGenerationScale, setIsGenerationScale] = useState(false)
   const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(null);
@@ -181,6 +170,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
   useEffect(() => {
     listDays()
+    setDayToEdit(initialStateDay)
   }, [daysList])
 
 
