@@ -1,5 +1,4 @@
 import { Box, Button, ButtonGroup, Modal, TextField } from "@mui/material"
-import { initialStateDay } from "../../@types/InitialStateDay";
 import { IDay } from "../../@types/IScaleMonth";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { CustomToast } from "../CustomToast";
@@ -40,7 +39,6 @@ export const ModalDay = (props: IModalGenerationScale) => {
   const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | null>(manipulationDay?.dateTime ? dayjs(manipulationDay?.dateTime) : null)
 
   const HandlerClose = () => {
-    setManipulationDay(initialStateDay)
     setOpenModal(!openModal)
   }
 

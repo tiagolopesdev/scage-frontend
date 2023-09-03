@@ -12,9 +12,7 @@ import { CustomToast } from '../../Components/CustomToast';
 import { Toaster } from 'react-hot-toast';
 import WarningIcon from '../../Assets/icon_warning.svg'
 import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
-import { SaveScaleService } from '../../Services/Scale';
 import IconError from '../../Assets/icon_error.svg'
-import IconSuccess from '../../Assets/icon_success.svg'
 import { SidebarContainer } from './style';
 import { ScaleListFloating } from '../../Components/Scales/scale-list-floating';
 import { ScaleContext } from '../../Context/scale';
@@ -66,8 +64,10 @@ export const RenderScale = () => {
   };
 
   useEffect(() => {
-    if (scaleContext) setScale(scaleContext)
-  }, [scaleContext])
+    if (!scaleContext) return
+    setScale(scaleContext)
+    existScale()
+  }, [scaleContext?.days])
 
   const saveScale = async () => {
     try {

@@ -21,7 +21,6 @@ import SelectNewUserIcon from '../../../Assets/render_user.svg'
 import CameraIcon from '../../../Assets/camera_icon.svg'
 import DeskIcon from '../../../Assets/desk_icon.svg'
 import { ModalDay } from "../../ModalDay"
-import { IScaleMonthPreview } from "../../../@types/IScaleMonthPreview"
 
 interface ICardDay {
   day: IDay
@@ -30,13 +29,12 @@ interface ICardDay {
 export const CardDay = ({ day }: ICardDay) => {
 
   const controls = useDragControls()
-  
-  // const [daysList, setDaysList] = useState<IScaleMonthPreview[] | undefined>();
+
   const [dayToEdit, setDayToEdit] = useState<IDay>(day);
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
   const [elements, setElements] = useState<IUser[]>([]);
-  const [dataTimeFormated] = useState(`Dia ${dayjs(day.dateTime).format('DD/MM/YYYY')} às ${dayjs(day.dateTime).format('HH:mm')}`)
-  const [daysList, setDaysList] = useState<IDay[]>([]);
+  const [dateTimeFormated, setDateTimeFormated] = useState(`Dia ${dayjs(day.dateTime).format('DD/MM/YYYY')} às ${dayjs(day.dateTime).format('HH:mm')}`)
+  const [daysList, setDaysList] = useState<IDay[]>([day]);
 
   useEffect(() => {
     let elementsToList: IUser[] = []
@@ -44,9 +42,11 @@ export const CardDay = ({ day }: ICardDay) => {
     elementsToList.push(day.cameraOne as IUser)
     elementsToList.push(day.cameraTwo as IUser)
     elementsToList.push(day.cutDesk as IUser)
-
     setElements(elementsToList)
-  }, [])
+    
+    setDateTimeFormated(`Dia ${dayjs(dayToEdit.dateTime).format('DD/MM/YYYY')} às ${dayjs(dayToEdit.dateTime).format('HH:mm')}`)
+    setDayToEdit(day)
+  }, [daysList, day])
 
   const ButtonActions = (isOutlined: boolean, iconToDisplay: string, onClick: () => void, customStyle?: any) => {
     return <Button
@@ -71,7 +71,7 @@ export const CardDay = ({ day }: ICardDay) => {
         alignItems: 'center'
       }} >
         <NameDayStyle>
-          {day.name}
+          {dayToEdit.name}
         </NameDayStyle>
         <Chip style={{
           width: '80%',
@@ -80,7 +80,7 @@ export const CardDay = ({ day }: ICardDay) => {
           color: 'white',
           border: '0px'
         }}
-          label={dataTimeFormated}
+          label={dateTimeFormated}
           color="success"
           variant="outlined"
         />
@@ -118,8 +118,6 @@ export const CardDay = ({ day }: ICardDay) => {
             setManipulationDay={setDayToEdit}
             listManipulationDay={daysList}
             setListManipulationDay={setDaysList}
-            // manipulationDay={setDaysList}
-            // stateDay={undefined}
           /> : ''
       }
     </Card >
