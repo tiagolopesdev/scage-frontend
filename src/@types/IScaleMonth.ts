@@ -1,6 +1,7 @@
 import { IUser } from "./IUser"
 
 export interface IDay {
+  id?: string,
   name: string
   dateTime: string
   cameraOne?: IUser

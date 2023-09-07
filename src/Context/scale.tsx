@@ -10,7 +10,8 @@ interface IScaleContextProvider {
 interface IScaleContext {
   scaleId: string;
   setScaleId: React.Dispatch<React.SetStateAction<string>>,
-  scaleContext: IScaleMonth | undefined
+  scaleContext: IScaleMonth
+  setScaleContext: React.Dispatch<React.SetStateAction<IScaleMonth>>
 }
 
 export const ScaleContext = createContext({} as IScaleContext)
@@ -18,7 +19,12 @@ export const ScaleContext = createContext({} as IScaleContext)
 export const ScaleProvider = ({ children }: IScaleContextProvider) => {
 
   const [scaleId, setScaleId] = useState('');
-  const [scaleContext, setScaleContext] = useState<IScaleMonth>();
+  const [scaleContext, setScaleContext] = useState<IScaleMonth>({
+    name: '',
+    start: '',
+    end: '',
+    days: []
+  });
 
   const getScale = async () => {
     try {
@@ -33,7 +39,7 @@ export const ScaleProvider = ({ children }: IScaleContextProvider) => {
   }, [scaleId])
 
   return (
-    <ScaleContext.Provider value={{ scaleId, setScaleId, scaleContext }} >
+    <ScaleContext.Provider value={{ scaleId, setScaleId, scaleContext, setScaleContext }} >
       {children}
     </ScaleContext.Provider>
   )

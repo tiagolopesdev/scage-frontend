@@ -3,7 +3,8 @@ import { IDay } from "../../@types/IScaleMonth";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { CustomToast } from "../CustomToast";
 import dayjs, { Dayjs } from "dayjs";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ScaleContext } from "../../Context/scale";
 import { Icon } from "../Img";
 
 import { ContainerElementsStyle, DateTimeGroupStyle } from "./style";
@@ -33,8 +34,9 @@ interface IModalGenerationScale {
 
 export const ModalDay = (props: IModalGenerationScale) => {
 
-  const { openModal, setOpenModal, manipulationDay, setManipulationDay, listManipulationDay, setListManipulationDay } = props  
-  
+  const { openModal, setOpenModal, manipulationDay } = props
+  const { scaleContext, setScaleContext } = useContext(ScaleContext);
+
   const [eventName, setEventName] = useState(manipulationDay ? manipulationDay.name : '');
   const [selectedDateTime, setSelectedDateTime] = useState<Dayjs | null>(manipulationDay?.dateTime ? dayjs(manipulationDay?.dateTime) : null)
 
@@ -98,24 +100,46 @@ export const ModalDay = (props: IModalGenerationScale) => {
                 if (!eventName || !selectedDateTime?.format('DD/MM/YYYY') || !selectedDateTime?.format('h:mm A')) {
                   CustomToast({ duration: 2000, message: 'Preencha todos os campos', icon: String(IconWarning) })
                 } else {
-                  const elementExist = listManipulationDay.find((item: IDay) => { return item === manipulationDay });
+
+                  const elementExist = scaleContext.days.find((item: IDay) => { return item === manipulationDay });
+
                   if (elementExist) {
-                    const day = listManipulationDay.filter((item) => { return item !== manipulationDay })
-                    setListManipulationDay([...day, ...[{
+                    const days = scaleContext.days.filter((item) => { return item !== manipulationDay })
+
+                    days.push({
+                      id: manipulationDay.id,
                       name: eventName,
                       dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
                       cameraOne: manipulationDay.cameraOne,
                       cameraTwo: manipulationDay.cameraTwo,
                       cutDesk: manipulationDay.cutDesk
-                    }]])
+                    })
+
+                    setScaleContext({
+                      ...scaleContext, ...{
+                        id: scaleContext.id,
+                        name: scaleContext.name,
+                        start: scaleContext.start,
+                        end: scaleContext.end,
+                        days: days
+                      }
+                    })
                   } else {
-                    setListManipulationDay([...listManipulationDay, ...[{
-                      name: eventName,
-                      dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
-                      cameraOne: manipulationDay.cameraOne,
-                      cameraTwo: manipulationDay.cameraTwo,
-                      cutDesk: manipulationDay.cutDesk
-                    }]])
+                    setScaleContext({
+                      ...scaleContext?.days, ...{
+                        id: scaleContext.id,
+                        name: scaleContext.name,
+                        start: scaleContext.start,
+                        end: scaleContext.end,
+                        days: [{
+                          name: eventName,
+                          dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
+                          cameraOne: manipulationDay.cameraOne,
+                          cameraTwo: manipulationDay.cameraTwo,
+                          cutDesk: manipulationDay.cutDesk
+                        }]
+                      }
+                    })
                   }
                 }
                 HandlerClose()

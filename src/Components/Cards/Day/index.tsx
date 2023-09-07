@@ -43,7 +43,7 @@ export const CardDay = ({ day }: ICardDay) => {
     elementsToList.push(day.cameraTwo as IUser)
     elementsToList.push(day.cutDesk as IUser)
     setElements(elementsToList)
-    
+
     setDateTimeFormated(`Dia ${dayjs(dayToEdit.dateTime).format('DD/MM/YYYY')} às ${dayjs(dayToEdit.dateTime).format('HH:mm')}`)
     setDayToEdit(day)
   }, [daysList, day])
