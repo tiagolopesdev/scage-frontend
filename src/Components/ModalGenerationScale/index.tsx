@@ -19,7 +19,7 @@ import IconEdit from '../../Assets/icon_user_edit.svg'
 import IconDelete from '../../Assets/icon_trash.svg'
 import { ButtonGroup, ContainerNewDay } from "./style";
 import { ModalDay } from "../ModalDay";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IUser } from "../../@types/IUser";
 import { getAllUsersService } from "../../Services/Users";
 import { GenerationPreviewScale } from "../../Services/Scale";
@@ -33,6 +33,7 @@ import { IDay, IScaleMonth } from "../../@types/IScaleMonth";
 import { Months } from "../../@types/Months";
 import IconWarning from '../../Assets/icon_warning.svg'
 import { initialStateDay } from "../../@types/InitialStateDay";
+import { ScaleContext } from "../../Context/scale";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -54,15 +55,16 @@ interface IModalGenerationScale {
 export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
   const { openModal, openModalState, setScalePreview } = props
+  const { scaleContext, setScaleContext, setDisplayScale } = useContext(ScaleContext);
 
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
   const [daysList, setDaysList] = useState<IDay[]>([]);
   const [dayToEdit, setDayToEdit] = useState<IDay>(initialStateDay);
   const [isGenerationScale, setIsGenerationScale] = useState(false)
-  const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(null);
-  const [selectedEndDate, setSelectedEndDate] = useState<Dayjs | null>(null);
+  const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(dayjs(scaleContext.start) ?? null);
+  const [selectedEndDate, setSelectedEndDate] = useState<Dayjs | null>(dayjs(scaleContext.end) ?? null);
   const [scaleMonth, setScaleMonth] = useState<IScaleMonth>({
-    name: '',
+    name: scaleContext.name ?? '',
     end: '',
     start: '',
     days: []
@@ -86,7 +88,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
       const onlyUserId = responseUserApi.map((item) => { return item.id })
 
-      const onlyNameDay = daysList.map((item) => { return item.name })
+      const onlyNameDay = scaleContext.days.map((item) => { return item.name })
 
       const scalePreviewToSend = {
         users: onlyUserId,
@@ -103,8 +105,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             cameraOne: item.cameraOne,
             cameraTwo: item.cameraTwo,
             cutDesk: item.cutDesk,
-            dateTime: `${daysList[index].dateTime}Z`,
-            name: daysList[index].name
+            dateTime: `${scaleContext.days[index].dateTime}Z`,
+            name: scaleContext.days[index].name
           }
         )
       })
@@ -118,8 +120,18 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
         days: daysToReturn
       })
 
+      setScaleContext({
+        name: scaleMonth.name,
+        end: selectedEndDate?.format('YYYY-MM-DD') as string,
+        start: selectedStartDate?.format('YYYY-MM-DD') as string,
+        days: daysToReturn
+      })
+
+      setDisplayScale(true)
+
       HandlerClose()
     } catch (error) {
+      console.log('Error ', error)
       CustomToast({ duration: 2000, message: 'Não foi possível obter a pré-visualização das escalas', icon: String(IconError) })
       setIsGenerationScale(false)
     }
@@ -144,8 +156,10 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     setOpenModalNewDay(true)
   }
 
+  console.log('scale -> ', scaleContext.id)
+
   const listDays = () => {
-    return daysList?.map((item, index) => {
+    return scaleContext.days?.map((item, index) => {
       return (
         <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
           <TableCell component="th" scope="row">
@@ -171,7 +185,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   useEffect(() => {
     listDays()
     setDayToEdit(initialStateDay)
-  }, [daysList])
+  }, [scaleContext.days])
 
 
   return (
@@ -227,7 +241,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { listDays() }
+                {listDays()}
               </TableBody>
             </Table>
           </TableContainer>
@@ -244,7 +258,11 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
               variant="contained"
               size='small'
               fullWidth
-              onClick={() => { GenerationScale() }}
+              onClick={() => {
+                scaleContext.id ?
+                  CustomToast({ duration: 2000, message: 'A escala já foi gerada', icon: String(IconWarning) }) :
+                  GenerationScale()
+              }}
             >
               {isGenerationScale ?
                 <CircularProgress style={{ color: 'white', width: '20px', height: '20px' }} color="secondary" />

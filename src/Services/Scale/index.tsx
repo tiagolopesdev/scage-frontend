@@ -20,8 +20,11 @@ export const SaveScaleService = (scale: IScaleMonth) => {
     .catch((error) => error)
 }
 
-export const GenerationPreviewScale = (scale: any) => {
-  return scaleChannel.post('api/Scale/generationScale', scale)
-    .then((response) => response.data.data)
-    .catch((error) => error)
+export const GenerationPreviewScale = async (scale: any) => {
+  try {
+    const response = await scaleChannel.post('api/Scale/generationScale', scale)
+    return response.data.data
+  } catch (error) {
+    return error
+  }
 }
