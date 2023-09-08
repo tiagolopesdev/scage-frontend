@@ -15,9 +15,9 @@ interface IUsersProps {
 export const Scale = (scalesProps: IUsersProps) => {
 
   const { scale } = scalesProps;
+  const { setScaleId, setDisplayScale } = useContext(ScaleContext);
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const { setScaleId } = useContext(ScaleContext);
   const [isProgress] = useState(dayjs().isBefore(dayjs(scalesProps.scale?.end, 'YYYY-MM-DD')))
 
   const open = Boolean(anchorEl);
@@ -79,6 +79,7 @@ export const Scale = (scalesProps: IUsersProps) => {
               aria-describedby={id}
               onClick={(event: any) => {
                 setScaleId(scale?.id as string)
+                setDisplayScale(true)
               }}
             >
               <Icon style={{ width: '25px' }} src={String(EyeScaleIcon)} />
