@@ -125,19 +125,22 @@ export const ModalDay = (props: IModalGenerationScale) => {
                       }
                     })
                   } else {
+
+                    let daysToInclude = [...scaleContext.days, ...[{
+                      name: eventName,
+                      dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
+                      cameraOne: manipulationDay.cameraOne,
+                      cameraTwo: manipulationDay.cameraTwo,
+                      cutDesk: manipulationDay.cutDesk
+                    }]]
+
                     setScaleContext({
-                      ...scaleContext?.days, ...{
+                      ...scaleContext, ...{
                         id: scaleContext.id,
                         name: scaleContext.name,
                         start: scaleContext.start,
                         end: scaleContext.end,
-                        days: [{
-                          name: eventName,
-                          dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
-                          cameraOne: manipulationDay.cameraOne,
-                          cameraTwo: manipulationDay.cameraTwo,
-                          cutDesk: manipulationDay.cutDesk
-                        }]
+                        days: daysToInclude
                       }
                     })
                   }
