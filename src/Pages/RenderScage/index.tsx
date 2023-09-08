@@ -2,20 +2,23 @@ import { Box, Button, ButtonGroup, Tab, Tabs } from '@mui/material';
 import { CardDay } from '../../Components/Cards/Day/index';
 import { NavBar } from '../../Components/Navbar';
 import { UserListFloating } from '../../Components/Users/user-list-floating';
-import { ScroolCustom } from '../../Styles';
-import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, TextStyle } from './style';
 import { CSSProperties, useContext, useEffect, useState } from 'react';
 import { ModalGenerationScale } from '../../Components/ModalGenerationScale';
 import { Icon } from '../../Components/Img';
-import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 import { CustomToast } from '../../Components/CustomToast';
 import { Toaster } from 'react-hot-toast';
-import WarningIcon from '../../Assets/icon_warning.svg'
 import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
-import IconError from '../../Assets/icon_error.svg'
-import { SidebarContainer } from './style';
 import { ScaleListFloating } from '../../Components/Scales/scale-list-floating';
 import { ScaleContext } from '../../Context/scale';
+import { SaveScaleService } from '../../Services/Scale';
+
+import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, TextStyle } from './style';
+import { SidebarContainer } from './style';
+import { ScroolCustom } from '../../Styles';
+import IconSuccess from "../../Assets/icon_success.svg";
+import IconError from '../../Assets/icon_error.svg'
+import WarningIcon from '../../Assets/icon_warning.svg'
+import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 
 
 function a11yProps(index: number) {
@@ -74,26 +77,26 @@ export const RenderScale = () => {
 
       if (!scale) return
 
-      // const filterOnlyIdUsers: IDay[] = scale.days.map((day) => {
-      //   return {
-      //     name: day.name,
-      //     dateTime: day.dateTime,
-      //     cameraOne: day.cameraOne.id,
-      //     cameraTwo: day.cameraTwo.id,
-      //     cutDesk: day.cutDesk.id
-      //   }
-      // })
+      const filterOnlyIdUsers: IDay[] = scale.days.map((day) => {
+        return {
+          name: day.name,
+          dateTime: day.dateTime,
+          cameraOne: day.cameraOne,
+          cameraTwo: day.cameraTwo,
+          cutDesk: day.cutDesk
+        }
+      })
 
-      // const objectToSend: IScaleMonth = {
-      //   name: scale.name,
-      //   start: scale.start,
-      //   end: scale.end,
-      //   days: filterOnlyIdUsers
-      // }
+      const objectToSend: IScaleMonth = {
+        name: scale.name,
+        start: scale.start,
+        end: scale.end,
+        days: filterOnlyIdUsers
+      }
 
-      // await SaveScaleService(objectToSend)
+      await SaveScaleService(objectToSend)
 
-      // CustomToast({ duration: 2000, message: 'Escala salva com sucesso', icon: String(IconSuccess) })
+      CustomToast({ duration: 2000, message: 'Escala salva com sucesso', icon: String(IconSuccess) })
 
     } catch (error) {
       CustomToast({ duration: 2000, message: 'Não foi possível salvar a escala', icon: String(IconError) })
