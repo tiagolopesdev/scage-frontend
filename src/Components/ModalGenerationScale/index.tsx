@@ -131,7 +131,6 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
       HandlerClose()
     } catch (error) {
-      console.log('Error ', error)
       CustomToast({ duration: 2000, message: 'Não foi possível obter a pré-visualização das escalas', icon: String(IconError) })
       setIsGenerationScale(false)
     }
@@ -155,8 +154,6 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     setDayToEdit(day);
     setOpenModalNewDay(true)
   }
-
-  console.log('scale -> ', scaleContext.id)
 
   const listDays = () => {
     return scaleContext.days?.map((item, index) => {

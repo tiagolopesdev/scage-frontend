@@ -110,8 +110,6 @@ export const RenderScale = () => {
     margin: '0% 1% 0% 3%'
   })
 
-  console.log('dsd ', scaleContext?.days)
-
   const existScale = () => {
     return !displayScale ?
       <NotFoundContainerStyle>
