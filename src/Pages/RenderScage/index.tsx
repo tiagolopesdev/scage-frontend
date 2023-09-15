@@ -97,15 +97,9 @@ export const RenderScale = () => {
         days: filterOnlyIdUsers
       }
 
-      console.log("Update -> ", objectToSend)
-
-      objectToSend.id != undefined ? 
+      objectToSend.id !== undefined ? 
         await UpdateScaleService(objectToSend) :
         await SaveScaleService(objectToSend) 
-
-      // console.log('id ', objectToSend.id)
-
-      // await SaveScaleService(objectToSend)
 
       CustomToast({ duration: 2000, message: 'Escala salva com sucesso', icon: String(IconSuccess) })
 
