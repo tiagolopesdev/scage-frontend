@@ -1,4 +1,5 @@
 import { IScaleMonth } from "../../@types/IScaleMonth"
+import { IScaleMonthSendApi } from "../../@types/IScaleMonthSendApi"
 import { scaleChannel } from "../Bases/api"
 
 
@@ -14,7 +15,16 @@ export const GetSingleScales = (filter?: string) => {
     .catch((error) => error)  
 }
 
-export const SaveScaleService = (scale: IScaleMonth) => {
+export const UpdateScaleService = async (scale: IScaleMonthSendApi) => {
+  try {
+    const response = await scaleChannel.put('api/Scale/updateScale', scale)
+    return response.data.data
+  } catch (error) {
+    return error
+  }
+}
+
+export const SaveScaleService = (scale: IScaleMonthSendApi) => {
   return scaleChannel.post('api/Scale/createScale', scale)
     .then((response) => response.data.data)
     .catch((error) => error)

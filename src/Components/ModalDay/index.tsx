@@ -115,6 +115,8 @@ export const ModalDay = (props: IModalGenerationScale) => {
                       cutDesk: manipulationDay.cutDesk
                     })
 
+                    console.log("DAys -> ", days)
+
                     setScaleContext({
                       ...scaleContext, ...{
                         id: scaleContext.id,
@@ -145,6 +147,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
                     })
                   }
                 }
+                console.log('Context ', scaleContext)
                 HandlerClose()
               }}
             ><Icon src={String(SelectIcon)} /></Button>

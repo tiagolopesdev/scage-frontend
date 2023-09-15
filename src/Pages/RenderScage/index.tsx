@@ -10,7 +10,7 @@ import { Toaster } from 'react-hot-toast';
 import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
 import { ScaleListFloating } from '../../Components/Scales/scale-list-floating';
 import { ScaleContext } from '../../Context/scale';
-import { SaveScaleService } from '../../Services/Scale';
+import { SaveScaleService, UpdateScaleService } from '../../Services/Scale';
 
 import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, TextStyle } from './style';
 import { SidebarContainer } from './style';
@@ -19,6 +19,7 @@ import IconSuccess from "../../Assets/icon_success.svg";
 import IconError from '../../Assets/icon_error.svg'
 import WarningIcon from '../../Assets/icon_warning.svg'
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
+import { IDaySendApi, IScaleMonthSendApi } from '../../@types/IScaleMonthSendApi';
 
 
 function a11yProps(index: number) {
@@ -77,24 +78,34 @@ export const RenderScale = () => {
 
       if (!scale) return
 
-      const filterOnlyIdUsers: IDay[] = scale.days.map((day) => {
+      const filterOnlyIdUsers: IDaySendApi[] = scale.days.map((day) => {
         return {
+          id: day.id,
           name: day.name,
           dateTime: day.dateTime,
-          cameraOne: day.cameraOne,
-          cameraTwo: day.cameraTwo,
-          cutDesk: day.cutDesk
+          cameraOne: day.cameraOne?.id,
+          cameraTwo: day.cameraTwo?.id,
+          cutDesk: day.cutDesk?.id
         }
       })
 
-      const objectToSend: IScaleMonth = {
+      const objectToSend: IScaleMonthSendApi = {
+        id: scale.id,
         name: scale.name,
         start: scale.start,
         end: scale.end,
         days: filterOnlyIdUsers
       }
 
-      await SaveScaleService(objectToSend)
+      console.log("Update -> ", objectToSend)
+
+      objectToSend.id != undefined ? 
+        await UpdateScaleService(objectToSend) :
+        await SaveScaleService(objectToSend) 
+
+      // console.log('id ', objectToSend.id)
+
+      // await SaveScaleService(objectToSend)
 
       CustomToast({ duration: 2000, message: 'Escala salva com sucesso', icon: String(IconSuccess) })
 
