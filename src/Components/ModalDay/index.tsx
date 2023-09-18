@@ -112,10 +112,9 @@ export const ModalDay = (props: IModalGenerationScale) => {
                       dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
                       cameraOne: manipulationDay.cameraOne,
                       cameraTwo: manipulationDay.cameraTwo,
-                      cutDesk: manipulationDay.cutDesk
+                      cutDesk: manipulationDay.cutDesk,
+                      isEnable: manipulationDay.isEnable
                     })
-
-                    console.log("DAys -> ", days)
 
                     setScaleContext({
                       ...scaleContext, ...{
@@ -123,17 +122,19 @@ export const ModalDay = (props: IModalGenerationScale) => {
                         name: scaleContext.name,
                         start: scaleContext.start,
                         end: scaleContext.end,
-                        days: days
+                        days: days,   
+                        isEnable: scaleContext.isEnable                     
                       }
                     })
                   } else {
 
-                    let daysToInclude = [...scaleContext.days, ...[{
+                    let daysToInclude: IDay[] = [...scaleContext.days, ...[{
                       name: eventName,
                       dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
                       cameraOne: manipulationDay.cameraOne,
                       cameraTwo: manipulationDay.cameraTwo,
-                      cutDesk: manipulationDay.cutDesk
+                      cutDesk: manipulationDay.cutDesk,      
+                      isEnable: manipulationDay.isEnable     
                     }]]
 
                     setScaleContext({
@@ -142,12 +143,12 @@ export const ModalDay = (props: IModalGenerationScale) => {
                         name: scaleContext.name,
                         start: scaleContext.start,
                         end: scaleContext.end,
-                        days: daysToInclude
+                        days: daysToInclude,
+                        isEnable: scaleContext.isEnable
                       }
                     })
                   }
                 }
-                console.log('Context ', scaleContext)
                 HandlerClose()
               }}
             ><Icon src={String(SelectIcon)} /></Button>

@@ -7,6 +7,7 @@ export interface IDay {
   cameraOne?: IUser
   cameraTwo?: IUser
   cutDesk?: IUser
+  isEnable?: boolean
 }
 
 export interface IScaleMonth {
@@ -15,4 +16,5 @@ export interface IScaleMonth {
   start: string
   end: string
   days: IDay[]
+  isEnable?: boolean
 }

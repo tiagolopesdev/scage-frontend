@@ -67,7 +67,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     name: scaleContext.name ?? '',
     end: '',
     start: '',
-    days: []
+    days: [],
+    isEnable: true
   })
 
   const HandlerClose = () => {
@@ -117,14 +118,16 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
         name: scaleMonth.name,
         end: selectedEndDate?.format('YYYY-MM-DD') as string,
         start: selectedStartDate?.format('YYYY-MM-DD') as string,
-        days: daysToReturn
+        days: daysToReturn,
+        isEnable: true
       })
 
       setScaleContext({
         name: scaleMonth.name,
         end: selectedEndDate?.format('YYYY-MM-DD') as string,
         start: selectedStartDate?.format('YYYY-MM-DD') as string,
-        days: daysToReturn
+        days: daysToReturn,
+        isEnable: true
       })
 
       setDisplayScale(true)

@@ -85,7 +85,8 @@ export const RenderScale = () => {
           dateTime: day.dateTime,
           cameraOne: day.cameraOne?.id,
           cameraTwo: day.cameraTwo?.id,
-          cutDesk: day.cutDesk?.id
+          cutDesk: day.cutDesk?.id,
+          isEnable: day.isEnable
         }
       })
 
@@ -94,7 +95,8 @@ export const RenderScale = () => {
         name: scale.name,
         start: scale.start,
         end: scale.end,
-        days: filterOnlyIdUsers
+        days: filterOnlyIdUsers,
+        isEnable: true
       }
 
       objectToSend.id !== undefined ? 
@@ -140,7 +142,7 @@ export const RenderScale = () => {
             scaleContext?.days.length as number < 0 ?
               '' :
               scaleContext?.days.map((item: IDay, index: number) => {
-                return <CardDay key={index} day={item} />
+                if (item.isEnable) return <CardDay key={index} day={item} />
               })
           }
         </ScroolCustom>

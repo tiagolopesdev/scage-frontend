@@ -1,7 +1,7 @@
 import { Button, Card, CardContent, Chip } from "@mui/material"
 import { Icon } from "../../Img"
 import { Reorder, useDragControls } from "framer-motion"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { IUser } from "../../../@types/IUser"
 import { IDay } from "../../../@types/IScaleMonth"
 import dayjs from "dayjs"
@@ -21,6 +21,7 @@ import SelectNewUserIcon from '../../../Assets/render_user.svg'
 import CameraIcon from '../../../Assets/camera_icon.svg'
 import DeskIcon from '../../../Assets/desk_icon.svg'
 import { ModalDay } from "../../ModalDay"
+import { ScaleContext } from "../../../Context/scale"
 
 interface ICardDay {
   day: IDay
@@ -29,6 +30,7 @@ interface ICardDay {
 export const CardDay = ({ day }: ICardDay) => {
 
   const controls = useDragControls()
+  const { scaleContext, setScaleContext } = useContext(ScaleContext);
 
   const [dayToEdit, setDayToEdit] = useState<IDay>(day);
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
@@ -106,7 +108,31 @@ export const CardDay = ({ day }: ICardDay) => {
         <GroupButtonsStyle>
           {ButtonActions(false, String(IconReloadPeople), () => { }, { backgroundColor: 'rgb(14, 202, 101)' })}
           {ButtonActions(false, String(PeopleEditIconWhite), () => { setOpenModalNewDay(!openModalNewDay) }, { backgroundColor: '#0966BB' })}
-          {ButtonActions(true, String(PeopleDeleteIconWhite), () => { }, { border: '1px solid rgba(211, 47, 47, 0.5)' })}
+          {ButtonActions(true, String(PeopleDeleteIconWhite),
+            () => {
+              const days = scaleContext.days.filter((item) => { return item.id !== day.id });
+
+              days.push({
+                id: day.id,
+                name: day.name,
+                dateTime: day.dateTime,
+                cameraOne: day.cameraOne,
+                cameraTwo: day.cameraTwo,
+                cutDesk: day.cutDesk,
+                isEnable: false
+              })
+
+              setScaleContext({
+                id: scaleContext.id,
+                name: scaleContext.name,
+                start: scaleContext.start,
+                end: scaleContext.end,
+                days: days,
+                isEnable: scaleContext.isEnable
+              })
+            },
+            { border: '1px solid rgba(211, 47, 47, 0.5)' })
+          }
         </GroupButtonsStyle>
       </CardContent>
       {

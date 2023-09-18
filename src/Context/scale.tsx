@@ -25,7 +25,8 @@ export const ScaleProvider = ({ children }: IScaleContextProvider) => {
     name: '',
     start: '',
     end: '',
-    days: []
+    days: [],
+    isEnable: true
   });
   const [displayScale, setDisplayScale] = useState(false)
 

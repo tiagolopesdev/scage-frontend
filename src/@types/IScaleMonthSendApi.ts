@@ -6,6 +6,7 @@ export interface IDaySendApi {
   cameraOne?: string
   cameraTwo?: string
   cutDesk?: string
+  isEnable?: boolean
 }
 
 export interface IScaleMonthSendApi {
@@ -14,4 +15,5 @@ export interface IScaleMonthSendApi {
   start: string
   end: string
   days: IDaySendApi[]
+  isEnable?: boolean
 }
