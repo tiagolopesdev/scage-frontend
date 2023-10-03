@@ -57,7 +57,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export const RenderScale = () => {
 
-  const { scaleContext, displayScale } = useContext(ScaleContext);
+  const { scaleContext, displayScale, setDisplayScale } = useContext(ScaleContext);
 
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
   const [scale, setScale] = useState<IScaleMonth>();
@@ -121,7 +121,7 @@ export const RenderScale = () => {
   })
 
   const existScale = () => {
-    return !displayScale ?
+    return scaleContext.days.length === 0 ?
       <NotFoundContainerStyle>
         <TextStyle size={15}>Uma escala ainda não foi selecionada para ser exibida</TextStyle>
         <Icon src={String(ScaleNotFoundIcon)} style={{ width: '400px' }} />
@@ -142,7 +142,10 @@ export const RenderScale = () => {
             scaleContext?.days.length as number < 0 ?
               '' :
               scaleContext?.days.map((item: IDay, index: number) => {
-                if (item.isEnable) return <CardDay key={index} day={item} />
+                if (item.isEnable) { 
+                  console.log('Loading card ', item)
+                  return <CardDay key={index} day={item} />
+                }
               })
           }
         </ScroolCustom>

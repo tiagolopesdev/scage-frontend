@@ -22,6 +22,8 @@ import CameraIcon from '../../../Assets/camera_icon.svg'
 import DeskIcon from '../../../Assets/desk_icon.svg'
 import { ModalDay } from "../../ModalDay"
 import { ScaleContext } from "../../../Context/scale"
+import { GenerationPreviewScale } from "../../../Services/Scale"
+import { getAllUsersService } from "../../../Services/Users"
 
 interface ICardDay {
   day: IDay
@@ -30,7 +32,7 @@ interface ICardDay {
 export const CardDay = ({ day }: ICardDay) => {
 
   const controls = useDragControls()
-  const { scaleContext, setScaleContext } = useContext(ScaleContext);
+  const { scaleContext, setScaleContext   } = useContext(ScaleContext);
 
   const [dayToEdit, setDayToEdit] = useState<IDay>(day);
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
@@ -38,17 +40,15 @@ export const CardDay = ({ day }: ICardDay) => {
   const [dateTimeFormated, setDateTimeFormated] = useState(`Dia ${dayjs(day.dateTime).format('DD/MM/YYYY')} às ${dayjs(day.dateTime).format('HH:mm')}`)
   const [daysList, setDaysList] = useState<IDay[]>([day]);
 
-  useEffect(() => {
-    let elementsToList: IUser[] = []
-
-    elementsToList.push(day.cameraOne as IUser)
-    elementsToList.push(day.cameraTwo as IUser)
-    elementsToList.push(day.cutDesk as IUser)
-    setElements(elementsToList)
-
+  useEffect(() => { 
+    setElements([
+      day.cameraOne as IUser, 
+      day.cameraTwo as IUser, 
+      day.cutDesk as IUser
+    ])
     setDateTimeFormated(`Dia ${dayjs(dayToEdit.dateTime).format('DD/MM/YYYY')} às ${dayjs(dayToEdit.dateTime).format('HH:mm')}`)
     setDayToEdit(day)
-  }, [daysList, day])
+  }, [daysList, day.cameraOne, day.cameraTwo, day.cutDesk])
 
   const ButtonActions = (isOutlined: boolean, iconToDisplay: string, onClick: () => void, customStyle?: any) => {
     return <Button
@@ -106,7 +106,46 @@ export const CardDay = ({ day }: ICardDay) => {
           }
         </Reorder.Group>
         <GroupButtonsStyle>
-          {ButtonActions(false, String(IconReloadPeople), () => { }, { backgroundColor: 'rgb(14, 202, 101)' })}
+          {ButtonActions(false, String(IconReloadPeople),
+            async () => {
+
+              let responseUserApi: IUser[] = await getAllUsersService();
+
+              let onlyUserId: any = []
+
+              responseUserApi.filter((item) => {
+                if (item.id !== day.cameraOne?.id && item.id !== day.cameraTwo?.id && item.id !== day.cutDesk?.id) {
+                  onlyUserId.push(item.id as string)
+                }
+              })
+
+              const scalePreviewToSend = {
+                users: onlyUserId,
+                days: [day.name]
+              }
+
+              const responseScalePreviewApi = await GenerationPreviewScale(scalePreviewToSend);
+
+              var index = scaleContext.days.findIndex((item) => { return item === day })
+
+              let daysInContext = scaleContext.days;
+
+              daysInContext[index].cameraOne = responseScalePreviewApi[0].cameraOne
+              daysInContext[index].cameraTwo = responseScalePreviewApi[0].cameraTwo
+              daysInContext[index].cutDesk = responseScalePreviewApi[0].cutDesk
+              daysInContext[index].isEnable = true
+
+              setScaleContext({
+                id: scaleContext.id,
+                name: scaleContext.name,
+                start: scaleContext.start,
+                end: scaleContext.end,
+                days: daysInContext,
+                isEnable: scaleContext.isEnable
+              })
+            },
+            { backgroundColor: 'rgb(14, 202, 101)' })
+          }
           {ButtonActions(false, String(PeopleEditIconWhite), () => { setOpenModalNewDay(!openModalNewDay) }, { backgroundColor: '#0966BB' })}
           {ButtonActions(true, String(PeopleDeleteIconWhite),
             () => {
