@@ -26,7 +26,7 @@ export const PeopleContainer = styled.div`
   -webkit-box-align: center;
   align-items: center;
   background-color: rgb(217, 217, 217);
-  border-radius: 5px 10px 10px 5px;
+  border-radius: 5px 5px 5px 5px;
   width: 90%;
   border-left-color: #3E9CF3;
   border-left-style: solid;
