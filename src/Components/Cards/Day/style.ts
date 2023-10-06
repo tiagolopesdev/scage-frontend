@@ -4,6 +4,7 @@ import styled from "styled-components";
 export const GroupButtonsStyle = styled.div`
   display: flex; 
   width: 100%;
+  justify-content: center;
 `
 
 export const NameDayStyle = styled.h5`

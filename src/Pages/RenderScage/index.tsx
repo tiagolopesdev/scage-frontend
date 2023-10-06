@@ -57,7 +57,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export const RenderScale = () => {
 
-  const { scaleContext, displayScale, setDisplayScale } = useContext(ScaleContext);
+  const { scaleContext } = useContext(ScaleContext);
 
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
   const [scale, setScale] = useState<IScaleMonth>();
@@ -143,7 +143,6 @@ export const RenderScale = () => {
               '' :
               scaleContext?.days.map((item: IDay, index: number) => {
                 if (item.isEnable) { 
-                  console.log('Loading card ', item)
                   return <CardDay key={index} day={item} />
                 }
               })
