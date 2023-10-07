@@ -5,6 +5,7 @@ interface IInputProps {
   label: string,
   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+  style?: any
 }
 
 export const Input = (props: IInputProps) => {
@@ -17,7 +18,8 @@ export const Input = (props: IInputProps) => {
       variant="outlined"
       style={{
         marginRight: '15px',
-        width: '100%'
+        width: '100%',
+        ...props.style
       }}
       onClick={props.onClick}
       onChange={props.onChange}

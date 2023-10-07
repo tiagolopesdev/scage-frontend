@@ -1,6 +1,6 @@
 import { Button, Card, CardContent, Chip } from "@mui/material"
 import { Icon } from "../../Img"
-import { Reorder, useDragControls } from "framer-motion"
+import { Reorder, motion, useDragControls } from "framer-motion"
 import { useContext, useEffect, useState } from "react"
 import { IUser } from "../../../@types/IUser"
 import { IDay } from "../../../@types/IScaleMonth"
@@ -25,6 +25,7 @@ import { ModalDay } from "../../ModalDay"
 import { ScaleContext } from "../../../Context/scale"
 import { GenerationPreviewScale } from "../../../Services/Scale"
 import { getAllUsersService } from "../../../Services/Users"
+import { ModalChangedSerf } from "../../ModalChangedSerf"
 
 interface ICardDay {
   day: IDay
@@ -41,6 +42,7 @@ export const CardDay = ({ day }: ICardDay) => {
   const [dateTimeFormated, setDateTimeFormated] = useState(`Dia ${dayjs(day.dateTime).format('DD/MM/YYYY')} às ${dayjs(day.dateTime).format('HH:mm')}`)
   const [daysList, setDaysList] = useState<IDay[]>([day]);
   const [isReorder, setIsReorder] = useState(false)
+  const [modalIsVisible, setModalIsVisible] = useState(false);
 
   useEffect(() => {
     setElements([
@@ -176,7 +178,17 @@ export const CardDay = ({ day }: ICardDay) => {
                     <NamePeopleStyle>{item.name}</NamePeopleStyle>
                   </InformationPeopleContainer>
                   <IconSelectUserStyle>
-                    <Icon src={String(SelectNewUserIcon)} />
+                    <motion.div
+                      className="box"
+                      whileHover={{ scale: 1.07 }}
+                      whileTap={{ scale: 1.0 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    >
+                      <Icon
+                        src={String(SelectNewUserIcon)}
+                        onClick={() => { setModalIsVisible(!modalIsVisible) }}
+                      />
+                    </motion.div>
                   </IconSelectUserStyle>
                 </PeopleContainer>
               </Reorder.Item>
@@ -191,13 +203,13 @@ export const CardDay = ({ day }: ICardDay) => {
                 ButtonActions(false, String(IconSave),
                   () => {
                     let days = scaleContext.days.filter((item) => { return item !== day });
-                    
+
                     days.push({
                       id: day.id,
                       dateTime: day.dateTime,
                       name: day.name,
                       isEnable: day.isEnable,
-                      cameraOne: elements[0], 
+                      cameraOne: elements[0],
                       cameraTwo: elements[1],
                       cutDesk: elements[2]
                     })
@@ -228,6 +240,13 @@ export const CardDay = ({ day }: ICardDay) => {
             setManipulationDay={setDayToEdit}
             listManipulationDay={daysList}
             setListManipulationDay={setDaysList}
+          /> : ''
+      }
+      {
+        modalIsVisible ?
+          <ModalChangedSerf
+            openModal={modalIsVisible}
+            openModalState={setModalIsVisible}
           /> : ''
       }
     </Card >
