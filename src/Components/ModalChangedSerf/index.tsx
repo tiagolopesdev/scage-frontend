@@ -36,6 +36,8 @@ import IconWarning from '../../Assets/icon_warning.svg'
 import { initialStateDay } from "../../@types/InitialStateDay";
 import { ScaleContext } from "../../Context/scale";
 import { Input } from "../Input";
+import { Serving } from "../Users/Serving";
+// import { Serving } from "../Users/Serving";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -181,13 +183,14 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
 
   const ManagerInformations = () => {
     if (!nameSerfToFind) {
-      return <div style={{
-        margin: '2%',
-        display: 'flex',
-        justifyContent: 'center'
-      }}>
-        <Alert style={{ width: '100%', display: 'flex', justifyContent: 'center' }} severity="info">{<strong>Insira o nome do servo.</strong>}</Alert>
-      </div>
+      return <Serving />
+      // return <div style={{
+      //   margin: '2%',
+      //   display: 'flex',
+      //   justifyContent: 'center'
+      // }}>
+      //   <Alert style={{ width: '100%', display: 'flex', justifyContent: 'center' }} severity="info">{<strong>Insira o nome do servo.</strong>}</Alert>
+      // </div>
     } else if (nameSerfToFind && 2 > 0) {
       return <div style={{
         margin: '2%',
