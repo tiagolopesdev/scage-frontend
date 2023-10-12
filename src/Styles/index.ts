@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 interface ITextStyle {
   fontSize: number;
-  color: string
+  color: string;
+  margin?: number;
   isBold?: boolean;
 }
 
@@ -10,7 +11,7 @@ export const TextBaseStyle = styled.div<ITextStyle>`
   font-family: Dosis;
   font-size: ${(props) => props.fontSize}pt;
   font-weight: ${(props => props.isBold ? 'bold' : 'lighter')};
-  margin: 2px;
+  margin: ${(props) => props.margin ? props.margin : 0 }px;
   color: ${(props) => props.color};
   overflow: hidden;
   display: -webkit-box;
