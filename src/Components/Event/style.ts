@@ -9,7 +9,7 @@ export const InformationContainerStyle = styled.div`
   background-color: #4dac79;
   border-radius: 8px;
   padding: 1px 8px;
-  width: 50%;
+  width: 100%;
   margin: 5px 10px;
 `
 
@@ -20,7 +20,7 @@ export const InformationStyle = styled.div`
 export const InformationGroupStyle = styled.div`
  display: flex;
  justify-content: space-around;
- width: 60%;
+ width: 70%;
 `
 
 export const TextStyle = styled.p<ITextStyle>`

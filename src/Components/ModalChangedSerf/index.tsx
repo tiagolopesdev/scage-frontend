@@ -47,7 +47,11 @@ const style = {
   bgcolor: 'background.paper',
   borderRadius: '15px',
   boxShadow: 24,
-  minWidth: 650,
+  minWidth: 450,
+  minHeight: 400,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
   p: 4,
 };
 
