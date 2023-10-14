@@ -5,10 +5,20 @@ import { InformationContainerStyle, InformationGroupStyle, InformationStyle, Tex
 import { motion } from "framer-motion"
 import { Checkbox } from "@mui/material"
 import { useState } from "react"
+import dayjs from "dayjs"
 
-export const EventSerf = () => {
+
+interface IEventSerf {
+  name: string,
+  dateTime: string
+}
+
+export const EventSerf = ({name, dateTime}: IEventSerf) => {
 
   const [isChecked, setIsChecked] = useState(false);
+
+  const date = dayjs(dateTime).format('DD/MM/YYYY')
+  const hour = dayjs(dateTime).format('HH:mm')
 
   return <motion.div
     className="box"
@@ -19,15 +29,15 @@ export const EventSerf = () => {
   >
     <div style={{ display: 'flex' }}>
       <InformationContainerStyle>
-        <TextStyle fontSize={15} isBold={true} >Nome do evento</TextStyle>
+        <TextStyle fontSize={15} isBold={true} >{name}</TextStyle>
         <InformationGroupStyle>
           <InformationStyle>
             <Icon src={String(IconCalendar)} />
-            <TextStyle fontSize={12}>Data</TextStyle>
+            <TextStyle fontSize={12}>{date}</TextStyle>
           </InformationStyle>
           <InformationStyle>
             <Icon src={String(IconClock)} />
-            <TextStyle fontSize={12}>Horário</TextStyle>
+            <TextStyle fontSize={12}>{hour}</TextStyle>
           </InformationStyle>
         </InformationGroupStyle>
       </InformationContainerStyle>

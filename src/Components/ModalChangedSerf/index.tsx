@@ -201,7 +201,7 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
         display: 'flex',
         justifyContent: 'center'
       }}>
-        <Alert style={{ width: '100%', display: 'flex', justifyContent: 'center' }} severity="warning">{<strong>Servo não encontrado na escala.</strong>} Adicione-o clicando no botão abaixo.</Alert>
+        <Alert style={{ width: '100%', display: 'flex', justifyContent: 'center' }} severity="warning">{<strong>Servo não encontrado no sistema.</strong>}</Alert>
       </div>
     } else {
       return <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">

@@ -10,79 +10,98 @@ import IconExpand from '../../../Assets/icon_arrow.svg';
 import IconUser from '../../../Assets/icon_user.svg';
 import { TextBaseStyle } from '../../../Styles';
 import { InformationSerfGroupStyle } from './style';
+import { getAllUsersService } from '../../../Services/Users';
+import { IUser } from '../../../@types/IUser';
+import { useContext, useEffect, useState } from 'react';
+import { ScaleContext } from '../../../Context/scale';
+import { IDay } from '../../../@types/IScaleMonth';
 
 export const Serving = () => {
-  const [expanded, setExpanded] = React.useState<string | false>(false);
+
+  const { scaleContext } = useContext(ScaleContext);
+
+  const [expanded, setExpanded] = useState<string | false>(false);
+  const [users, setUsers] = useState<IUser[]>([]);
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
 
-  return (
-    <div style={{ width: '100%' }}>
-      <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+  const findUsers = async () => {
+    try {
+
+      const users: IUser[] = await getAllUsersService();
+
+      setUsers(users)
+
+    } catch (error) {
+    }
+  }
+
+  useEffect(() => {
+    findUsers()
+  }, [])
+
+  const managerAccordions = () => {
+    return users.map((item, index) => {
+
+      let isInsideScale: boolean = false
+      let quantityInsideDays: number = 0
+      let insideDays: IDay[] = []
+
+      scaleContext.days.map((dayItem) => {
+        if (dayItem.cameraOne?.id === item.id || dayItem.cameraTwo?.id === item.id || dayItem.cutDesk?.id === item.id) {
+          isInsideScale = true;
+          quantityInsideDays++;
+          insideDays.push(dayItem);
+        }
+      })
+
+      return <Accordion
+        expanded={expanded === `panel${index}`}
+        onChange={handleChange(`panel${index}`)}
+        style={{ borderRadius: '5px', margin: '5px' }}
+      >
         <AccordionSummary
           expandIcon={<Icon src={String(IconExpand)} />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
+          aria-controls={`panel${index}bh-content`}
+          id={`panel${index}bh-header`}
         >
           <div style={{ display: 'flex' }}>
-            <Icon src={String(IconUser)} style={{ marginRight: '10px' }}/>
+            <Icon src={String(IconUser)} style={{ marginRight: '10px' }} />
             <InformationSerfGroupStyle>
               <TextBaseStyle fontSize={15} color='black' isBold={true}>
-                Nome usuário
+                {item.name}
               </TextBaseStyle>
               <TextBaseStyle fontSize={11} color='black'>
-                usuario@gmail.com
-              </TextBaseStyle>              
+                {item.email}
+              </TextBaseStyle>
             </InformationSerfGroupStyle>
           </div>
           {
-            2 > 0 ?
-              <Chip size='small' label={<strong>2 dias para servir</strong>} color="success" variant="outlined" /> :
+            isInsideScale ?
+              <Chip size='small' label={`${quantityInsideDays} dias para servir`} color="success" variant="outlined" /> :
               <Button color='success' size='small' variant='contained'>Inseri-lo na escala</Button>
           }
         </AccordionSummary>
-        <AccordionDetails>
-          <EventSerf />
-          <EventSerf />
-          <EventSerf />
-          <EventSerf />
-          <EventSerf />
-        </AccordionDetails>
+        {
+          isInsideScale ?
+            <AccordionDetails>
+              {
+                insideDays.map((item) => {
+                  return <EventSerf
+                    name={item.name}
+                    dateTime={item.dateTime}
+                  />
+                })
+              }
+            </AccordionDetails> :
+            ''
+        }
       </Accordion>
-      <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-        <AccordionSummary
-          expandIcon={<Icon src={String(IconExpand)} />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
-          <div style={{ display: 'flex' }}>
-            <Icon src={String(IconUser)} style={{ marginRight: '10px' }}/>
-            <InformationSerfGroupStyle>
-              <TextBaseStyle fontSize={15} color='black' isBold={true}>
-                Nome usuário
-              </TextBaseStyle>
-              <TextBaseStyle fontSize={11} color='black'>
-                usuario@gmail.com
-              </TextBaseStyle>              
-            </InformationSerfGroupStyle>
-          </div>
-          {
-            2 < 0 ?
-              <Chip size='small' label={<strong>2 dias para servir</strong>} color="success" variant="outlined" /> :
-              <Button color='success' size='small' variant='contained'>Inseri-lo na escala</Button>
-          }
-        </AccordionSummary>
-        <AccordionDetails>
-          <EventSerf />
-          <EventSerf />
-          <EventSerf />
-          <EventSerf />
-          <EventSerf />
-        </AccordionDetails>
-      </Accordion>
-    </div>
-  );
+    })
+  }
+
+  return <>{managerAccordions()}</>
 }
