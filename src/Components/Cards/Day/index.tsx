@@ -34,7 +34,7 @@ interface ICardDay {
 export const CardDay = ({ day }: ICardDay) => {
 
   const controls = useDragControls()
-  const { scaleContext, setScaleContext } = useContext(ScaleContext);
+  const { scaleContext, setScaleContext, setFromDay } = useContext(ScaleContext);
 
   const [dayToEdit, setDayToEdit] = useState<IDay>(day);
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
@@ -186,7 +186,13 @@ export const CardDay = ({ day }: ICardDay) => {
                     >
                       <Icon
                         src={String(SelectNewUserIcon)}
-                        onClick={() => { setModalIsVisible(!modalIsVisible) }}
+                        onClick={() => {
+                          setModalIsVisible(!modalIsVisible)
+                          setFromDay({
+                            day: day,
+                            serf: item
+                          })
+                        }}
                       />
                     </motion.div>
                   </IconSelectUserStyle>

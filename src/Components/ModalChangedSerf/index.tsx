@@ -20,10 +20,7 @@ import IconInclusion from '../../Assets/icon_success.svg'
 import IconDelete from '../../Assets/icon_trash.svg'
 import { ButtonGroup, ContainerNewDay } from "./style";
 import { ModalDay } from "../ModalDay";
-import { useContext, useEffect, useState } from "react";
-import { IUser } from "../../@types/IUser";
-import { getAllUsersService } from "../../Services/Users";
-import { GenerationPreviewScale } from "../../Services/Scale";
+import { useEffect, useState } from "react";
 import { IScaleMonthPreview } from "../../@types/IScaleMonthPreview";
 import { CustomToast } from "../CustomToast";
 import { Toaster } from "react-hot-toast";
@@ -31,13 +28,9 @@ import IconError from '../../Assets/icon_error.svg'
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { IDay, IScaleMonth } from "../../@types/IScaleMonth";
-import { Months } from "../../@types/Months";
-import IconWarning from '../../Assets/icon_warning.svg'
 import { initialStateDay } from "../../@types/InitialStateDay";
-import { ScaleContext } from "../../Context/scale";
 import { Input } from "../Input";
 import { Serving } from "../Users/Serving";
-// import { Serving } from "../Users/Serving";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -63,82 +56,15 @@ interface IModalGenerationScale {
 export const ModalChangedSerf = (props: IModalGenerationScale) => {
 
   const { openModal, openModalState } = props
-  // const { scaleContext, setScaleContext, setDisplayScale } = useContext(ScaleContext);
 
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
   const [daysList, setDaysList] = useState<IDay[]>([]);
   const [dayToEdit, setDayToEdit] = useState<IDay>(initialStateDay);
-  const [isGenerationScale, setIsGenerationScale] = useState(false)
   const [nameSerfToFind, setNameSerfToFind] = useState('');
-  // const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(dayjs(scaleContext.start) ?? null);
-  // const [selectedEndDate, setSelectedEndDate] = useState<Dayjs | null>(dayjs(scaleContext.end) ?? null);
-  // const [scaleMonth, setScaleMonth] = useState<IScaleMonth>({
-  //   name: scaleContext.name ?? '',
-  //   end: '',
-  //   start: '',
-  //   days: [],
-  //   isEnable: true
-  // })
 
   const HandlerClose = () => {
     openModalState(!openModal)
   }
-
-  // const GenerationScale = async () => {
-  //   try {
-  //     setIsGenerationScale(true)
-
-  //     if (!daysList || !scaleMonth.name || !selectedEndDate?.format('DD/MM/YYYY') || !selectedStartDate?.format('DD/MM/YYYY')) {
-  //       CustomToast({ duration: 2000, message: 'Preencha todos os campos', icon: String(IconWarning) })
-  //       setIsGenerationScale(false)
-  //       return
-  //     }
-
-  //     let responseUserApi: IUser[] = await getAllUsersService();
-
-  //     const onlyUserId = responseUserApi.map((item) => { return item.id })
-
-  //     const onlyNameDay = scaleContext.days.map((item) => { return item.name })
-
-  //     const scalePreviewToSend = {
-  //       users: onlyUserId,
-  //       days: onlyNameDay
-  //     }
-
-  //     const responseScalePreviewApi = await GenerationPreviewScale(scalePreviewToSend);
-
-  //     let daysToReturn: IDay[] = [];
-
-  //     responseScalePreviewApi.map((item: any, index: number) => {
-  //       daysToReturn.push(
-  //         {
-  //           cameraOne: item.cameraOne,
-  //           cameraTwo: item.cameraTwo,
-  //           cutDesk: item.cutDesk,
-  //           dateTime: `${scaleContext.days[index].dateTime}Z`,
-  //           name: scaleContext.days[index].name
-  //         }
-  //       )
-  //     })
-
-  //     setIsGenerationScale(false)
-
-  //     setScaleContext({
-  //       name: scaleMonth.name,
-  //       end: selectedEndDate?.format('YYYY-MM-DD') as string,
-  //       start: selectedStartDate?.format('YYYY-MM-DD') as string,
-  //       days: daysToReturn,
-  //       isEnable: true
-  //     })
-
-  //     setDisplayScale(true)
-
-  //     HandlerClose()
-  //   } catch (error) {
-  //     CustomToast({ duration: 2000, message: 'Não foi possível obter a pré-visualização das escalas', icon: String(IconError) })
-  //     setIsGenerationScale(false)
-  //   }
-  // }
 
   const ButtonStyleCustom = (customStyle: any) => ({
     borderRadius: '12px',
@@ -149,27 +75,14 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
     ...customStyle
   })
 
-  const DeleteDay = (dayToRemove: IScaleMonthPreview) => {
-    const newListDay = daysList?.filter((item) => { return item !== dayToRemove });
-    setDaysList(newListDay)
-  }
-
-  const EditDay = (day: IDay) => {
-    setDayToEdit(day);
-    setOpenModalNewDay(true)
-  }
-
   const listDays = () => {
-    // return scaleContext.days?.map((item, index) => {
     return (
       <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
         <TableCell component="th" scope="row">
           item.name
         </TableCell>
         <TableCell align="center">DD/MM/YYYY</TableCell>
-        {/* <TableCell align="center">{dayjs(item.dateTime).format('DD/MM/YYYY')}</TableCell> */}
         <TableCell align="center">hh:mm:ss</TableCell>
-        {/* <TableCell align="center">{dayjs(item.dateTime).format('hh:mm:ss')}</TableCell> */}
         <TableCell align="right" style={{ padding: '0rem 0.5rem 0rem 0.5rem' }}>
           <IconButton onClick={() => { }}>
             <Icon src={String(IconInclusion)} />
@@ -177,24 +90,11 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
         </TableCell>
       </TableRow>
     )
-    // })
   }
-
-  // useEffect(() => {
-  //   listDays()
-  //   setDayToEdit(initialStateDay)
-  // }, [scaleContext.days])
 
   const ManagerInformations = () => {
     if (!nameSerfToFind) {
       return <Serving />
-      // return <div style={{
-      //   margin: '2%',
-      //   display: 'flex',
-      //   justifyContent: 'center'
-      // }}>
-      //   <Alert style={{ width: '100%', display: 'flex', justifyContent: 'center' }} severity="info">{<strong>Insira o nome do servo.</strong>}</Alert>
-      // </div>
     } else if (nameSerfToFind && 2 > 0) {
       return <div style={{
         margin: '2%',
@@ -241,7 +141,7 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
             />
           </div>
           <TableContainer component={Paper} sx={{ maxHeight: 300 }} >
-            { ManagerInformations() }
+            {ManagerInformations()}
           </TableContainer>
           <ButtonGroup>
             <Button
@@ -256,16 +156,8 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
               variant="contained"
               size='small'
               fullWidth
-              onClick={() => {
-                // scaleContext.id ?
-                //   CustomToast({ duration: 2000, message: 'A escala já foi gerada', icon: String(IconWarning) }) :
-                //   GenerationScale()
-              }}
-            >
-              {isGenerationScale ?
-                <CircularProgress style={{ color: 'white', width: '20px', height: '20px' }} color="secondary" />
-                : 'Gerar escala'
-              }
+              onClick={() => { HandlerClose() }}
+            >Concluir
             </Button>
           </ButtonGroup>
           <Toaster

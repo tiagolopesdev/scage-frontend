@@ -89,10 +89,10 @@ export const Serving = () => {
           isInsideScale ?
             <AccordionDetails>
               {
-                insideDays.map((item) => {
+                insideDays.map((itemDay) => {
                   return <EventSerf
-                    name={item.name}
-                    dateTime={item.dateTime}
+                    day={itemDay}
+                    user={item}
                   />
                 })
               }
