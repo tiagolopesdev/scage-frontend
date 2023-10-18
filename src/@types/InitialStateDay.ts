@@ -1,7 +1,7 @@
 import { IDay } from "./IScaleMonth"
 import { IUser } from "./IUser"
 
-const initialStateUser: IUser = {
+export const initialStateUser: IUser = {
   email: '',
   name: '',
   sex: ''
