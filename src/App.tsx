@@ -8,9 +8,9 @@ export const App = () => {
 
   return (
     <ScaleProvider>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <RenderScale />
-      </LocalizationProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <RenderScale />
+        </LocalizationProvider>      
     </ScaleProvider>
   )
 }
