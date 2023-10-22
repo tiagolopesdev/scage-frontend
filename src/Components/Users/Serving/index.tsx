@@ -18,7 +18,7 @@ import { IDay } from '../../../@types/IScaleMonth';
 
 export const Serving = () => {
 
-  const { scaleContext } = useContext(ScaleContext);
+  const { scaleContext, fromDay, setScaleContext } = useContext(ScaleContext);
 
   const [expanded, setExpanded] = useState<string | false>(false);
   const [users, setUsers] = useState<IUser[]>([]);
@@ -37,6 +37,32 @@ export const Serving = () => {
 
     } catch (error) {
     }
+  }
+
+  const serfInclusion = (serf: IUser) => {
+
+    if (fromDay.serf.id === fromDay.day.cameraOne?.id) {
+      fromDay.day.cameraOne = serf
+    } else if (fromDay.serf.id === fromDay.day.cameraTwo?.id) {
+      fromDay.day.cameraTwo = serf
+    } else if (fromDay.serf.id === fromDay.day.cutDesk?.id) {
+      fromDay.day.cutDesk = serf
+    }
+
+    let scaleContextToUpdate = scaleContext.days
+
+    const indexFromDay = scaleContextToUpdate.findIndex((item) => { return item.id === fromDay.day.id })
+
+    scaleContextToUpdate.splice(indexFromDay, 1, fromDay.day)
+
+    setScaleContext({
+      id: scaleContext.id,
+      name: scaleContext.name,
+      start: scaleContext.start,
+      end: scaleContext.end,
+      isEnable: scaleContext.isEnable,
+      days: scaleContextToUpdate
+    })
   }
 
   useEffect(() => {
@@ -81,8 +107,18 @@ export const Serving = () => {
           </div>
           {
             isInsideScale ?
-              <Chip size='small' label={`${quantityInsideDays} dias para servir`} color="success" variant="outlined" /> :
-              <Button color='success' size='small' variant='contained'>Inseri-lo na escala</Button>
+              <Chip
+                size='small'
+                color="success"
+                variant="outlined"
+                label={`${quantityInsideDays} dias para servir`}
+              /> :
+              <Button
+                size='small'
+                color='success'
+                variant='contained'
+                onClick={() => { serfInclusion(item) }}
+              >Inseri-lo na escala</Button>
           }
         </AccordionSummary>
         {
