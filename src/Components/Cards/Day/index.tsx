@@ -202,15 +202,18 @@ export const CardDay = ({ day }: ICardDay) => {
           }
         </Reorder.Group>
         <GroupButtonsStyle>
-          <>
-            {
-              !isReorder ?
-                Actions() :
-                ButtonActions(false, String(IconSave),
-                  () => {
-                    let days = scaleContext.days.filter((item) => { return item !== day });
+          {
+            !isReorder ?
+              Actions() :
+              ButtonActions(false, String(IconSave),
+                () => {
 
-                    days.push({
+                  let daysContextToUpdate = scaleContext.days
+
+                  let indexToInsertDay = scaleContext.days.findIndex((item) => { return item.id === day.id });
+
+                  daysContextToUpdate.splice(indexToInsertDay, 1,
+                    {
                       id: day.id,
                       dateTime: day.dateTime,
                       name: day.name,
@@ -220,21 +223,20 @@ export const CardDay = ({ day }: ICardDay) => {
                       cutDesk: elements[2]
                     })
 
-                    setScaleContext({
-                      id: scaleContext.id,
-                      name: scaleContext.name,
-                      start: scaleContext.start,
-                      end: scaleContext.end,
-                      isEnable: scaleContext.isEnable,
-                      days: days
-                    })
+                  setScaleContext({
+                    id: scaleContext.id,
+                    name: scaleContext.name,
+                    start: scaleContext.start,
+                    end: scaleContext.end,
+                    isEnable: scaleContext.isEnable,
+                    days: daysContextToUpdate
+                  })
 
-                    setIsReorder(false)
-                  },
-                  { backgroundColor: 'rgb(14, 202, 101)', width: '70%' }
-                )
-            }
-          </>
+                  setIsReorder(false)
+                },
+                { backgroundColor: 'rgb(14, 202, 101)', width: '70%' }
+              )
+          }
         </GroupButtonsStyle>
       </CardContent>
       {
