@@ -6,6 +6,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { useContext, useState } from "react";
 import { ScaleContext } from "../../Context/scale";
 import { Icon } from "../Img";
+import { initialStateDay } from "../../@types/InitialStateDay";
 
 import { ContainerElementsStyle, DateTimeGroupStyle } from "./style";
 import SelectIcon from "../../Assets/icon_success_white.svg"
@@ -34,7 +35,7 @@ interface IModalGenerationScale {
 
 export const ModalDay = (props: IModalGenerationScale) => {
 
-  const { openModal, setOpenModal, manipulationDay } = props
+  const { openModal, setOpenModal, manipulationDay, setManipulationDay } = props
   const { scaleContext, setScaleContext } = useContext(ScaleContext);
 
   const [eventName, setEventName] = useState(manipulationDay ? manipulationDay.name : '');
@@ -42,6 +43,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
 
   const HandlerClose = () => {
     setOpenModal(!openModal)
+    setManipulationDay(initialStateDay)
   }
 
   const ButtonStyleCustom = (customStyle: any) => ({
@@ -100,13 +102,12 @@ export const ModalDay = (props: IModalGenerationScale) => {
                 if (!eventName || !selectedDateTime?.format('DD/MM/YYYY') || !selectedDateTime?.format('h:mm A')) {
                   CustomToast({ duration: 2000, message: 'Preencha todos os campos', icon: String(IconWarning) })
                 } else {
+                  const elementExist = scaleContext.days.findIndex((item: IDay) => { return item === manipulationDay });
+                  if (elementExist >= 0) {
+                    
+                    const days = scaleContext.days;
 
-                  const elementExist = scaleContext.days.find((item: IDay) => { return item === manipulationDay });
-
-                  if (elementExist) {
-                    const days = scaleContext.days.filter((item) => { return item !== manipulationDay })
-
-                    days.push({
+                    days.splice(elementExist, 1, {
                       id: manipulationDay.id,
                       name: eventName,
                       dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
@@ -114,7 +115,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
                       cameraTwo: manipulationDay.cameraTwo,
                       cutDesk: manipulationDay.cutDesk,
                       isEnable: manipulationDay.isEnable
-                    })
+                    });
 
                     setScaleContext({
                       ...scaleContext, ...{

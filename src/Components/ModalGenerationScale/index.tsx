@@ -107,7 +107,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             cameraTwo: item.cameraTwo,
             cutDesk: item.cutDesk,
             dateTime: `${scaleContext.days[index].dateTime}Z`,
-            name: scaleContext.days[index].name
+            name: scaleContext.days[index].name,
+            isEnable: true
           }
         )
       })
@@ -137,7 +138,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
       CustomToast({ duration: 2000, message: 'Não foi possível obter a pré-visualização das escalas', icon: String(IconError) })
       setIsGenerationScale(false)
     }
-  }
+  }  
 
   const ButtonStyleCustom = (customStyle: any) => ({
     borderRadius: '12px',
@@ -182,11 +183,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     })
   }
 
-  useEffect(() => {
-    listDays()
-    setDayToEdit(initialStateDay)
-  }, [scaleContext.days])
-
+  useEffect(() => { listDays() }, [scaleContext.days])
 
   return (
     <>

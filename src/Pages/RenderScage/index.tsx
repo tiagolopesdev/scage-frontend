@@ -2,7 +2,7 @@ import { Box, Button, ButtonGroup, Tab, Tabs } from '@mui/material';
 import { CardDay } from '../../Components/Cards/Day/index';
 import { NavBar } from '../../Components/Navbar';
 import { UserListFloating } from '../../Components/Users/user-list-floating';
-import { CSSProperties, useContext, useEffect, useState } from 'react';
+import { CSSProperties, RefObject, useContext, useEffect, useRef, useState } from 'react';
 import { ModalGenerationScale } from '../../Components/ModalGenerationScale';
 import { Icon } from '../../Components/Img';
 import { CustomToast } from '../../Components/CustomToast';
@@ -20,6 +20,8 @@ import IconError from '../../Assets/icon_error.svg'
 import WarningIcon from '../../Assets/icon_warning.svg'
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 import { IDaySendApi, IScaleMonthSendApi } from '../../@types/IScaleMonthSendApi';
+import html2canvas from 'html2canvas';
+import computedStyleToInlineStyle from 'computed-style-to-inline-style';
 
 
 function a11yProps(index: number) {
@@ -67,6 +69,31 @@ export const RenderScale = () => {
     setValue(newValue);
   };
 
+  const handlerDownload = async () => {
+    if (document.getElementsByTagName('containersCards')) {
+      setTimeout(() => {
+        html2canvas(document.getElementById('containersCards') as HTMLElement, {
+          onclone: function (document) {
+            computedStyleToInlineStyle(document.getElementById('containersCards') as HTMLElement, {
+              recursive: true,
+              properties: ['font-size', 'text-decoration']
+            })
+          }
+        }).then(function (canvas) {
+          const a = document.createElement("a");
+          a.href = canvas.toDataURL("image/png");
+          a.download = `testDownload.png`;
+          a.style.display = "none";
+          document.body.appendChild(a);
+
+          a.click();
+
+          document.body.removeChild(a);
+        });
+      }, 800)
+    }
+  }
+
   useEffect(() => {
     if (!scaleContext) return
     setScale(scaleContext)
@@ -99,9 +126,9 @@ export const RenderScale = () => {
         isEnable: true
       }
 
-      objectToSend.id !== undefined ? 
+      objectToSend.id !== undefined ?
         await UpdateScaleService(objectToSend) :
-        await SaveScaleService(objectToSend) 
+        await SaveScaleService(objectToSend)
 
       CustomToast({ duration: 2000, message: 'Escala salva com sucesso', icon: String(IconSuccess) })
 
@@ -127,7 +154,7 @@ export const RenderScale = () => {
         <Icon src={String(ScaleNotFoundIcon)} style={{ width: '400px' }} />
         <TextStyle size={18}>Acesse-a na side bar de escalas</TextStyle>
       </NotFoundContainerStyle> :
-      <CardDayContainer>
+      <CardDayContainer id='containersCards'>
         <ScroolCustom
           style={{
             margin: '0% 25rem 2% 2%',
@@ -139,10 +166,10 @@ export const RenderScale = () => {
           }}
         >
           {
-            scaleContext?.days.length as number < 0 ?
+            scaleContext?.days.length === 0 ?
               '' :
               scaleContext?.days.map((item: IDay, index: number) => {
-                if (item.isEnable) { 
+                if (item.isEnable) {
                   return <CardDay key={index} day={item} />
                 }
               })
@@ -180,7 +207,7 @@ export const RenderScale = () => {
             {buttons(() => { setOpenModalGenerationScale(!openModalGenerationScale) }, ButtonStyle('rgb(14, 202, 101)'), "Gerar preview da escala")}
             {buttons(() => { messageError(saveScale()) }, ButtonStyle('rgb(14, 202, 101)'), "Salvar")}
             {buttons(() => { messageError('') }, ButtonStyle('rgb(14, 202, 101)'), "Adicionar novo dia")}
-            {buttons(() => { messageError('') }, ButtonStyle('#30B2DB'), "Exportar em PDF")}
+            {buttons(() => { handlerDownload() }, ButtonStyle('#30B2DB'), "Exportar em PDF")}
           </ButtonGroup>
         </ButtonGroupContainer>
       </div>
