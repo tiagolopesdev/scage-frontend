@@ -94,11 +94,15 @@ export const RenderScale = () => {
     }
   }
 
+  console.log('Scale update 1', scaleContext)
+  console.log('Scale update 2', scaleContext.days)
+
   useEffect(() => {
+    console.log('inside useEffect')
     if (!scaleContext) return
     setScale(scaleContext)
     existScale()
-  }, [scaleContext?.days])
+  }, [scaleContext?.days, scaleContext])
 
   const saveScale = async () => {
     try {

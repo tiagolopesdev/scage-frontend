@@ -50,10 +50,10 @@ export const CardDay = ({ day }: ICardDay) => {
       day.cameraTwo as IUser,
       day.cutDesk as IUser
     ])
-    setDateTimeFormated(`Dia ${dayjs(dayToEdit.dateTime).format('DD/MM/YYYY')} às ${dayjs(dayToEdit.dateTime).format('HH:mm')}`)
+    setDateTimeFormated(`Dia ${dayjs(day.dateTime).format('DD/MM/YYYY')} às ${dayjs(day.dateTime).format('HH:mm')}`)
     setDayToEdit(day)
     setIsReorder(false)
-  }, [daysList, day.cameraOne, day.cameraTwo, day.cutDesk])
+  }, [daysList, day.cameraOne, day.cameraTwo, day.cutDesk, day.dateTime])
 
   const ButtonActions = (isOutlined: boolean, iconToDisplay: string, onClick: () => void, customStyle?: any) => {
     return <Button
@@ -149,7 +149,7 @@ export const CardDay = ({ day }: ICardDay) => {
         alignItems: 'center'
       }} >
         <NameDayStyle>
-          {dayToEdit.name}
+          {day.name}
         </NameDayStyle>
         <Chip style={{
           width: '80%',
