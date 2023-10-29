@@ -1,36 +1,21 @@
 import {
   Alert,
-  Autocomplete,
   Box,
   Button,
-  CircularProgress,
-  IconButton,
   Modal,
   Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField
+  TableContainer
 } from "@mui/material";
-import { Icon } from "../Img";
-import IconInclusion from '../../Assets/icon_success.svg'
-import IconDelete from '../../Assets/icon_trash.svg'
-import { ButtonGroup, ContainerNewDay } from "./style";
+import { ButtonGroup } from "./style";
 import { ModalDay } from "../ModalDay";
 import { useEffect, useState } from "react";
-import { IScaleMonthPreview } from "../../@types/IScaleMonthPreview";
-import { CustomToast } from "../CustomToast";
 import { Toaster } from "react-hot-toast";
-import IconError from '../../Assets/icon_error.svg'
-import { DatePicker } from "@mui/x-date-pickers";
-import dayjs, { Dayjs } from "dayjs";
-import { IDay, IScaleMonth } from "../../@types/IScaleMonth";
+import { IDay } from "../../@types/IScaleMonth";
 import { initialStateDay } from "../../@types/InitialStateDay";
 import { Input } from "../Input";
 import { Serving } from "../Users/Serving";
+import { IUser } from "../../@types/IUser";
+import { getAllUsersByFiltersService, getAllUsersService } from "../../Services/Users";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -57,6 +42,7 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
 
   const { openModal, openModalState } = props
 
+  const [users, setUsers] = useState<IUser[]>([]);
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
   const [daysList, setDaysList] = useState<IDay[]>([]);
   const [dayToEdit, setDayToEdit] = useState<IDay>(initialStateDay);
@@ -75,49 +61,38 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
     ...customStyle
   })
 
-  const listDays = () => {
-    return (
-      <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-        <TableCell component="th" scope="row">
-          item.name
-        </TableCell>
-        <TableCell align="center">DD/MM/YYYY</TableCell>
-        <TableCell align="center">hh:mm:ss</TableCell>
-        <TableCell align="right" style={{ padding: '0rem 0.5rem 0rem 0.5rem' }}>
-          <IconButton onClick={() => { }}>
-            <Icon src={String(IconInclusion)} />
-          </IconButton>
-        </TableCell>
-      </TableRow>
-    )
+  const findUsers = async () => {
+    try {
+      const users: IUser[] = nameSerfToFind ?
+        await getAllUsersByFiltersService(nameSerfToFind) :
+        await getAllUsersService();
+
+      setUsers(users)
+
+    } catch (error) {
+    }
   }
 
+  useEffect(() => { findUsers() }, [nameSerfToFind])
+
   const ManagerInformations = () => {
-    if (!nameSerfToFind) {
-      return <Serving />
-    } else if (nameSerfToFind && 2 > 0) {
-      return <div style={{
+    return users.length !== 0 ?
+      <Serving users={users} /> :
+      <div style={{
         margin: '2%',
         display: 'flex',
         justifyContent: 'center'
       }}>
-        <Alert style={{ width: '100%', display: 'flex', justifyContent: 'center' }} severity="warning">{<strong>Servo não encontrado no sistema.</strong>}</Alert>
+        <Alert severity="warning"
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center'
+          }}
+        >{
+            <strong>Servo não encontrado no sistema.</strong>}
+        </Alert>
       </div>
-    } else {
-      return <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell style={{ fontFamily: 'Dosis', fontSize: 'larger' }} >{<strong>Nome</strong>}</TableCell>
-            <TableCell style={{ fontFamily: 'Dosis', fontSize: 'larger' }} align="center">{<strong>Data</strong>}</TableCell>
-            <TableCell style={{ fontFamily: 'Dosis', fontSize: 'larger' }} align="center">{<strong>Horário</strong>}</TableCell>
-            <TableCell style={{ fontFamily: 'Dosis', fontSize: 'larger' }} align="right">{<strong>Ações</strong>}</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {listDays()}
-        </TableBody>
-      </Table>
-    }
   }
 
   useEffect(() => {

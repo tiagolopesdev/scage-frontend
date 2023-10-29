@@ -10,34 +10,25 @@ import IconExpand from '../../../Assets/icon_arrow.svg';
 import IconUser from '../../../Assets/icon_user.svg';
 import { TextBaseStyle } from '../../../Styles';
 import { InformationSerfGroupStyle } from './style';
-import { getAllUsersService } from '../../../Services/Users';
 import { IUser } from '../../../@types/IUser';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { ScaleContext } from '../../../Context/scale';
 import { IDay } from '../../../@types/IScaleMonth';
 
-export const Serving = () => {
+interface IServing {
+  users: IUser[]
+}
+
+export const Serving = ({ users }: IServing) => {
 
   const { scaleContext, fromDay, setScaleContext } = useContext(ScaleContext);
 
   const [expanded, setExpanded] = useState<string | false>(false);
-  const [users, setUsers] = useState<IUser[]>([]);
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
-
-  const findUsers = async () => {
-    try {
-
-      const users: IUser[] = await getAllUsersService();
-
-      setUsers(users)
-
-    } catch (error) {
-    }
-  }
 
   const serfInclusion = (serf: IUser) => {
 
@@ -64,10 +55,6 @@ export const Serving = () => {
       days: scaleContextToUpdate
     })
   }
-
-  useEffect(() => {
-    findUsers()
-  }, [])
 
   const managerAccordions = () => {
     return users.map((item, index) => {

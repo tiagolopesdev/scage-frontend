@@ -2,7 +2,7 @@ import { Box, Button, ButtonGroup, Tab, Tabs } from '@mui/material';
 import { CardDay } from '../../Components/Cards/Day/index';
 import { NavBar } from '../../Components/Navbar';
 import { UserListFloating } from '../../Components/Users/user-list-floating';
-import { CSSProperties, RefObject, useContext, useEffect, useRef, useState } from 'react';
+import { CSSProperties, useContext, useEffect, useRef, useState } from 'react';
 import { ModalGenerationScale } from '../../Components/ModalGenerationScale';
 import { Icon } from '../../Components/Img';
 import { CustomToast } from '../../Components/CustomToast';
@@ -21,7 +21,6 @@ import WarningIcon from '../../Assets/icon_warning.svg'
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 import { IDaySendApi, IScaleMonthSendApi } from '../../@types/IScaleMonthSendApi';
 import html2canvas from 'html2canvas';
-import computedStyleToInlineStyle from 'computed-style-to-inline-style';
 
 
 function a11yProps(index: number) {
@@ -61,6 +60,7 @@ export const RenderScale = () => {
 
   const { scaleContext } = useContext(ScaleContext);
 
+  const objectRef = useRef<HTMLDivElement | null>(null);
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
   const [scale, setScale] = useState<IScaleMonth>();
   const [value, setValue] = useState(0);
@@ -70,39 +70,31 @@ export const RenderScale = () => {
   };
 
   const handlerDownload = async () => {
-    if (document.getElementsByTagName('containersCards')) {
-      setTimeout(() => {
-        html2canvas(document.getElementById('containersCards') as HTMLElement, {
-          onclone: function (document) {
-            computedStyleToInlineStyle(document.getElementById('containersCards') as HTMLElement, {
-              recursive: true,
-              properties: ['font-size', 'text-decoration']
-            })
-          }
-        }).then(function (canvas) {
-          const a = document.createElement("a");
-          a.href = canvas.toDataURL("image/png");
-          a.download = `testDownload.png`;
-          a.style.display = "none";
-          document.body.appendChild(a);
 
-          a.click();
+    if (objectRef.current === null) return
 
-          document.body.removeChild(a);
-        });
-      }, 800)
-    }
+    html2canvas(objectRef.current, {
+      backgroundColor: "#FFF",
+      allowTaint: true,
+      useCORS: true
+    }).then(function (canvas) {
+      const a = document.createElement("a");
+      a.href = canvas.toDataURL("image/png");
+      a.download = `testDownload.png`;
+      a.style.display = "none";
+      document.body.appendChild(a);
+
+      a.click();
+
+      document.body.removeChild(a);
+    })
   }
 
-  console.log('Scale update 1', scaleContext)
-  console.log('Scale update 2', scaleContext.days)
-
   useEffect(() => {
-    console.log('inside useEffect')
     if (!scaleContext) return
     setScale(scaleContext)
     existScale()
-  }, [scaleContext?.days, scaleContext])
+  }, [scaleContext?.days])
 
   const saveScale = async () => {
     try {
@@ -158,7 +150,7 @@ export const RenderScale = () => {
         <Icon src={String(ScaleNotFoundIcon)} style={{ width: '400px' }} />
         <TextStyle size={18}>Acesse-a na side bar de escalas</TextStyle>
       </NotFoundContainerStyle> :
-      <CardDayContainer id='containersCards'>
+      <CardDayContainer ref={objectRef}>
         <ScroolCustom
           style={{
             margin: '0% 25rem 2% 2%',
