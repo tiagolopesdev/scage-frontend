@@ -91,7 +91,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
       const onlyNameDay = scaleContext.days.map((item) => { return item.name })
 
-      const scalePreviewToSend = {
+      const scalePreviewToSend = {   
+        name: scaleMonth.name,     
         users: onlyUserId,
         days: onlyNameDay
       }
@@ -134,8 +135,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
       setDisplayScale(true)
 
       HandlerClose()
-    } catch (error) {
-      CustomToast({ duration: 2000, message: 'Não foi possível obter a pré-visualização das escalas', icon: String(IconError) })
+    } catch (error: any) {
+      CustomToast({ duration: 2000, message: error.message, icon: String(IconError) })
       setIsGenerationScale(false)
     }
   }  

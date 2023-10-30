@@ -1,3 +1,4 @@
+import { AxiosError } from "axios"
 import { IScaleMonth } from "../../@types/IScaleMonth"
 import { IScaleMonthSendApi } from "../../@types/IScaleMonthSendApi"
 import { scaleChannel } from "../Bases/api"
@@ -34,7 +35,7 @@ export const GenerationPreviewScale = async (scale: any) => {
   try {
     const response = await scaleChannel.post('api/Scale/generationScale', scale)
     return response.data.data
-  } catch (error) {
-    return error
-  }
+  } catch (error: any) {
+    throw Error(error.response.data) 
+  } 
 }
