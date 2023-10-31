@@ -1,5 +1,5 @@
 import { ContainerUserList, ContainerComboBoxStyle } from "./style"
-import { Alert, Autocomplete, TextField } from "@mui/material"
+import { Alert, Autocomplete, Skeleton, TextField } from "@mui/material"
 import { Scale } from "./scale"
 import { useEffect, useState } from "react"
 import { CustomToast } from "../CustomToast"
@@ -38,14 +38,21 @@ export const ScaleListFloating = () => {
   }, [selectedMonth])
 
   const managerScaleRender = () => {
-    return !isLoading ?
-      <div id="group-scales-single">
+    if (scales.length === 0) {
+      return <Skeleton variant="rounded" width={360} height='50rem' />
+    } else if (!isLoading && scales.length > 0) {
+      return <div id="group-scales-single">
         {scales.map((scale) => {
           return <div key={scale.id}>
             <Scale scale={scale} />
           </div>
         })}
-      </div> : <Alert severity="info">Escala de <strong>{selectedMonth}</strong> não encontrada</Alert>
+      </div>
+    } else {
+      return selectedMonth === '' ? 
+        <Alert severity="warning">Não foi possível obter as escalas</Alert> :
+        <Alert severity="info">Escala de <strong>{selectedMonth}</strong> não encontrada</Alert>
+    }
   }
 
   return (
@@ -58,7 +65,9 @@ export const ScaleListFloating = () => {
           sx={{ width: 300 }}
           isOptionEqualToValue={(option, value) => value.label === option.label}
           renderInput={(params) => <TextField {...params} label="Selecione o mês" />}
-          onChange={(event: any) => { setSelectedMonth(event.target.innerText) }}
+          onChange={(event: any) => { 
+            setSelectedMonth(event.target.innerText ?? '') 
+          }}
         />
       </ContainerComboBoxStyle>
       <ScroolCustom
