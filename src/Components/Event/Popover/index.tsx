@@ -6,6 +6,18 @@ import { IUser } from "../../../@types/IUser";
 import { CustomToast } from "../../CustomToast";
 
 import IconWarning from "../../../Assets/icon_warning.svg"
+import { ISerfHandler } from "../../../@types/IFromDay";
+
+
+function AlocationNewSerf(toDay: ISerfHandler, fromDay: ISerfHandler) {
+  if (toDay.day.cameraOne?.id === toDay.serf.id) {
+    toDay.day.cameraOne = fromDay.serf    
+  } else if (toDay.day.cameraTwo?.id === toDay.serf.id) {
+    toDay.day.cameraTwo = fromDay.serf
+  } else {
+    toDay.day.cutDesk = fromDay.serf
+  }
+}
 
 interface IChangeSerfPopoverProps {
   id?: string | undefined,
@@ -46,32 +58,13 @@ export const ChangeSerfPopover = (props: IChangeSerfPopoverProps) => {
 
     if (fromDay.day.cameraOne?.id === fromDay.serf.id) {
       fromDay.day.cameraOne = toDay.serf
-
-      if (toDay.day.cameraOne?.id === toDay.serf.id) {
-        toDay.day.cameraOne = fromDay.serf
-      } else if (toDay.day.cameraTwo?.id === toDay.serf.id) {
-        toDay.day.cameraTwo = fromDay.serf
-      } else if (toDay.day.cutDesk?.id === toDay.serf.id) {
-        toDay.day.cutDesk = fromDay.serf
-      }
+      AlocationNewSerf(toDay, fromDay)
     } else if (fromDay.day.cameraTwo?.id === fromDay.serf.id) {
       fromDay.day.cameraTwo = toDay.serf
-      if (toDay.day.cameraOne?.id === toDay.serf.id) {
-        toDay.day.cameraOne = fromDay.serf
-      } else if (toDay.day.cameraTwo?.id === toDay.serf.id) {
-        toDay.day.cameraTwo = fromDay.serf
-      } else if (toDay.day.cutDesk?.id === toDay.serf.id) {
-        toDay.day.cutDesk = fromDay.serf
-      }
-    } else if (fromDay.day.cutDesk?.id === fromDay.serf.id) {
+      AlocationNewSerf(toDay, fromDay)
+    } else {
       fromDay.day.cutDesk = toDay.serf
-      if (toDay.day.cameraOne?.id === toDay.serf.id) {
-        toDay.day.cameraOne = fromDay.serf
-      } else if (toDay.day.cameraTwo?.id === toDay.serf.id) {
-        toDay.day.cameraTwo = fromDay.serf
-      } else if (toDay.day.cutDesk?.id === toDay.serf.id) {
-        toDay.day.cutDesk = fromDay.serf
-      }
+      AlocationNewSerf(toDay, fromDay)
     }
 
     let scaleContextToUpdate = scaleContext.days
