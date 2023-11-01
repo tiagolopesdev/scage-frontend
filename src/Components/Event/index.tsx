@@ -32,7 +32,7 @@ export const EventSerf = ({ day, user }: IEventSerf) => {
     setAnchorEl(event.currentTarget);
   };
 
-  return <div style={{ display: 'flex' }}>
+  return <div key={`${day.id}-${user.id}`} style={{ display: 'flex' }}>
     <InformationContainerStyle>
       <TextStyle fontSize={15} isBold={true} >{day.name}</TextStyle>
       <InformationGroupStyle>
