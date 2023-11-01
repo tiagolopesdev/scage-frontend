@@ -198,9 +198,10 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
           <div style={{ display: 'flex', margin: '4% 2%' }}>
             <Autocomplete
               disablePortal
+              sx={{ width: 250 }}
               id="combo-box-demo"
               options={Months}
-              sx={{ width: 250 }}
+              value={{label: scaleMonth.name}}
               isOptionEqualToValue={(option, value) => value.label === option.label}
               renderInput={(params) => <TextField {...params} label="Mês" />}
               onChange={(event: any) => { setScaleMonth({ ...scaleMonth, name: event.target.innerText as string }) }}
