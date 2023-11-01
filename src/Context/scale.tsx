@@ -1,16 +1,11 @@
 import { ReactNode, createContext, useEffect, useState } from "react"
 import { GetScale } from "../Services/Scale";
-import { IDay, IScaleMonth } from "../@types/IScaleMonth";
+import { IScaleMonth } from "../@types/IScaleMonth";
 import { initialStateDay, initialStateUser } from "../@types/InitialStateDay";
-import { IUser } from "../@types/IUser";
+import { ISerfHandler } from "../@types/IFromDay";
 
 
-interface IFromDay {
-  day: IDay,
-  serf: IUser
-}
-
-const InitialState: IFromDay = {
+const InitialState: ISerfHandler = {
   day: initialStateDay,
   serf: initialStateUser
 }
@@ -26,18 +21,18 @@ interface IScaleContext {
   setScaleContext: React.Dispatch<React.SetStateAction<IScaleMonth>>
   displayScale: boolean
   setDisplayScale: React.Dispatch<React.SetStateAction<boolean>>
-  toDay: IFromDay,
-  setToDay: React.Dispatch<React.SetStateAction<IFromDay>>,
-  fromDay: IFromDay,
-  setFromDay: React.Dispatch<React.SetStateAction<IFromDay>>
+  toDay: ISerfHandler,
+  setToDay: React.Dispatch<React.SetStateAction<ISerfHandler>>,
+  fromDay: ISerfHandler,
+  setFromDay: React.Dispatch<React.SetStateAction<ISerfHandler>>
 }
 
 export const ScaleContext = createContext({} as IScaleContext)
 
 export const ScaleProvider = ({ children }: IScaleContextProvider) => {
 
-  const [fromDay, setFromDay] = useState<IFromDay>(InitialState);
-  const [toDay, setToDay] = useState<IFromDay>(InitialState);
+  const [fromDay, setFromDay] = useState<ISerfHandler>(InitialState);
+  const [toDay, setToDay] = useState<ISerfHandler>(InitialState);
   const [scaleId, setScaleId] = useState('');
   const [scaleContext, setScaleContext] = useState<IScaleMonth>({
     name: '',
