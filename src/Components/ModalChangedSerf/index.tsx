@@ -67,6 +67,8 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
         await getAllUsersByFiltersService(nameSerfToFind) :
         await getAllUsersService();
 
+      users.map((item) => { item.isEnable = true })
+
       setUsers(users)
 
     } catch (error) {

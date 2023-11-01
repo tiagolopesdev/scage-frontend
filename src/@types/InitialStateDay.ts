@@ -4,12 +4,14 @@ import { IUser } from "./IUser"
 export const initialStateUser: IUser = {
   email: '',
   name: '',
-  sex: ''
+  sex: '',
+  isEnable: true
 }
 export const initialStateDay: IDay = {
   name: '',
   dateTime: '',
   cameraOne: initialStateUser,
   cameraTwo: initialStateUser,
-  cutDesk: initialStateUser
+  cutDesk: initialStateUser,
+  isEnable: true
 }
