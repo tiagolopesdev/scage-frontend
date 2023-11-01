@@ -75,6 +75,7 @@ export const Serving = ({ users }: IServing) => {
         expanded={expanded === `panel${index}`}
         onChange={handleChange(`panel${index}`)}
         style={{ borderRadius: '5px', margin: '5px' }}
+        key={index}
       >
         <AccordionSummary
           expandIcon={<Icon src={String(IconExpand)} />}
