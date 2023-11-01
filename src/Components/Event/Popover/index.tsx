@@ -1,6 +1,11 @@
 import { Button, Popover } from "@mui/material";
 import { useContext } from "react";
 import { ScaleContext } from "../../../Context/scale";
+import { ObjectIsEquals } from "../../../Handlers/objectIsEquals";
+import { IUser } from "../../../@types/IUser";
+import { CustomToast } from "../../CustomToast";
+
+import IconWarning from "../../../Assets/icon_warning.svg"
 
 interface IChangeSerfPopoverProps {
   id?: string | undefined,
@@ -26,6 +31,18 @@ export const ChangeSerfPopover = (props: IChangeSerfPopoverProps) => {
   })
 
   const changeSerf = () => {
+
+    if (
+      ObjectIsEquals(fromDay.serf, toDay.day.cameraOne as IUser) ||
+      ObjectIsEquals(fromDay.serf, toDay.day.cameraTwo as IUser) ||
+      ObjectIsEquals(fromDay.serf, toDay.day.cutDesk as IUser) ||
+      ObjectIsEquals(toDay.serf, fromDay.day.cameraOne as IUser) ||
+      ObjectIsEquals(toDay.serf, fromDay.day.cameraTwo as IUser) ||
+      ObjectIsEquals(toDay.serf, fromDay.day.cutDesk as IUser)
+    ) {
+      CustomToast({ duration: 3000, message: "Um dos servos já está no evento. Troca não possível!", icon: String(IconWarning) })
+      return
+    }
 
     if (fromDay.day.cameraOne?.id === fromDay.serf.id) {
       fromDay.day.cameraOne = toDay.serf
