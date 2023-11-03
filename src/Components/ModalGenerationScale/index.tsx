@@ -2,6 +2,7 @@ import {
   Autocomplete,
   Box,
   Button,
+  Chip,
   CircularProgress,
   IconButton,
   Modal,
@@ -15,8 +16,6 @@ import {
   TextField
 } from "@mui/material";
 import { Icon } from "../Img";
-import IconEdit from '../../Assets/icon_user_edit.svg'
-import IconDelete from '../../Assets/icon_trash.svg'
 import { ButtonGroup, ContainerNewDay } from "./style";
 import { ModalDay } from "../ModalDay";
 import { useContext, useEffect, useState } from "react";
@@ -26,14 +25,19 @@ import { GenerationPreviewScale } from "../../Services/Scale";
 import { IScaleMonthPreview } from "../../@types/IScaleMonthPreview";
 import { CustomToast } from "../CustomToast";
 import { Toaster } from "react-hot-toast";
-import IconError from '../../Assets/icon_error.svg'
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { IDay, IScaleMonth } from "../../@types/IScaleMonth";
 import { Months } from "../../@types/Months";
-import IconWarning from '../../Assets/icon_warning.svg'
 import { initialStateDay } from "../../@types/InitialStateDay";
 import { ScaleContext } from "../../Context/scale";
+import { IsNewDay } from "../../Handlers/isNewDay";
+
+import IconEdit from '../../Assets/icon_user_edit.svg'
+import IconError from '../../Assets/icon_error.svg'
+import IconWarning from '../../Assets/icon_warning.svg'
+import IconDelete from '../../Assets/icon_trash.svg'
+
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -54,7 +58,7 @@ interface IModalGenerationScale {
 
 export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
-  const { openModal, openModalState, setScalePreview } = props
+  const { openModal, openModalState } = props
   const { scaleContext, setScaleContext, setDisplayScale } = useContext(ScaleContext);
 
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
@@ -89,10 +93,14 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
       const onlyUserId = responseUserApi.map((item) => { return item.id })
 
-      const onlyNameDay = scaleContext.days.map((item) => { return item.name })
+      const filterNewDays = scaleContext.days.filter((item) => {
+        if (IsNewDay(item)) return item.name
+      })
 
-      const scalePreviewToSend = {   
-        name: scaleMonth.name,     
+      const onlyNameDay = filterNewDays.map((item: IDay) => { return item.name })
+
+      const scalePreviewToSend = {
+        name: scaleMonth.name,
         users: onlyUserId,
         days: onlyNameDay
       }
@@ -107,8 +115,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             cameraOne: item.cameraOne,
             cameraTwo: item.cameraTwo,
             cutDesk: item.cutDesk,
-            dateTime: `${scaleContext.days[index].dateTime}Z`,
-            name: scaleContext.days[index].name,
+            dateTime: `${filterNewDays[index].dateTime}Z`,
+            name: filterNewDays[index].name,
             isEnable: true
           }
         )
@@ -116,19 +124,15 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
       setIsGenerationScale(false)
 
-      setScalePreview({
-        name: scaleMonth.name,
-        end: selectedEndDate?.format('YYYY-MM-DD') as string,
-        start: selectedStartDate?.format('YYYY-MM-DD') as string,
-        days: daysToReturn,
-        isEnable: true
-      })
+      const filterNotNewDay = scaleContext.days.filter((item) => { if (!IsNewDay(item)) return item })
+
+      daysToReturn.map((item) => { filterNotNewDay.push(item) })
 
       setScaleContext({
         name: scaleMonth.name,
         end: selectedEndDate?.format('YYYY-MM-DD') as string,
         start: selectedStartDate?.format('YYYY-MM-DD') as string,
-        days: daysToReturn,
+        days: filterNotNewDay,
         isEnable: true
       })
 
@@ -139,7 +143,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
       CustomToast({ duration: 2000, message: error.message, icon: String(IconError) })
       setIsGenerationScale(false)
     }
-  }  
+  }
 
   const ButtonStyleCustom = (customStyle: any) => ({
     borderRadius: '12px',
@@ -166,6 +170,17 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
         <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
           <TableCell component="th" scope="row">
             {item.name}
+            {
+              IsNewDay(item) ?
+                <Chip
+                  style={{ marginLeft: '20px' }}
+                  size='small'
+                  color="primary"
+                  variant="outlined"
+                  label='Rascunho'
+                /> :
+                ''
+            }
           </TableCell>
           <TableCell align="center">{dayjs(item.dateTime).format('DD/MM/YYYY')}</TableCell>
           <TableCell align="center">{dayjs(item.dateTime).format('hh:mm:ss')}</TableCell>
@@ -201,7 +216,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
               sx={{ width: 250 }}
               id="combo-box-demo"
               options={Months}
-              value={{label: scaleMonth.name}}
+              value={{ label: scaleMonth.name }}
               isOptionEqualToValue={(option, value) => value.label === option.label}
               renderInput={(params) => <TextField {...params} label="Mês" />}
               onChange={(event: any) => { setScaleMonth({ ...scaleMonth, name: event.target.innerText as string }) }}
@@ -254,14 +269,10 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             >Cancelar</Button>
             <Button
               style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginLeft: '30px' })}
+              onClick={() => { GenerationScale() }}
               variant="contained"
               size='small'
               fullWidth
-              onClick={() => {
-                scaleContext.id ?
-                  CustomToast({ duration: 2000, message: 'A escala já foi gerada', icon: String(IconWarning) }) :
-                  GenerationScale()
-              }}
             >
               {isGenerationScale ?
                 <CircularProgress style={{ color: 'white', width: '20px', height: '20px' }} color="secondary" />

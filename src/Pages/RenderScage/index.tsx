@@ -21,6 +21,10 @@ import WarningIcon from '../../Assets/icon_warning.svg'
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 import { IDaySendApi, IScaleMonthSendApi } from '../../@types/IScaleMonthSendApi';
 import html2canvas from 'html2canvas';
+import { ObjectIsEquals } from '../../Handlers/objectIsEquals';
+import { initialStateUser } from '../../@types/InitialStateDay';
+import { IUser } from '../../@types/IUser';
+import { IsNewDay } from '../../Handlers/isNewDay';
 
 
 function a11yProps(index: number) {
@@ -165,7 +169,7 @@ export const RenderScale = () => {
             scaleContext?.days.length === 0 ?
               '' :
               scaleContext?.days.map((item: IDay, index: number) => {
-                if (item.isEnable) {
+                if (item.isEnable && !IsNewDay(item)) {
                   return <CardDay key={index} day={item} />
                 }
               })
