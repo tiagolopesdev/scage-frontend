@@ -14,7 +14,7 @@ function AlocationNewSerf(toDay: ISerfHandler, fromDay: ISerfHandler) {
     toDay.day.cameraOne = fromDay.serf    
   } else if (toDay.day.cameraTwo?.id === toDay.serf.id) {
     toDay.day.cameraTwo = fromDay.serf
-  } else {
+  } else if (toDay.day.cutDesk?.id === toDay.serf.id){
     toDay.day.cutDesk = fromDay.serf
   }
 }
@@ -62,7 +62,7 @@ export const ChangeSerfPopover = (props: IChangeSerfPopoverProps) => {
     } else if (fromDay.day.cameraTwo?.id === fromDay.serf.id) {
       fromDay.day.cameraTwo = toDay.serf
       AlocationNewSerf(toDay, fromDay)
-    } else {
+    } else if (fromDay.day.cutDesk?.id === fromDay.serf.id) {
       fromDay.day.cutDesk = toDay.serf
       AlocationNewSerf(toDay, fromDay)
     }

@@ -2,6 +2,12 @@ import { Button, Card, CardContent, Chip } from "@mui/material"
 import { Icon } from "../../Img"
 import { Reorder, motion, useDragControls } from "framer-motion"
 import { useContext, useEffect, useState } from "react"
+import { ModalDay } from "../../ModalDay"
+import { ScaleContext } from "../../../Context/scale"
+import { GenerationPreviewScale } from "../../../Services/Scale"
+import { getAllUsersService } from "../../../Services/Users"
+import { ModalChangedSerf } from "../../ModalChangedSerf"
+import { CustomToast } from "../../CustomToast"
 import { IUser } from "../../../@types/IUser"
 import { IDay } from "../../../@types/IScaleMonth"
 import dayjs from "dayjs"
@@ -18,14 +24,11 @@ import PeopleDeleteIconWhite from "../../../Assets/icon_user_delete.svg"
 import PeopleEditIconWhite from "../../../Assets/icon_edit_day.svg"
 import IconReloadPeople from "../../../Assets/icon_refresh.svg"
 import SelectNewUserIcon from '../../../Assets/render_user.svg'
+import IconWarning from '../../../Assets/icon_warning.svg'
 import CameraIcon from '../../../Assets/camera_icon.svg'
 import DeskIcon from '../../../Assets/desk_icon.svg'
 import IconSave from '../../../Assets/icon_success_white.svg'
-import { ModalDay } from "../../ModalDay"
-import { ScaleContext } from "../../../Context/scale"
-import { GenerationPreviewScale } from "../../../Services/Scale"
-import { getAllUsersService } from "../../../Services/Users"
-import { ModalChangedSerf } from "../../ModalChangedSerf"
+
 
 interface ICardDay {
   day: IDay
@@ -187,6 +190,10 @@ export const CardDay = ({ day }: ICardDay) => {
                       <Icon
                         src={String(SelectNewUserIcon)}
                         onClick={() => {
+                          if (!day.id) {
+                            CustomToast({ duration: 3000, message: "Salve a escala para mudar os servos", icon: String(IconWarning) })
+                            return
+                          }
                           setModalIsVisible(!modalIsVisible)
                           setFromDay({
                             day: day,
