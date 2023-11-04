@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Tab, Tabs } from '@mui/material';
+import { Box, Button, Tab, Tabs } from '@mui/material';
 import { CardDay } from '../../Components/Cards/Day/index';
 import { NavBar } from '../../Components/Navbar';
 import { UserListFloating } from '../../Components/Users/user-list-floating';
@@ -10,7 +10,7 @@ import { Toaster } from 'react-hot-toast';
 import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
 import { ScaleListFloating } from '../../Components/Scales/scale-list-floating';
 import { ScaleContext } from '../../Context/scale';
-import { SaveScaleService, UpdateScaleService } from '../../Services/Scale';
+import { GetScale, SaveScaleService, UpdateScaleService } from '../../Services/Scale';
 
 import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, TextStyle } from './style';
 import { SidebarContainer } from './style';
@@ -21,9 +21,6 @@ import WarningIcon from '../../Assets/icon_warning.svg'
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 import { IDaySendApi, IScaleMonthSendApi } from '../../@types/IScaleMonthSendApi';
 import html2canvas from 'html2canvas';
-import { ObjectIsEquals } from '../../Handlers/objectIsEquals';
-import { initialStateUser } from '../../@types/InitialStateDay';
-import { IUser } from '../../@types/IUser';
 import { IsNewDay } from '../../Handlers/isNewDay';
 
 
@@ -63,7 +60,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export const RenderScale = () => {
 
-  const { scaleContext } = useContext(ScaleContext);
+  const { scaleContext, setScaleContext } = useContext(ScaleContext);
 
   const objectRef = useRef<HTMLDivElement | null>(null);
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
@@ -101,7 +98,6 @@ export const RenderScale = () => {
     existScale()
   }, [scaleContext?.days])
 
-  console.log('COntex ', scale)
 
   const saveScale = async () => {
     try {
@@ -129,11 +125,13 @@ export const RenderScale = () => {
         isEnable: true
       }
 
-      console.log('Sa ', objectToSend)
-
-      objectToSend.id !== undefined ?
+      const responseApi: string = objectToSend.id !== undefined ?
         await UpdateScaleService(objectToSend) :
         await SaveScaleService(objectToSend)
+
+      const scaleAfterChange = await GetScale(responseApi)
+
+      setScaleContext(scaleAfterChange)
 
       CustomToast({ duration: 2000, message: 'Escala salva com sucesso', icon: String(IconSuccess) })
 

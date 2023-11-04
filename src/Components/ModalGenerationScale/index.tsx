@@ -68,6 +68,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(dayjs(scaleContext.start) ?? null);
   const [selectedEndDate, setSelectedEndDate] = useState<Dayjs | null>(dayjs(scaleContext.end) ?? null);
   const [scaleMonth, setScaleMonth] = useState<IScaleMonth>({
+    id: scaleContext.id ?? '',
     name: scaleContext.name ?? '',
     end: '',
     start: '',
@@ -129,6 +130,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
       daysToReturn.map((item) => { filterNotNewDay.push(item) })
 
       setScaleContext({
+        id: scaleMonth.id,
         name: scaleMonth.name,
         end: selectedEndDate?.format('YYYY-MM-DD') as string,
         start: selectedStartDate?.format('YYYY-MM-DD') as string,
