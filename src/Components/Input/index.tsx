@@ -16,11 +16,8 @@ export const Input = (props: IInputProps) => {
       id="standard-basic"
       label={props.label}
       variant="outlined"
-      style={{
-        marginRight: '15px',
-        width: '100%',
-        ...props.style
-      }}
+      style={{ ...props.style }}
+      fullWidth
       onClick={props.onClick}
       onChange={props.onChange}
     />

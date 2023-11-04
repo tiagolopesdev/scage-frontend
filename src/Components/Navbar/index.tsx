@@ -21,9 +21,6 @@ export const NavBar = () => {
             }}>{scaleContext?.name}</p>
           </ReferencyMonthNameStyle> : ""
       }
-      {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Title>Pascom</Title>
-      </div> */}
     </Container>
   )
 }

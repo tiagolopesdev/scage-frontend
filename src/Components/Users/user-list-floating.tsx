@@ -1,6 +1,6 @@
 import { BadgeSizeFixed, ContainerUserList, Search } from "./style"
 import { Input } from "../Input"
-import { Button, Chip, IconButton, Skeleton } from "@mui/material"
+import { Box, Button, Chip, IconButton, Skeleton } from "@mui/material"
 import IconFilter from "../../Assets/filter_search.svg"
 import { Icon } from "../Img"
 import { User } from "../Users/user"
@@ -88,7 +88,7 @@ export const UserListFloating = () => {
 
   const managerUserRender = () => {
     if (users.length > 0) {
-      return <>
+      return <div>
         {users.map((user) => {
           return <div key={user.id}>
             <User
@@ -98,41 +98,36 @@ export const UserListFloating = () => {
             />
           </div>
         })}
-      </>
+      </div>
     } else {
       return (
-        <Skeleton variant="rounded" width={360} height='50rem' />
+        <Skeleton variant="rounded" width='100%' height='50rem' />
       )
     }
   }
 
   return (
     <ContainerUserList>
-      <Search>
-        <Input
-          label="Digite o nome do servo"
-          onChange={(event: any) => { setNameToFilter(event.target.value) }}
-        />
-        <IconButton onClick={(event: any) => { handleClick(event, false) }} >
-          <Icon src={String(IconFilter)} />
-        </IconButton>
-      </Search>
-      <BadgeSizeFixed>
-        {sexFilter ?
-          <Chip
-            style={{ marginTop: '10px' }}
-            label={sexFilter}
-            onDelete={() => { setSexFilter('') }} /> :
-          ''
-        }
-      </BadgeSizeFixed> 
-      <ScroolCustom
-        style={{
-          marginTop: '1%',
-          maxHeight: '51.5%',
-          paddingRight: '2%'
-        }}
-      >
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+        <Search>
+          <Input
+            label="Digite o nome do servo"
+            onChange={(event: any) => { setNameToFilter(event.target.value) }}
+          />
+          <IconButton onClick={(event: any) => { handleClick(event, false) }} >
+            <Icon src={String(IconFilter)} />
+          </IconButton>
+        </Search>
+        <BadgeSizeFixed>
+          {sexFilter ?
+            <Chip
+              label={sexFilter}
+              onDelete={() => { setSexFilter('') }} /> :
+            ''
+          }
+        </BadgeSizeFixed> 
+      </Box>
+      <ScroolCustom >
         {managerUserRender()}
       </ScroolCustom>
       <Button

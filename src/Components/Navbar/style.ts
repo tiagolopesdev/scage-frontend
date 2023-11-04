@@ -25,7 +25,9 @@ export const Title = styled.h4`
 export const Container = styled.div`
   background-color: #0ECA65;
   width: 100%;
-  min-height: 4rem;
   display: flex;
   align-items: center;
+  height: auto;
+  min-height: 10vh;
+  max-height: 10vh;
 `;

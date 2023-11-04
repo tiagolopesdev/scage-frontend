@@ -7,13 +7,10 @@ export const ContainerBadgeStyle = styled.div`
   justify-content: flex-end;
 `
 
+// Alterar o nome
 export const ContainerUserList = styled.div`
   height: 100%;
-  position: fixed;
-  width: 380px;
-  top: 8.5rem;
-  right: 0;
-  padding: 15px;
+  width: 100%;
 `
 
 export const GroupFieldStyle = styled.div`
@@ -29,5 +26,5 @@ export const BadgeSizeFixed = styled.div`
 export const ContainerComboBoxStyle = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 `;

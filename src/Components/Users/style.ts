@@ -3,11 +3,8 @@ import styled from "styled-components";
 
 export const ContainerUserList = styled.div`
   height: 100%;
-  position: fixed;
-  width: 380px;
-  top: 8.5rem;
-  right: 0;
-  padding: 15px;
+  width: 100%;
+  padding-right: 1rem;
 `
 
 export const GroupFieldStyle = styled.div`
@@ -15,10 +12,12 @@ export const GroupFieldStyle = styled.div`
 `
 
 export const BadgeSizeFixed = styled.div`
-  height: 7%;
+  height: 1rem;
 `
 
 export const Search = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  max-width: 100%;
+  width: 100%;
 `;

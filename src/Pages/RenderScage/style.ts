@@ -3,12 +3,12 @@ import styled from "styled-components";
 
 export const SidebarContainer = styled.div`
   background-color: #d1d1d1;
+  min-height: 90vh;
+  max-height: 90vh;
   height: 100%;
-  position: fixed;
-  min-width: 380px;
-  top: 4rem;
-  right: 0;
-  padding: 15px;
+  width: 100%;
+  flex: 1;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
 `;
@@ -28,21 +28,31 @@ export const NotFoundContainerStyle = styled.div`
   display: flex; 
   flex-direction: column; 
   align-items: center; 
-  margin-right: 25%;
+  justify-content: center;
+  height: 100%;
+  min-height: 80vh;
+  max-height: 80vh;
+  width: 100%;
 `
 
 export const ButtonGroupContainer = styled.div`
-  position: absolute;
-  bottom: 0px;
+  height: 100%;
+  min-height: 10vh;
+  max-height: 10vh;
+  flex: 1;
   background-color: #CBCBCB;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
   box-shadow: 0px -6px 15px rgba(0, 0, 0, 0.3);
 `;
 
 export const CardDayContainer = styled.div`
-  margin: 1% 31% 0% 0%;
-  position: fixed;
-  left: 0;
-  height: 38rem;
   display: flex;
+  flex: 2;
+  height: 100%;
+  min-height: 80vh;
+  max-height: 80vh;
 `

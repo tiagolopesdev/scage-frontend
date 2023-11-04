@@ -50,12 +50,13 @@ function CustomTabPanel(props: TabPanelProps) {
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
+      style={{
+        width: '100%',
+        height: '100%',
+        padding: '0.5rem'
+      }}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && (<Box sx={{ width: '100%', height: '100%' }}> {children} </Box>)}
     </div>
   );
 }
@@ -100,6 +101,8 @@ export const RenderScale = () => {
     existScale()
   }, [scaleContext?.days])
 
+  console.log('COntex ', scale)
+
   const saveScale = async () => {
     try {
 
@@ -125,6 +128,8 @@ export const RenderScale = () => {
         days: filterOnlyIdUsers,
         isEnable: true
       }
+
+      console.log('Sa ', objectToSend)
 
       objectToSend.id !== undefined ?
         await UpdateScaleService(objectToSend) :
@@ -157,12 +162,11 @@ export const RenderScale = () => {
       <CardDayContainer ref={objectRef}>
         <ScroolCustom
           style={{
-            margin: '0% 25rem 2% 2%',
+            margin: '1rem',
             display: 'flex',
             flexWrap: 'wrap',
-            right: '40%',
-            minWidth: '98%',
-            maxHeight: '87%'
+            width: '100%',
+            height: '100%'
           }}
         >
           {
@@ -193,42 +197,58 @@ export const RenderScale = () => {
       style={style}
       variant="contained"
       size='small'
-      fullWidth
+      sx={{ maxHeight: '50px', width: '210px' }}
     >{text}</Button>
   }
 
   return (
-    <>
+    <div style={{ overflow: 'hidden' }}>
       <NavBar />
-      <div>
-        {existScale()}
-        <ButtonGroupContainer>
-          <ButtonGroup style={{ padding: '15px 0px 20px 0px', minWidth: '60%' }} >
+      <div style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'stretch',
+        maxHeight: '90vh',
+        minHeight: '90vh',
+        height: '100%',
+        width: '100vw'
+      }}>
+        <div style={{
+          minWidth: '75vw',
+          maxWidth: '75vw',
+          width: '100%',
+          flex: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%'
+        }}>
+          {existScale()}
+          <ButtonGroupContainer>
             {buttons(() => { setOpenModalGenerationScale(!openModalGenerationScale) }, ButtonStyle('rgb(14, 202, 101)'), "Gerar preview da escala")}
-            {buttons(() => { messageError(saveScale()) }, ButtonStyle('rgb(14, 202, 101)'), "Salvar")}
+            {buttons(() => { saveScale() }, ButtonStyle('rgb(14, 202, 101)'), "Salvar")}
             {buttons(() => { messageError('') }, ButtonStyle('rgb(14, 202, 101)'), "Adicionar novo dia")}
             {buttons(() => { handlerDownload() }, ButtonStyle('#30B2DB'), "Exportar em PDF")}
-          </ButtonGroup>
-        </ButtonGroupContainer>
+          </ButtonGroupContainer>
+        </div>
+        <SidebarContainer>
+          <Box sx={{ borderColor: 'divider', justifyContent: 'space-between' }}>
+            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+              <Tab label="Servos" {...a11yProps(0)} />
+              <Tab label="Escalas" {...a11yProps(2)} onClick={() => { setValue(1) }} />
+              <Tab label="Estatísticas" {...a11yProps(1)} />
+            </Tabs>
+          </Box>
+          <CustomTabPanel value={value} index={0}>
+            <UserListFloating />
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={1}>
+            <ScaleListFloating />
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={2}>
+            Item Three
+          </CustomTabPanel>
+        </SidebarContainer>
       </div>
-      <SidebarContainer>
-        <Box sx={{ borderColor: 'divider', justifyContent: 'space-between' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label="Servos" {...a11yProps(0)} />
-            <Tab label="Escalas" {...a11yProps(2)} onClick={() => { setValue(1) }} />
-            <Tab label="Estatísticas" {...a11yProps(1)} />
-          </Tabs>
-        </Box>
-        <CustomTabPanel value={value} index={0}>
-          <UserListFloating />
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          <ScaleListFloating />
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          Item Three
-        </CustomTabPanel>
-      </SidebarContainer>
       {openModalGenerationScale ?
         <ModalGenerationScale
           openModal={openModalGenerationScale}
@@ -237,6 +257,6 @@ export const RenderScale = () => {
         /> : ''
       }
       <Toaster position="bottom-center" reverseOrder={false} />
-    </>
+    </div>
   );
 }

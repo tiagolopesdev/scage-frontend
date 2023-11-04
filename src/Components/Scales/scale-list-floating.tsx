@@ -39,7 +39,7 @@ export const ScaleListFloating = () => {
 
   const managerScaleRender = () => {
     if (scales.length === 0) {
-      return <Skeleton variant="rounded" width={360} height='50rem' />
+      return <Skeleton variant="rounded" width="100%" height='50rem' />
     } else if (!isLoading && scales.length > 0) {
       return <div id="group-scales-single">
         {scales.map((scale) => {
@@ -62,7 +62,7 @@ export const ScaleListFloating = () => {
           disablePortal
           id="combo-box-demo"
           options={Months}
-          sx={{ width: 300 }}
+          sx={{ width: '100%' }}
           isOptionEqualToValue={(option, value) => value.label === option.label}
           renderInput={(params) => <TextField {...params} label="Selecione o mês" />}
           onChange={(event: any) => { 
@@ -70,13 +70,7 @@ export const ScaleListFloating = () => {
           }}
         />
       </ContainerComboBoxStyle>
-      <ScroolCustom
-        style={{
-          marginTop: '8%',
-          maxHeight: '55.5%',
-          paddingRight: '2%'
-        }}
-      >
+      <ScroolCustom >
         {managerScaleRender()}
       </ScroolCustom>
     </ContainerUserList>

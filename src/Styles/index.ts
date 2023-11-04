@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 interface ITextStyle {
   fontSize: number;
@@ -21,7 +21,9 @@ export const TextBaseStyle = styled.div<ITextStyle>`
 
 export const ScroolCustom = styled.div`
   scroll-behavior: smooth;
-  overflow-y: scroll;
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
 
   ::-webkit-scrollbar {
     width: 5px;
@@ -34,3 +36,11 @@ export const ScroolCustom = styled.div`
     border-radius : 10px;
   }
 `;
+
+export const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+`
