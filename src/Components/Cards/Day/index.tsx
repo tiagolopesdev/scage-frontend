@@ -91,7 +91,8 @@ export const CardDay = ({ day }: ICardDay) => {
 
           const scalePreviewToSend = {
             users: onlyUserId,
-            days: [day.name]
+            days: [day.name],
+            name: scaleContext.name
           }
 
           const responseScalePreviewApi = await GenerationPreviewScale(scalePreviewToSend);
