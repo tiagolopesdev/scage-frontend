@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
 
+export const InputStyle = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 5%;
+`
+
 export const WarningGroupStyle = styled.div`
   margin: 2%;
   display: flex;

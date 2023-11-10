@@ -6,7 +6,7 @@ import {
   Paper,
   TableContainer
 } from "@mui/material";
-import { ButtonGroup, WarningGroupStyle } from "./style";
+import { ButtonGroup, InputStyle, WarningGroupStyle } from "./style";
 import { ModalDay } from "../ModalDay";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
@@ -106,13 +106,13 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5%' }}>
+          <InputStyle>
             <Input
               label="Digite o nome do servo"
               style={{ width: '55%' }}
               onChange={(event: any) => { setNameSerfToFind(event.target.value) }}
             />
-          </div>
+          </InputStyle>
           <TableContainer component={Paper} sx={{ maxHeight: 300 }} >
             {ManagerInformations()}
           </TableContainer>
