@@ -6,7 +6,7 @@ import {
   Paper,
   TableContainer
 } from "@mui/material";
-import { ButtonGroup } from "./style";
+import { ButtonGroup, WarningGroupStyle } from "./style";
 import { ModalDay } from "../ModalDay";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
@@ -80,11 +80,7 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
   const ManagerInformations = () => {
     return users.length !== 0 ?
       <Serving users={users} /> :
-      <div style={{
-        margin: '2%',
-        display: 'flex',
-        justifyContent: 'center'
-      }}>
+      <WarningGroupStyle>
         <Alert severity="warning"
           style={{
             width: '100%',
@@ -94,7 +90,7 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
         >{
             <strong>Servo não encontrado no sistema.</strong>}
         </Alert>
-      </div>
+      </WarningGroupStyle>
   }
 
   useEffect(() => {
