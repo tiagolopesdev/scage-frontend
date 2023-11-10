@@ -1,6 +1,4 @@
 import { toast } from "react-hot-toast"
-import iconSuccess from "../../Assets/icon_success.svg"
-import iconError from "../../Assets/icon_error.svg"
 import { TextStyle, ToastContainer } from "./style"
 
 interface ICustomToast {
