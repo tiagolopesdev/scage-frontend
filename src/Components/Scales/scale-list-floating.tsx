@@ -1,17 +1,19 @@
 import { ContainerUserList, ContainerComboBoxStyle } from "./style"
 import { Alert, Autocomplete, Skeleton, TextField } from "@mui/material"
 import { Scale } from "./scale"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { CustomToast } from "../CustomToast"
 import { ScroolCustom } from "../../Styles/index"
 import IconError from '../../Assets/icon_error.svg'
 import { GetSingleScales } from "../../Services/Scale"
 import { ISingleScale } from "../../@types/ISingleScale"
 import { Months } from "../../@types/Months"
+import { ScaleContext } from "../../Context/scale"
 
 
 export const ScaleListFloating = () => {
 
+  const { scaleContext } = useContext(ScaleContext);
   const [scales, setScales] = useState<ISingleScale[]>([]);
   const [selectedMonth, setSelectedMonth] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -35,7 +37,7 @@ export const ScaleListFloating = () => {
 
   useEffect(() => {
     managementFindScales()
-  }, [selectedMonth])
+  }, [selectedMonth, scaleContext])
 
   const managerScaleRender = () => {
     if (scales.length === 0) {
