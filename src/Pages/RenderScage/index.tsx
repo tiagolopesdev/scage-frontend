@@ -122,7 +122,7 @@ export const RenderScale = () => {
         isEnable: true
       }
 
-      const responseApi: string = objectToSend.id !== undefined ?
+      const responseApi: string = objectToSend.id !== undefined && objectToSend.id !== "" ?
         await UpdateScaleService(objectToSend) :
         await SaveScaleService(objectToSend)
 

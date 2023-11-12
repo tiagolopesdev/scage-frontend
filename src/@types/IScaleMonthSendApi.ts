@@ -14,6 +14,7 @@ export interface IScaleMonthSendApi {
   name: string
   start: string
   end: string
+  transmissions: number
   days: IDaySendApi[]
   isEnable?: boolean
 }
