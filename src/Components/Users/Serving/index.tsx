@@ -82,32 +82,32 @@ export const Serving = ({ users }: IServing) => {
           aria-controls={`panel${index}bh-content`}
           id={`panel${index}bh-header`}
         >
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', marginRight: '30px' }}>
             <Icon src={String(IconUser)} style={{ marginRight: '10px' }} />
             <InformationSerfGroupStyle>
-              <TextBaseStyle fontSize={15} color='black' isBold={true}>
+              <TextBaseStyle fontSize={16} color='black' isBold={true}>
                 {item.name}
               </TextBaseStyle>
-              <TextBaseStyle fontSize={11} color='black'>
+              <TextBaseStyle fontSize={12} color='black'>
                 {item.email}
               </TextBaseStyle>
             </InformationSerfGroupStyle>
           </div>
-          {
-            isInsideScale ?
-              <Chip
-                size='small'
-                color="success"
-                variant="outlined"
-                label={`${quantityInsideDays} dias para servir`}
-              /> :
-              <Button
-                size='small'
-                color='success'
-                variant='contained'
-                onClick={() => { serfInclusion(item) }}
-              >Inseri-lo na escala</Button>
-          }
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+            <Button
+              size='small'
+              color='success'
+              variant='contained'
+              onClick={() => { serfInclusion(item) }}
+            >Inseri-lo na escala</Button>
+            <Chip
+              size='small'
+              color="success"
+              variant="outlined"
+              label={`${quantityInsideDays} dias para servir`}
+              style={{ margin: '5px 0px', height: '18px' }}
+            />
+          </div>
         </AccordionSummary>
         {
           isInsideScale ?
