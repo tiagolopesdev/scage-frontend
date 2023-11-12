@@ -53,7 +53,7 @@ const style = {
 interface IModalGenerationScale {
   openModal: boolean,
   openModalState: React.Dispatch<React.SetStateAction<boolean>>,
-  setScalePreview: React.Dispatch<React.SetStateAction<IScaleMonth | undefined>>
+  setScalePreview: React.Dispatch<React.SetStateAction<IScaleMonth>>
 }
 
 export const ModalGenerationScale = (props: IModalGenerationScale) => {

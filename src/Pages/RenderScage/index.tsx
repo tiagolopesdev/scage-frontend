@@ -7,7 +7,7 @@ import { ModalGenerationScale } from '../../Components/ModalGenerationScale';
 import { Icon } from '../../Components/Img';
 import { CustomToast } from '../../Components/CustomToast';
 import { Toaster } from 'react-hot-toast';
-import { IDay, IScaleMonth } from '../../@types/IScaleMonth';
+import { IDay } from '../../@types/IScaleMonth';
 import { ScaleListFloating } from '../../Components/Scales/scale-list-floating';
 import { ScaleContext } from '../../Context/scale';
 import { GetScale, SaveScaleService, UpdateScaleService } from '../../Services/Scale';
@@ -64,7 +64,6 @@ export const RenderScale = () => {
 
   const objectRef = useRef<HTMLDivElement | null>(null);
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
-  const [scale, setScale] = useState<IScaleMonth>();
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -93,18 +92,15 @@ export const RenderScale = () => {
   }
 
   useEffect(() => {
-    if (!scaleContext) return
-    setScale(scaleContext)
-    existScale()
+    if (scaleContext) existScale()
   }, [scaleContext?.days])
-
 
   const saveScale = async () => {
     try {
 
-      if (!scale) return
+      if (!scaleContext) return
 
-      const filterOnlyIdUsers: IDaySendApi[] = scale.days.map((day) => {
+      const filterOnlyIdUsers: IDaySendApi[] = scaleContext.days.map((day) => {
         return {
           id: day.id,
           name: day.name,
@@ -117,11 +113,12 @@ export const RenderScale = () => {
       })
 
       const objectToSend: IScaleMonthSendApi = {
-        id: scale.id,
-        name: scale.name,
-        start: scale.start,
-        end: scale.end,
-        days: filterOnlyIdUsers,
+        id: scaleContext.id,
+        name: scaleContext.name,
+        start: scaleContext.start,
+        end: scaleContext.end,
+        transmissions: scaleContext.days.length,
+        days: filterOnlyIdUsers,        
         isEnable: true
       }
 
@@ -181,7 +178,7 @@ export const RenderScale = () => {
   }
 
   const messageError = (functionProp: any) => {
-    return !scale?.days || scale?.days.length as number <= 0 ?
+    return !scaleContext?.days || scaleContext?.days.length as number <= 0 ?
       CustomToast({
         duration: 2000,
         icon: String(WarningIcon),
@@ -251,7 +248,7 @@ export const RenderScale = () => {
         <ModalGenerationScale
           openModal={openModalGenerationScale}
           openModalState={setOpenModalGenerationScale}
-          setScalePreview={setScale}
+          setScalePreview={setScaleContext}
         /> : ''
       }
       <Toaster position="bottom-center" reverseOrder={false} />
