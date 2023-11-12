@@ -9,7 +9,7 @@ import { Icon } from '../../Img';
 import IconExpand from '../../../Assets/icon_arrow.svg';
 import IconUser from '../../../Assets/icon_user.svg';
 import { TextBaseStyle } from '../../../Styles';
-import { InformationSerfGroupStyle } from './style';
+import { InclusionSerfStyle, InformationSerfContainerStyle, InformationSerfGroupStyle } from './style';
 import { IUser } from '../../../@types/IUser';
 import { useContext, useState } from 'react';
 import { ScaleContext } from '../../../Context/scale';
@@ -82,7 +82,7 @@ export const Serving = ({ users }: IServing) => {
           aria-controls={`panel${index}bh-content`}
           id={`panel${index}bh-header`}
         >
-          <div style={{ display: 'flex', marginRight: '30px' }}>
+          <InformationSerfContainerStyle>
             <Icon src={String(IconUser)} style={{ marginRight: '10px' }} />
             <InformationSerfGroupStyle>
               <TextBaseStyle fontSize={16} color='black' isBold={true}>
@@ -92,14 +92,14 @@ export const Serving = ({ users }: IServing) => {
                 {item.email}
               </TextBaseStyle>
             </InformationSerfGroupStyle>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          </InformationSerfContainerStyle>
+          <InclusionSerfStyle>
             <Button
               size='small'
               color='success'
               variant='contained'
               onClick={() => { serfInclusion(item) }}
-            >Inseri-lo na escala</Button>
+            >{`Incluí-lo(a)`}</Button>
             <Chip
               size='small'
               color="success"
@@ -107,7 +107,7 @@ export const Serving = ({ users }: IServing) => {
               label={`${quantityInsideDays} dias para servir`}
               style={{ margin: '5px 0px', height: '18px' }}
             />
-          </div>
+          </InclusionSerfStyle>
         </AccordionSummary>
         {
           isInsideScale ?
