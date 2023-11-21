@@ -178,10 +178,18 @@ export const CardDay = ({ day }: ICardDay) => {
               <Reorder.Item value={item} key={item.id} >
                 <PeopleContainer onPointerDown={(e) => controls.start(e)} >
                   <InformationPeopleContainer>
-                    <Icon src={index === 2 ? String(DeskIcon) : String(CameraIcon)} style={{ width: '25px' }} />
+                    <Icon
+                      src={
+                        index === 2 ?
+                        String(DeskIcon) :
+                        String(CameraIcon)
+                      }
+                      style={{ width: '25px' }}
+                      className="action-icon-indication"
+                    />
                     <NamePeopleStyle>{item.name}</NamePeopleStyle>
                   </InformationPeopleContainer>
-                  <IconSelectUserStyle>
+                  <IconSelectUserStyle >
                     <motion.div
                       className="box"
                       whileHover={{ scale: 1.07 }}
@@ -189,6 +197,7 @@ export const CardDay = ({ day }: ICardDay) => {
                       transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     >
                       <Icon
+                        className="change-collaborator"
                         src={String(SelectNewUserIcon)}
                         onClick={() => {
                           if (!day.id) {
@@ -209,7 +218,7 @@ export const CardDay = ({ day }: ICardDay) => {
             ))
           }
         </Reorder.Group>
-        <GroupButtonsStyle>
+        <GroupButtonsStyle className="actions-card-event">
           {
             !isReorder ?
               Actions() :

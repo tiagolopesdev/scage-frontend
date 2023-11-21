@@ -20,9 +20,32 @@ import IconError from '../../Assets/icon_error.svg'
 import WarningIcon from '../../Assets/icon_warning.svg'
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 import { IDaySendApi, IScaleMonthSendApi } from '../../@types/IScaleMonthSendApi';
-import html2canvas from 'html2canvas';
 import { IsNewDay } from '../../Handlers/isNewDay';
+import html2canvas from 'html2canvas';
 
+
+function hideStyles(elements: HTMLCollectionOf<Element>) {
+  let elementCopy: CSSStyleDeclaration[] = []
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i] as HTMLElement
+    elementCopy.push(element.style)
+    element.style.display = "none"
+  }
+  return elementCopy;
+}
+
+function seeStyles(elements: HTMLCollectionOf<Element>, isIcon: boolean) {
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i] as HTMLElement
+    if (isIcon) {
+      element.style.display = "block"
+    } else {
+      element.style.display = "flex" 
+      element.style.width = "100%" 
+      element.style.justifyContent = "center" 
+    }
+  }
+}
 
 function a11yProps(index: number) {
   return {
@@ -74,26 +97,37 @@ export const RenderScale = () => {
 
     if (objectRef.current === null) return
 
-    html2canvas(objectRef.current, {
-      backgroundColor: "#FFF",
-      allowTaint: true,
-      useCORS: true
-    }).then(function (canvas) {
-      const a = document.createElement("a");
-      a.href = canvas.toDataURL("image/png");
-      a.download = `testDownload.png`;
-      a.style.display = "none";
-      document.body.appendChild(a);
+    const iconChangeFounded = objectRef.current.getElementsByClassName("change-collaborator")
+    hideStyles(iconChangeFounded as HTMLCollectionOf<Element>)
 
-      a.click();
+    const actionsFounded = objectRef.current.getElementsByClassName("actions-card-event")
+    hideStyles(actionsFounded as HTMLCollectionOf<Element>)
 
-      document.body.removeChild(a);
-    })
+    console.log('Sds ', actionsFounded.length)
+    
+    const canvas = await html2canvas(objectRef.current)
+    const image = canvas.toDataURL("image/jpeg", 1.0)
+
+    const fakeLink = document.createElement("a")
+
+    fakeLink.style.display = "none"
+    fakeLink.download = "test"
+
+    fakeLink.href = image
+
+    document.body.appendChild(fakeLink)
+    fakeLink.click()
+
+    seeStyles(iconChangeFounded, true)
+    seeStyles(actionsFounded, false)
+
+    document.body.removeChild(fakeLink)
+    fakeLink.remove()    
   }
 
   useEffect(() => {
     if (scaleContext) existScale()
-  }, [scaleContext?.days])
+  }, [scaleContext?.days, handlerDownload])
 
   const saveScale = async () => {
     try {
@@ -118,7 +152,7 @@ export const RenderScale = () => {
         start: scaleContext.start,
         end: scaleContext.end,
         transmissions: scaleContext.days.length,
-        days: filterOnlyIdUsers,        
+        days: filterOnlyIdUsers,
         isEnable: true
       }
 
