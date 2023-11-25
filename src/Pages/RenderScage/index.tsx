@@ -11,6 +11,7 @@ import { IDay } from '../../@types/IScaleMonth';
 import { ScaleListFloating } from '../../Components/Scales/scale-list-floating';
 import { ScaleContext } from '../../Context/scale';
 import { GetScale, SaveScaleService, UpdateScaleService } from '../../Services/Scale';
+import ReactPDF, { PDFDownloadLink } from '@react-pdf/renderer';
 
 import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, TextStyle } from './style';
 import { SidebarContainer } from './style';
@@ -22,6 +23,7 @@ import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 import { IDaySendApi, IScaleMonthSendApi } from '../../@types/IScaleMonthSendApi';
 import { IsNewDay } from '../../Handlers/isNewDay';
 import html2canvas from 'html2canvas';
+import { ScalePDF } from '../../Utils/scalePDF';
 
 
 function hideStyles(elements: HTMLCollectionOf<Element>) {
@@ -40,9 +42,9 @@ function seeStyles(elements: HTMLCollectionOf<Element>, isIcon: boolean) {
     if (isIcon) {
       element.style.display = "block"
     } else {
-      element.style.display = "flex" 
-      element.style.width = "100%" 
-      element.style.justifyContent = "center" 
+      element.style.display = "flex"
+      element.style.width = "100%"
+      element.style.justifyContent = "center"
     }
   }
 }
@@ -95,34 +97,34 @@ export const RenderScale = () => {
 
   const handlerDownload = async () => {
 
-    if (objectRef.current === null) return
+    // if (objectRef.current === null) return
 
-    const iconChangeFounded = objectRef.current.getElementsByClassName("change-collaborator")
-    hideStyles(iconChangeFounded as HTMLCollectionOf<Element>)
+    // const iconChangeFounded = objectRef.current.getElementsByClassName("change-collaborator")
+    // hideStyles(iconChangeFounded as HTMLCollectionOf<Element>)
 
-    const actionsFounded = objectRef.current.getElementsByClassName("actions-card-event")
-    hideStyles(actionsFounded as HTMLCollectionOf<Element>)
+    // const actionsFounded = objectRef.current.getElementsByClassName("actions-card-event")
+    // hideStyles(actionsFounded as HTMLCollectionOf<Element>)
 
-    console.log('Sds ', actionsFounded.length)
-    
-    const canvas = await html2canvas(objectRef.current)
-    const image = canvas.toDataURL("image/jpeg", 1.0)
+    // console.log('Sds ', actionsFounded.length)
 
-    const fakeLink = document.createElement("a")
+    // const canvas = await html2canvas(objectRef.current)
+    // const image = canvas.toDataURL("image/jpeg", 1.0)
 
-    fakeLink.style.display = "none"
-    fakeLink.download = "test"
+    // const fakeLink = document.createElement("a")
 
-    fakeLink.href = image
+    // fakeLink.style.display = "none"
+    // fakeLink.download = "test"
 
-    document.body.appendChild(fakeLink)
-    fakeLink.click()
+    // fakeLink.href = image
 
-    seeStyles(iconChangeFounded, true)
-    seeStyles(actionsFounded, false)
+    // document.body.appendChild(fakeLink)
+    // fakeLink.click()
 
-    document.body.removeChild(fakeLink)
-    fakeLink.remove()    
+    // seeStyles(iconChangeFounded, true)
+    // seeStyles(actionsFounded, false)
+
+    // document.body.removeChild(fakeLink)
+    // fakeLink.remove()    
   }
 
   useEffect(() => {
@@ -256,7 +258,16 @@ export const RenderScale = () => {
             {buttons(() => { setOpenModalGenerationScale(!openModalGenerationScale) }, ButtonStyle('rgb(14, 202, 101)'), "Gerar preview da escala")}
             {buttons(() => { saveScale() }, ButtonStyle('rgb(14, 202, 101)'), "Salvar")}
             {buttons(() => { messageError('') }, ButtonStyle('rgb(14, 202, 101)'), "Adicionar novo dia")}
-            {buttons(() => { handlerDownload() }, ButtonStyle('#30B2DB'), "Exportar em PDF")}
+            {
+              scaleContext.days.length > 0 ?
+                <PDFDownloadLink document={<ScalePDF days={scaleContext.days} />} fileName='test-download.pdf'>
+                  {({ blob, url, loading, error }) =>
+                    buttons(() => { handlerDownload() },
+                      ButtonStyle('#30B2DB'),
+                      loading ? "Exportando" : "Exportar em PDF")
+                  }
+                </PDFDownloadLink> : ''
+            }
           </ButtonGroupContainer>
         </div>
         <SidebarContainer>
