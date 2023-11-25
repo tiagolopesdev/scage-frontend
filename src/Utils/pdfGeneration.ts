@@ -2,13 +2,13 @@ import dayjs from "dayjs";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts"
 import { Column, Content, TDocumentDefinitions } from "pdfmake/interfaces";
-import { IDay, IScaleMonth } from "../../@types/IScaleMonth";
+import { IDay, IScaleMonth } from "../@types/IScaleMonth";
 
-import { IconVerticalLogo } from "../../Assets/Icons/export-vertical-logo";
-import { IconDivisionDay } from "../../Assets/Icons/division-day";
-import { IconMonth } from "../../Assets/Icons/month";
-import { IconCamera } from "../../Assets/Icons/camera-day";
-import { IconCutDesk } from "../../Assets/Icons/cut-desk-day";
+import { IconDivisionDay } from "../Assets/Icons/division-day";
+import { IconMonth } from "../Assets/Icons/month";
+import { IconCamera } from "../Assets/Icons/camera-day";
+import { IconCutDesk } from "../Assets/Icons/cut-desk-day";
+import { IconHorizontalPascom } from "../Assets/Icons/horizontal-logo";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
@@ -108,13 +108,13 @@ export function downloadPDF(data: IScaleMonth) {
   var docDefinition: TDocumentDefinitions = {
     pageOrientation: "landscape",
     header: {
-      text: 'Escala referente aos festejos de São Sebastião',
+      text: `${data.name} - ${dayjs(data.start).format('DD/MM/YYYY')} à ${dayjs(data.end).format('DD/MM/YYYY')}`,
       style: 'scaleName',
       alignment: 'center'
     },
     content: [contentFlex],
     footer: {
-      svg: IconVerticalLogo,
+      svg: IconHorizontalPascom,
       width: 100,
       marginTop: 10,
       alignment: 'center'
@@ -149,8 +149,11 @@ export function downloadPDF(data: IScaleMonth) {
         fontSize: 15,
         italics: true,
       }
+    },
+    info: {
+      title: `${data.name} - ${dayjs(data.start).format('DD/MM/YYYY')} à ${dayjs(data.end).format('DD/MM/YYYY')}`
     }
   }
 
-  pdfMake.createPdf(docDefinition).download()
+  pdfMake.createPdf(docDefinition).download(`${data.name} - ${dayjs(data.start).format('DD/MM/YYYY')} à ${dayjs(data.end).format('DD/MM/YYYY')}`)
 }

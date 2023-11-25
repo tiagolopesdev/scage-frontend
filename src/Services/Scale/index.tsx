@@ -1,5 +1,3 @@
-import { AxiosError } from "axios"
-import { IScaleMonth } from "../../@types/IScaleMonth"
 import { IScaleMonthSendApi } from "../../@types/IScaleMonthSendApi"
 import { scaleChannel } from "../Bases/api"
 

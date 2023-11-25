@@ -11,6 +11,9 @@ import { IDay } from '../../@types/IScaleMonth';
 import { ScaleListFloating } from '../../Components/Scales/scale-list-floating';
 import { ScaleContext } from '../../Context/scale';
 import { GetScale, SaveScaleService, UpdateScaleService } from '../../Services/Scale';
+import { IsNewDay } from '../../Handlers/isNewDay';
+import { IDaySendApi, IScaleMonthSendApi } from '../../@types/IScaleMonthSendApi';
+import { downloadPDF } from '../../Utils/pdfGeneration';
 
 import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, TextStyle } from './style';
 import { SidebarContainer } from './style';
@@ -19,35 +22,7 @@ import IconSuccess from "../../Assets/icon_success.svg";
 import IconError from '../../Assets/icon_error.svg'
 import WarningIcon from '../../Assets/icon_warning.svg'
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
-import { IDaySendApi, IScaleMonthSendApi } from '../../@types/IScaleMonthSendApi';
-import { IsNewDay } from '../../Handlers/isNewDay';
-import html2canvas from 'html2canvas';
-import { ScalePDF } from '../../Utils/scalePDF';
-import { downloadPDF } from '../../Components/PDFGeneration';
 
-
-function hideStyles(elements: HTMLCollectionOf<Element>) {
-  let elementCopy: CSSStyleDeclaration[] = []
-  for (let i = 0; i < elements.length; i++) {
-    const element = elements[i] as HTMLElement
-    elementCopy.push(element.style)
-    element.style.display = "none"
-  }
-  return elementCopy;
-}
-
-function seeStyles(elements: HTMLCollectionOf<Element>, isIcon: boolean) {
-  for (let i = 0; i < elements.length; i++) {
-    const element = elements[i] as HTMLElement
-    if (isIcon) {
-      element.style.display = "block"
-    } else {
-      element.style.display = "flex"
-      element.style.width = "100%"
-      element.style.justifyContent = "center"
-    }
-  }
-}
 
 function a11yProps(index: number) {
   return {
@@ -93,7 +68,7 @@ export const RenderScale = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
-  };  
+  };
 
   useEffect(() => {
     if (scaleContext) existScale()
@@ -226,7 +201,11 @@ export const RenderScale = () => {
             {buttons(() => { setOpenModalGenerationScale(!openModalGenerationScale) }, ButtonStyle('rgb(14, 202, 101)'), "Gerar preview da escala")}
             {buttons(() => { saveScale() }, ButtonStyle('rgb(14, 202, 101)'), "Salvar")}
             {buttons(() => { messageError('') }, ButtonStyle('rgb(14, 202, 101)'), "Adicionar novo dia")}
-            {buttons(() => { downloadPDF(scaleContext) }, ButtonStyle('#30B2DB'), "Exportar em PDF")}
+            {
+              scaleContext.days.length !== 0 ?
+                buttons(() => { downloadPDF(scaleContext) }, ButtonStyle('#30B2DB'), "Exportar em PDF") :
+                ''
+            }
           </ButtonGroupContainer>
         </div>
         <SidebarContainer>
