@@ -1,0 +1,12 @@
+export const IconMonth = `<svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.80542 1V3.88333" stroke="#797979" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M13.4946 1V3.88333" stroke="#797979" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1.48071 7.81427H17.8196" stroke="#797979" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.3 7.24727V15.4167C18.3 18.3 16.8583 20.2223 13.4944 20.2223H5.80556C2.44167 20.2223 1 18.3 1 15.4167V7.24727C1 4.36393 2.44167 2.44171 5.80556 2.44171H13.4944C16.8583 2.44171 18.3 4.36393 18.3 7.24727Z" stroke="#797979" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M13.2009 12.245H13.21" stroke="#797979" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M13.2009 15.1284H13.21" stroke="#797979" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.64551 12.245H9.65459" stroke="#797979" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.64551 15.1284H9.65459" stroke="#797979" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.08838 12.245H6.09744" stroke="#797979" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.08838 15.1284H6.09744" stroke="#797979" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`
