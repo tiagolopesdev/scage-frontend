@@ -11,7 +11,6 @@ import { IDay } from '../../@types/IScaleMonth';
 import { ScaleListFloating } from '../../Components/Scales/scale-list-floating';
 import { ScaleContext } from '../../Context/scale';
 import { GetScale, SaveScaleService, UpdateScaleService } from '../../Services/Scale';
-import ReactPDF, { PDFDownloadLink } from '@react-pdf/renderer';
 
 import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, TextStyle } from './style';
 import { SidebarContainer } from './style';
@@ -24,6 +23,7 @@ import { IDaySendApi, IScaleMonthSendApi } from '../../@types/IScaleMonthSendApi
 import { IsNewDay } from '../../Handlers/isNewDay';
 import html2canvas from 'html2canvas';
 import { ScalePDF } from '../../Utils/scalePDF';
+import { downloadPDF } from '../../Components/PDFGeneration';
 
 
 function hideStyles(elements: HTMLCollectionOf<Element>) {
@@ -93,43 +93,11 @@ export const RenderScale = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
-  };
-
-  const handlerDownload = async () => {
-
-    // if (objectRef.current === null) return
-
-    // const iconChangeFounded = objectRef.current.getElementsByClassName("change-collaborator")
-    // hideStyles(iconChangeFounded as HTMLCollectionOf<Element>)
-
-    // const actionsFounded = objectRef.current.getElementsByClassName("actions-card-event")
-    // hideStyles(actionsFounded as HTMLCollectionOf<Element>)
-
-    // console.log('Sds ', actionsFounded.length)
-
-    // const canvas = await html2canvas(objectRef.current)
-    // const image = canvas.toDataURL("image/jpeg", 1.0)
-
-    // const fakeLink = document.createElement("a")
-
-    // fakeLink.style.display = "none"
-    // fakeLink.download = "test"
-
-    // fakeLink.href = image
-
-    // document.body.appendChild(fakeLink)
-    // fakeLink.click()
-
-    // seeStyles(iconChangeFounded, true)
-    // seeStyles(actionsFounded, false)
-
-    // document.body.removeChild(fakeLink)
-    // fakeLink.remove()    
-  }
+  };  
 
   useEffect(() => {
     if (scaleContext) existScale()
-  }, [scaleContext?.days, handlerDownload])
+  }, [scaleContext?.days])
 
   const saveScale = async () => {
     try {
@@ -258,16 +226,7 @@ export const RenderScale = () => {
             {buttons(() => { setOpenModalGenerationScale(!openModalGenerationScale) }, ButtonStyle('rgb(14, 202, 101)'), "Gerar preview da escala")}
             {buttons(() => { saveScale() }, ButtonStyle('rgb(14, 202, 101)'), "Salvar")}
             {buttons(() => { messageError('') }, ButtonStyle('rgb(14, 202, 101)'), "Adicionar novo dia")}
-            {
-              scaleContext.days.length > 0 ?
-                <PDFDownloadLink document={<ScalePDF days={scaleContext.days} />} fileName='test-download.pdf'>
-                  {({ blob, url, loading, error }) =>
-                    buttons(() => { handlerDownload() },
-                      ButtonStyle('#30B2DB'),
-                      loading ? "Exportando" : "Exportar em PDF")
-                  }
-                </PDFDownloadLink> : ''
-            }
+            {buttons(() => { downloadPDF(scaleContext) }, ButtonStyle('#30B2DB'), "Exportar em PDF")}
           </ButtonGroupContainer>
         </div>
         <SidebarContainer>
