@@ -55,10 +55,9 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
         icon: String(IconSuccess)
       });
       
-      setTimeout(() => {
-        setAnchorEl(null)
-        setUserWasManipuled(true);
-      }, 2000)
+      setAnchorEl(null)
+      setUserWasManipuled(true);
+      
     } catch (error: any) {
       CustomToast({
         duration: 2000,
