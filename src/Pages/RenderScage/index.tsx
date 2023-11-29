@@ -22,6 +22,7 @@ import IconSuccess from "../../Assets/icon_success.svg";
 import IconError from '../../Assets/icon_error.svg'
 import WarningIcon from '../../Assets/icon_warning.svg'
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
+import { initialStateScale } from '../../@types/InitialStateDay';
 
 
 function a11yProps(index: number) {
@@ -69,10 +70,6 @@ export const RenderScale = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
-  useEffect(() => {
-    if (scaleContext) existScale()
-  }, [scaleContext?.days])
 
   const saveScale = async () => {
     try {
@@ -156,15 +153,6 @@ export const RenderScale = () => {
       </CardDayContainer>
   }
 
-  const messageError = (functionProp: any) => {
-    return !scaleContext?.days || scaleContext?.days.length as number <= 0 ?
-      CustomToast({
-        duration: 2000,
-        icon: String(WarningIcon),
-        message: 'Uma escala ainda não foi selecionada'
-      }) : functionProp
-  }
-
   const buttons = (onClick: () => void, style: CSSProperties, text: string) => {
     return <Button
       onClick={onClick}
@@ -174,6 +162,32 @@ export const RenderScale = () => {
       sx={{ maxHeight: '50px', width: '210px' }}
     >{text}</Button>
   }
+
+  const visibleButtons = () => {
+    return <>
+      {buttons(() => { setOpenModalGenerationScale(!openModalGenerationScale) }, ButtonStyle('rgb(14, 202, 101)'), "Gerar preview da escala")}
+      {
+        scaleContext.days.length !== 0 ?
+          buttons(() => { saveScale() }, ButtonStyle('rgb(14, 202, 101)'), "Salvar") :
+          ''
+      }
+      {
+        scaleContext.days.length !== 0 ?
+          buttons(() => { setScaleContext(initialStateScale) }, ButtonStyle('rgb(14, 202, 101)'), "Fechar escala") :
+          ''
+      }
+      {
+        scaleContext.days.length !== 0 ?
+          buttons(() => { downloadPDF(scaleContext) }, ButtonStyle('#30B2DB'), "Exportar em PDF") :
+          ''
+      }
+    </>
+  }
+
+  useEffect(() => {
+    if (scaleContext) existScale()
+    visibleButtons()
+  }, [scaleContext?.days])
 
   return (
     <div style={{ overflow: 'hidden' }}>
@@ -188,8 +202,8 @@ export const RenderScale = () => {
         width: '100vw'
       }}>
         <div style={{
-          minWidth: '75vw',
-          maxWidth: '75vw',
+          minWidth: '71vw',
+          maxWidth: '71vw',
           width: '100%',
           flex: 2,
           display: 'flex',
@@ -198,14 +212,7 @@ export const RenderScale = () => {
         }}>
           {existScale()}
           <ButtonGroupContainer>
-            {buttons(() => { setOpenModalGenerationScale(!openModalGenerationScale) }, ButtonStyle('rgb(14, 202, 101)'), "Gerar preview da escala")}
-            {buttons(() => { saveScale() }, ButtonStyle('rgb(14, 202, 101)'), "Salvar")}
-            {buttons(() => { messageError('') }, ButtonStyle('rgb(14, 202, 101)'), "Adicionar novo dia")}
-            {
-              scaleContext.days.length !== 0 ?
-                buttons(() => { downloadPDF(scaleContext) }, ButtonStyle('#30B2DB'), "Exportar em PDF") :
-                ''
-            }
+            {visibleButtons()}
           </ButtonGroupContainer>
         </div>
         <SidebarContainer>
