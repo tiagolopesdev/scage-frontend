@@ -20,9 +20,9 @@ import { SidebarContainer } from './style';
 import { ScroolCustom } from '../../Styles';
 import IconSuccess from "../../Assets/icon_success.svg";
 import IconError from '../../Assets/icon_error.svg'
-import WarningIcon from '../../Assets/icon_warning.svg'
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 import { initialStateScale } from '../../@types/InitialStateDay';
+import { IsVisibleComponents } from '../../Utils/isVisibleComponents';
 
 
 function a11yProps(index: number) {
@@ -166,21 +166,18 @@ export const RenderScale = () => {
   const visibleButtons = () => {
     return <>
       {buttons(() => { setOpenModalGenerationScale(!openModalGenerationScale) }, ButtonStyle('rgb(14, 202, 101)'), "Gerar preview da escala")}
-      {
-        scaleContext.days.length !== 0 ?
-          buttons(() => { saveScale() }, ButtonStyle('rgb(14, 202, 101)'), "Salvar") :
-          ''
-      }
-      {
-        scaleContext.days.length !== 0 ?
-          buttons(() => { setScaleContext(initialStateScale) }, ButtonStyle('rgb(14, 202, 101)'), "Fechar escala") :
-          ''
-      }
-      {
-        scaleContext.days.length !== 0 ?
-          buttons(() => { downloadPDF(scaleContext) }, ButtonStyle('#30B2DB'), "Exportar em PDF") :
-          ''
-      }
+      {IsVisibleComponents(
+        buttons(() => { saveScale() }, ButtonStyle('rgb(14, 202, 101)'), "Salvar"),
+        Boolean(scaleContext.days.length !== 0)
+        )}
+      {IsVisibleComponents(
+        buttons(() => { setScaleContext(initialStateScale) }, ButtonStyle('rgb(14, 202, 101)'), "Fechar escala"),
+        Boolean(scaleContext.days.length !== 0)        
+      )}
+      {IsVisibleComponents(
+        buttons(() => { downloadPDF(scaleContext) }, ButtonStyle('#30B2DB'), "Exportar em PDF"),
+        Boolean(scaleContext.days.length !== 0)        
+      )}
     </>
   }
 
