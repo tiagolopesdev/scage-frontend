@@ -1,4 +1,4 @@
-import { IDay } from "./IScaleMonth"
+import { IDay, IScaleMonth } from "./IScaleMonth"
 import { IUser } from "./IUser"
 
 export const initialStateUser: IUser = {
@@ -14,4 +14,13 @@ export const initialStateDay: IDay = {
   cameraTwo: initialStateUser,
   cutDesk: initialStateUser,
   isEnable: true
+}
+
+export const initialStateScale: IScaleMonth = {
+  id: '',
+  start: '',
+  end: '',
+  name: '',
+  isEnable: false,
+  days: []
 }
