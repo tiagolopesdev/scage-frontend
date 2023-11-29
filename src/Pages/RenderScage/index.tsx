@@ -169,14 +169,14 @@ export const RenderScale = () => {
       {IsVisibleComponents(
         buttons(() => { saveScale() }, ButtonStyle('rgb(14, 202, 101)'), "Salvar"),
         Boolean(scaleContext.days.length !== 0)
-        )}
-      {IsVisibleComponents(
-        buttons(() => { setScaleContext(initialStateScale) }, ButtonStyle('rgb(14, 202, 101)'), "Fechar escala"),
-        Boolean(scaleContext.days.length !== 0)        
       )}
       {IsVisibleComponents(
         buttons(() => { downloadPDF(scaleContext) }, ButtonStyle('#30B2DB'), "Exportar em PDF"),
-        Boolean(scaleContext.days.length !== 0)        
+        Boolean(scaleContext.days.length !== 0)
+      )}
+      {IsVisibleComponents(
+        buttons(() => { setScaleContext(initialStateScale) }, ButtonStyle('rgb(211, 47, 47)'), "Fechar escala"),
+        Boolean(scaleContext.days.length !== 0)
       )}
     </>
   }
