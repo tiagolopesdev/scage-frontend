@@ -136,8 +136,9 @@ export const RenderScale = () => {
             margin: '1rem',
             display: 'flex',
             flexWrap: 'wrap',
-            width: '100%',
-            height: '100%'
+            width: '75vw',
+            height: '75vh',
+            overflowY: 'scroll'
           }}
         >
           {
