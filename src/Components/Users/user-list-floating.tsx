@@ -88,7 +88,9 @@ export const UserListFloating = () => {
 
   const managerUserRender = () => {
     if (users.length > 0) {
-      return <div>
+      return <div style={{
+        maxHeight: '58vh'
+      }}>
         {users.map((user) => {
           return <div key={user.id}>
             <User
@@ -101,7 +103,7 @@ export const UserListFloating = () => {
       </div>
     } else {
       return (
-        <Skeleton variant="rounded" width='100%' height='50rem' />
+        <Skeleton variant="rounded" width='100%' height='60vh' />
       )
     }
   }
@@ -125,7 +127,7 @@ export const UserListFloating = () => {
               onDelete={() => { setSexFilter('') }} /> :
             ''
           }
-        </BadgeSizeFixed> 
+        </BadgeSizeFixed>
       </Box>
       <ScroolCustom >
         {managerUserRender()}

@@ -52,7 +52,7 @@ export const ScaleProvider = ({ children }: IScaleContextProvider) => {
   }
 
   useEffect(() => {
-    if (scaleId) getScale()
+    if (scaleId && scaleId !== '') getScale()
   }, [scaleId])
 
   return (

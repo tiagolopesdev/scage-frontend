@@ -31,7 +31,7 @@ import { IDay, IScaleMonth } from "../../@types/IScaleMonth";
 import { Months } from "../../@types/Months";
 import { initialStateDay } from "../../@types/InitialStateDay";
 import { ScaleContext } from "../../Context/scale";
-import { IsNewDay } from "../../Handlers/isNewDay";
+import { IsNewDay } from "../../Utils/isNewDay";
 
 import IconEdit from '../../Assets/icon_user_edit.svg'
 import IconError from '../../Assets/icon_error.svg'

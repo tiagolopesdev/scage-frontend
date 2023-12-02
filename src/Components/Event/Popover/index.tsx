@@ -1,7 +1,7 @@
 import { Button, Popover } from "@mui/material";
 import { useContext } from "react";
 import { ScaleContext } from "../../../Context/scale";
-import { ObjectIsEquals } from "../../../Handlers/objectIsEquals";
+import { ObjectIsEquals } from "../../../Utils/objectIsEquals";
 import { IUser } from "../../../@types/IUser";
 import { CustomToast } from "../../CustomToast";
 

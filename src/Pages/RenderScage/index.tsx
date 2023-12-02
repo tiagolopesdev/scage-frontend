@@ -11,7 +11,7 @@ import { IDay } from '../../@types/IScaleMonth';
 import { ScaleListFloating } from '../../Components/Scales/scale-list-floating';
 import { ScaleContext } from '../../Context/scale';
 import { GetScale, SaveScaleService, UpdateScaleService } from '../../Services/Scale';
-import { IsNewDay } from '../../Handlers/isNewDay';
+import { IsNewDay } from '../../Utils/isNewDay';
 import { IDaySendApi, IScaleMonthSendApi } from '../../@types/IScaleMonthSendApi';
 import { downloadPDF } from '../../Utils/pdfGeneration';
 
@@ -61,7 +61,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export const RenderScale = () => {
 
-  const { scaleContext, setScaleContext } = useContext(ScaleContext);
+  const { scaleContext, setScaleContext, setScaleId } = useContext(ScaleContext);
 
   const objectRef = useRef<HTMLDivElement | null>(null);
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
@@ -176,7 +176,11 @@ export const RenderScale = () => {
         Boolean(scaleContext.days.length !== 0)
       )}
       {IsVisibleComponents(
-        buttons(() => { setScaleContext(initialStateScale) }, ButtonStyle('rgb(211, 47, 47)'), "Fechar escala"),
+        buttons(() => {
+          setScaleContext(initialStateScale)
+          setScaleId('')
+        },
+          ButtonStyle('rgb(211, 47, 47)'), "Fechar escala"),
         Boolean(scaleContext.days.length !== 0)
       )}
     </>
