@@ -35,7 +35,8 @@ export const User = (usersProps: IUsersProps) => {
           borderRadius: '15px',
           boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
           backgroundColor: 'rgba(0, 0, 0, 0.1) 0px 2px 4px',
-          marginTop: '10px'
+          marginTop: '10px',
+          maxWidth: '25vw'
         }}
       >
         <CardContent

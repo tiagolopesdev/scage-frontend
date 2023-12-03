@@ -1,4 +1,4 @@
-import { ContainerUserList, ContainerComboBoxStyle } from "./style"
+import { ContainerComboBoxStyle, ContainerScaleList } from "./style"
 import { Alert, Autocomplete, Skeleton, TextField } from "@mui/material"
 import { Scale } from "./scale"
 import { useContext, useEffect, useState } from "react"
@@ -58,7 +58,7 @@ export const ScaleListFloating = () => {
   }
 
   return (
-    <ContainerUserList>
+    <ContainerScaleList>
       <ContainerComboBoxStyle>
         <Autocomplete
           disablePortal
@@ -75,6 +75,6 @@ export const ScaleListFloating = () => {
       <ScroolCustom >
         {managerScaleRender()}
       </ScroolCustom>
-    </ContainerUserList>
+    </ContainerScaleList>
   )
 }

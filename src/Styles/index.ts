@@ -19,10 +19,14 @@ export const TextBaseStyle = styled.div<ITextStyle>`
   -webkit-box-orient: vertical;
 `
 
-export const ScroolCustom = styled.div`
+interface IScrollCustom {
+  width?: number
+}
+
+export const ScroolCustom = styled.div<IScrollCustom>`
   scroll-behavior: smooth;
   overflow-y: auto;
-  width: 100%;
+  width: ${(props) => props.width}vw;
   height: 100%;
 
   ::-webkit-scrollbar {

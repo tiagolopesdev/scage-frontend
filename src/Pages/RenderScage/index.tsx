@@ -49,12 +49,12 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
       style={{
-        width: '100%',
-        height: '100%',
+        width: '85vw',
+        height: '85vh',        
         padding: '0.5rem'
       }}
     >
-      {value === index && (<Box sx={{ width: '100%', height: '100%' }}> {children} </Box>)}
+      {value === index && (<Box sx={{ width: '85vw', height: '85vh' }}> {children} </Box>)}
     </div>
   );
 }
@@ -220,9 +220,9 @@ export const RenderScale = () => {
         <SidebarContainer>
           <Box sx={{ borderColor: 'divider', justifyContent: 'space-between' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-              <Tab label="Servos" {...a11yProps(0)} />
-              <Tab label="Escalas" {...a11yProps(2)} onClick={() => { setValue(1) }} />
-              <Tab label="Estatísticas" {...a11yProps(1)} />
+              <Tab style={{ fontFamily: 'Dosis', fontWeight: '600', fontSize: '1rem' }} label="Servos" {...a11yProps(0)} />
+              <Tab style={{ fontFamily: 'Dosis', fontWeight: '600', fontSize: '1rem' }} label="Escalas" {...a11yProps(2)} onClick={() => { setValue(1) }} />
+              <Tab style={{ fontFamily: 'Dosis', fontWeight: '600', fontSize: '1rem' }} label="Estatísticas" {...a11yProps(1)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>

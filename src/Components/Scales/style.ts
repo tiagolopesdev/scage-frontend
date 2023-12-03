@@ -7,10 +7,11 @@ export const ContainerBadgeStyle = styled.div`
   justify-content: flex-end;
 `
 
-// Alterar o nome
-export const ContainerUserList = styled.div`
-  height: 100%;
-  width: 100%;
+export const ContainerScaleList = styled.div`
+  min-height: 20vh;
+  max-height: 100vh;
+  height: 53vh;
+  width: 25vw;
 `
 
 export const GroupFieldStyle = styled.div`

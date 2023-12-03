@@ -92,7 +92,7 @@ export const UserListFloating = () => {
         maxHeight: '58vh'
       }}>
         {users.map((user) => {
-          return <div key={user.id}>
+          return <div key={user.id} style={{ maxWidth: '25vw' }}>
             <User
               user={user}
               setUserWasManipuled={setUserWasManipuled}
@@ -110,7 +110,14 @@ export const UserListFloating = () => {
 
   return (
     <ContainerUserList>
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+      <Box sx={{
+        width: '25vw',
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        flexDirection: 'column',
+        marginBottom: '25px'
+      }}>
         <Search>
           <Input
             label="Digite o nome do servo"
@@ -123,13 +130,15 @@ export const UserListFloating = () => {
         <BadgeSizeFixed>
           {sexFilter ?
             <Chip
+              size="small"
               label={sexFilter}
+              style={{ marginTop: '8px' }}
               onDelete={() => { setSexFilter('') }} /> :
             ''
           }
         </BadgeSizeFixed>
       </Box>
-      <ScroolCustom >
+      <ScroolCustom width={26} >
         {managerUserRender()}
       </ScroolCustom>
       <Button
@@ -141,7 +150,8 @@ export const UserListFloating = () => {
           fontWeight: '600',
           padding: '3px',
           marginTop: '15px',
-          backgroundColor: 'rgb(14, 202, 101)'
+          backgroundColor: 'rgb(14, 202, 101)',
+          maxWidth: '25vw'
         }}
         variant="contained"
         size='small'

@@ -2,8 +2,10 @@ import styled from "styled-components";
 
 
 export const ContainerUserList = styled.div`
-  height: 100%;
-  width: 100%;
+  min-height: 20vh;
+  max-height: 100vh;
+  height: 53vh;
+  width: 100vw;
   padding-right: 1rem;
 `
 
