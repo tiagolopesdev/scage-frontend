@@ -3,6 +3,7 @@ import React from "react"
 
 interface IInputProps {
   label: string,
+  value?: string,
   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
   style?: any
@@ -14,12 +15,13 @@ export const Input = (props: IInputProps) => {
     <TextField
       size="medium"
       id="standard-basic"
-      label={props.label}
       variant="outlined"
+      label={props.label}
       style={{ ...props.style }}
       fullWidth
       onClick={props.onClick}
       onChange={props.onChange}
+      defaultValue={props.value}
     />
   )
 }
