@@ -30,7 +30,7 @@ import { initialStateDay } from "../../@types/InitialStateDay";
 import { ScaleContext } from "../../Context/scale";
 import { IsNewDay } from "../../Utils/isNewDay";
 
-import { ButtonGroup, ContainerNewDay } from "./style";
+import { ButtonGroup, ContainerNewDay, DataGenerationScaleStyle, DateGroupStyle } from "./style";
 import IconEdit from '../../Assets/icon_user_edit.svg'
 import IconError from '../../Assets/icon_error.svg'
 import IconWarning from '../../Assets/icon_warning.svg'
@@ -211,7 +211,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div style={{ display: 'flex', margin: '4% 2%' }}>
+          <DataGenerationScaleStyle>
             <Input
               value={scaleMonth.name}
               label='Mês'
@@ -219,7 +219,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
                 setScaleMonth({ ...scaleMonth, name: event.target.value as string })
               }}
             />
-            <div style={{ width: '55%', display: 'flex', flexDirection: 'row' }}>
+            <DateGroupStyle>
               <DatePicker
                 inputFormat="DD/MM/YYYY"
                 label="Inicio do mês"
@@ -246,8 +246,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
                   />
                 }
               />
-            </div>
-          </div>
+            </DateGroupStyle>
+          </DataGenerationScaleStyle>
           <ContainerNewDay>
             <Button
               size='small'
