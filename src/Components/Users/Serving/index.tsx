@@ -2,7 +2,7 @@ import * as React from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import { Button, Chip } from '@mui/material';
+import { Button, Chip, ThemeProvider } from '@mui/material';
 import { EventSerf } from '../../Event';
 import './style.css';
 import { Icon } from '../../Img';
@@ -14,6 +14,7 @@ import { IUser } from '../../../@types/IUser';
 import { useContext, useState } from 'react';
 import { ScaleContext } from '../../../Context/scale';
 import { IDay } from '../../../@types/IScaleMonth';
+import { theme } from '../../../App';
 
 interface IServing {
   users: IUser[]
@@ -98,14 +99,15 @@ export const Serving = ({ users }: IServing) => {
               size='small'
               color='success'
               variant='contained'
+              sx={{ fontWeight: 'bolder', color: '#FFFFFF', fontSize: 14, borderRadius: 2 }}
               onClick={() => { serfInclusion(item) }}
             >{`Incluí-lo(a)`}</Button>
             <Chip
               size='small'
               color="success"
               variant="outlined"
+              sx={{ fontWeight: 'bolder', marginTop: 1, height: 18 }}
               label={`${quantityInsideDays} dias para servir`}
-              style={{ margin: '5px 0px', height: '18px' }}
             />
           </InclusionSerfStyle>
         </AccordionSummary>

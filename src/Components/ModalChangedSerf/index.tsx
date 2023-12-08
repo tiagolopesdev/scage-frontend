@@ -113,7 +113,7 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
               onChange={(event: any) => { setNameSerfToFind(event.target.value) }}
             />
           </InputStyle>
-          <TableContainer component={Paper} sx={{ maxHeight: 300 }} >
+          <TableContainer component={Paper} sx={{ maxHeight: 350 }} >
             {ManagerInformations()}
           </TableContainer>
           <ButtonGroup>
@@ -125,6 +125,7 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
               onClick={() => { HandlerClose() }}
             >Cancelar</Button>
             <Button
+              color="primary"
               style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginLeft: '30px' })}
               variant="contained"
               size='small'
