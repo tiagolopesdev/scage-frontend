@@ -9,6 +9,7 @@ import { GetSingleScales } from "../../Services/Scale"
 import { ISingleScale } from "../../@types/ISingleScale"
 import { Months } from "../../@types/Months"
 import { ScaleContext } from "../../Context/scale"
+import { Input } from "../Input"
 
 
 export const ScaleListFloating = () => {
@@ -51,7 +52,7 @@ export const ScaleListFloating = () => {
         })}
       </div>
     } else {
-      return selectedMonth === '' ? 
+      return selectedMonth === '' ?
         <Alert severity="warning">Não foi possível obter as escalas</Alert> :
         <Alert severity="info">Escala de <strong>{selectedMonth}</strong> não encontrada</Alert>
     }
@@ -60,15 +61,12 @@ export const ScaleListFloating = () => {
   return (
     <ContainerScaleList>
       <ContainerComboBoxStyle>
-        <Autocomplete
-          disablePortal
-          id="combo-box-demo"
-          options={Months}
-          sx={{ width: '100%' }}
-          isOptionEqualToValue={(option, value) => value.label === option.label}
-          renderInput={(params) => <TextField {...params} label="Selecione o mês" />}
-          onChange={(event: any) => { 
-            setSelectedMonth(event.target.innerText ?? '') 
+        <Input
+          value={selectedMonth}
+          label='Mês'
+          onChange={(event: any) => {
+            console.log('eter ', event.target.value)
+            setSelectedMonth(event.target.value ?? '') 
           }}
         />
       </ContainerComboBoxStyle>
