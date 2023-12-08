@@ -3,16 +3,30 @@ import { RenderScale } from "./Pages/RenderScage"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { ScaleProvider } from "./Context/scale"
 import { GlobalStyle } from "./Styles"
+import { ThemeProvider, createTheme } from "@mui/material"
 
+
+export const theme = createTheme({
+  palette: {
+    success: {
+      main: 'rgb(14, 202, 101)'
+    }
+  },
+  typography: {
+    fontFamily: 'Dosis',    
+  },
+})
 
 export const App = () => {
 
   return (
-    <ScaleProvider>
-      <GlobalStyle />
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <RenderScale />
-      </LocalizationProvider>
-    </ScaleProvider>
+    <ThemeProvider theme={theme}>
+      <ScaleProvider>
+        <GlobalStyle />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <RenderScale />
+        </LocalizationProvider>
+      </ScaleProvider>
+    </ThemeProvider>
   )
 }
