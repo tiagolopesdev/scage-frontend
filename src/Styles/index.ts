@@ -26,8 +26,8 @@ interface IScrollCustom {
 export const ScroolCustom = styled.div<IScrollCustom>`
   scroll-behavior: smooth;
   overflow-y: auto;
-  width: ${(props) => props.width}vw;
   height: 100%;
+  padding: 0.5rem;
 
   ::-webkit-scrollbar {
     width: 5px;

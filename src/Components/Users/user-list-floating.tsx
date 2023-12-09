@@ -88,10 +88,7 @@ export const UserListFloating = () => {
 
   const managerUserRender = () => {
     if (users.length > 0) {
-      return <div style={{
-        maxHeight: '58vh'
-      }}>
-        {users.map((user) => {
+      return users.map((user) => {
           return <div key={user.id} style={{ maxWidth: '25vw' }}>
             <User
               user={user}
@@ -99,8 +96,7 @@ export const UserListFloating = () => {
               onDelete={deleteUser}
             />
           </div>
-        })}
-      </div>
+        })
     } else {
       return (
         <Skeleton variant="rounded" width='100%' height='60vh' />
@@ -111,7 +107,8 @@ export const UserListFloating = () => {
   return (
     <ContainerUserList>
       <Box sx={{
-        width: '25vw',
+        maxWidth: '25vw',
+        width: '100%',
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
@@ -138,7 +135,7 @@ export const UserListFloating = () => {
           }
         </BadgeSizeFixed>
       </Box>
-      <ScroolCustom width={26} >
+      <ScroolCustom>
         {managerUserRender()}
       </ScroolCustom>
       <Button
@@ -149,9 +146,10 @@ export const UserListFloating = () => {
           fontSize: '1rem',
           fontWeight: '600',
           padding: '3px',
-          marginTop: '15px',
           backgroundColor: 'rgb(14, 202, 101)',
-          maxWidth: '25vw'
+          position: 'sticky',
+          left: 10,
+          bottom: 10
         }}
         variant="contained"
         size='small'

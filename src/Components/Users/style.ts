@@ -2,11 +2,16 @@ import styled from "styled-components";
 
 
 export const ContainerUserList = styled.div`
-  min-height: 20vh;
-  max-height: 100vh;
-  height: 53vh;
-  width: 100vw;
-  padding-right: 1rem;
+  width: 100%;
+  max-width: 26vw;
+  height: 100%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 0.5rem;
+  position: relative;
 `
 
 export const GroupFieldStyle = styled.div`

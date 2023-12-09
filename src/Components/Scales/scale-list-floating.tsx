@@ -65,7 +65,6 @@ export const ScaleListFloating = () => {
           value={selectedMonth}
           label='Mês'
           onChange={(event: any) => {
-            console.log('eter ', event.target.value)
             setSelectedMonth(event.target.value ?? '') 
           }}
         />
