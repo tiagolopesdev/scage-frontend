@@ -45,9 +45,8 @@ export const Scale = (scalesProps: IUsersProps) => {
             <div style={{ width: '100%' }}>
               <Typography
                 variant="h6"
-                style={{
-                  fontFamily: 'Dosis',
-                  fontWeight: '900',
+                sx={{
+                  fontWeight: 500,
                   fontSize: 'x-large',
                   lineHeight: '1.1'
                 }}
@@ -64,7 +63,7 @@ export const Scale = (scalesProps: IUsersProps) => {
             </div>
             <ContainerBadgeStyle>
               <Badge
-                style={{ width: '100%' }}
+                sx={{ width: '100%' }}
                 badgeContent={isProgress ? 'Em progresso' : 'Concluída'}
                 color={isProgress ? 'primary' : 'success'}
               />

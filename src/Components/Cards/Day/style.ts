@@ -10,7 +10,7 @@ export const GroupButtonsStyle = styled.div`
 export const NameDayStyle = styled.h5`
   font-family: Dosis;
   font-size: 16pt;
-  font-weight: bold;
+  font-weight: 600;
   margin: 10px;
   color: #005AAC;
   overflow: hidden;
@@ -44,6 +44,7 @@ export const IconSelectUserStyle = styled.div`
 export const NamePeopleStyle = styled.h2`
   margin: 0px 40px 0px 10px;
   font-family: Dosis;
+  font-weight: 500;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1;

@@ -155,12 +155,13 @@ export const CardDay = ({ day }: ICardDay) => {
         <NameDayStyle>
           {day.name}
         </NameDayStyle>
-        <Chip style={{
+        <Chip sx={{
           width: '80%',
           height: '19px',
           backgroundColor: "rgb(14, 202, 101)",
           color: 'white',
-          border: '0px'
+          border: '0px',
+          fontWeight: 500
         }}
           label={dateTimeFormated}
           color="success"

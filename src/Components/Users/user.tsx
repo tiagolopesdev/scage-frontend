@@ -50,19 +50,15 @@ export const User = (usersProps: IUsersProps) => {
           <GroupFieldStyle>
             <Typography
               variant="h6"
-              style={{
-                fontFamily: 'Dosis',
-                fontWeight: '900',
+              sx={{
+                fontWeight: 500,
                 fontSize: 'x-large',
                 lineHeight: '1.1'
               }}
             >{user.name}</Typography>
             <Typography
+              sx={{ fontWeight: 400 }}
               variant="body2"
-              style={{
-                fontFamily: 'Dosis',
-                fontWeight: '600'
-              }}
             >
               {user.email}
             </Typography>

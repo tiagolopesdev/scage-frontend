@@ -169,7 +169,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     return scaleContext.days?.map((item, index) => {
       return (
         <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-          <TableCell component="th" scope="row">
+          <TableCell sx={{ fontWeight: 900 }} component="th" scope="row">
             {item.name}
             {
               IsNewDay(item) ?
@@ -183,8 +183,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
                 ''
             }
           </TableCell>
-          <TableCell align="center">{dayjs(item.dateTime).format('DD/MM/YYYY')}</TableCell>
-          <TableCell align="center">{dayjs(item.dateTime).format('hh:mm:ss')}</TableCell>
+          <TableCell sx={{ fontWeight: 900 }} align="center">{dayjs(item.dateTime).format('DD/MM/YYYY')}</TableCell>
+          <TableCell sx={{ fontWeight: 900 }} align="center">{dayjs(item.dateTime).format('hh:mm:ss')}</TableCell>
           <TableCell align="right" style={{ padding: '0rem 0.5rem 0rem 0.5rem' }}>
             <IconButton onClick={() => {
               EditDay(item)
@@ -260,10 +260,10 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell style={{ fontFamily: 'Dosis', fontSize: 'larger' }} >{<strong>Nome</strong>}</TableCell>
-                  <TableCell style={{ fontFamily: 'Dosis', fontSize: 'larger' }} align="center">{<strong>Data</strong>}</TableCell>
-                  <TableCell style={{ fontFamily: 'Dosis', fontSize: 'larger' }} align="center">{<strong>Horário</strong>}</TableCell>
-                  <TableCell style={{ fontFamily: 'Dosis', fontSize: 'larger' }} align="right">{<strong>Ações</strong>}</TableCell>
+                  <TableCell sx={{ fontWeight: 600, fontSize: 'larger' }} >Nome</TableCell>
+                  <TableCell sx={{ fontWeight: 600, fontSize: 'larger' }} align="center">Data</TableCell>
+                  <TableCell sx={{ fontWeight: 600, fontSize: 'larger' }} align="center">Horário</TableCell>
+                  <TableCell sx={{ fontWeight: 600, fontSize: 'larger' }} align="right">Ações</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

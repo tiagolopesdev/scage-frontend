@@ -129,7 +129,7 @@ export const UserListFloating = () => {
             <Chip
               size="small"
               label={sexFilter}
-              style={{ marginTop: '8px' }}
+              sx={{ marginTop: '8px', fontWeight: 600 }}
               onDelete={() => { setSexFilter('') }} /> :
             ''
           }
