@@ -11,7 +11,7 @@ export const ContainerScaleList = styled.div`
   width: 100%;
   max-width: 26vw;
   height: 100%;
-  max-height: 80vh;
+  max-height: 76vh;
   display: flex;
   flex-direction: column;
   align-items: stretch;
