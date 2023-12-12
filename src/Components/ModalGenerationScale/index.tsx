@@ -36,6 +36,7 @@ import IconError from '../../Assets/icon_error.svg'
 import IconWarning from '../../Assets/icon_warning.svg'
 import IconDelete from '../../Assets/icon_trash.svg'
 import { Input } from "../Input";
+import { ModalAutomaticDay } from "../ModalAutomaticDay";
 
 
 const style = {
@@ -61,6 +62,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   const { scaleContext, setScaleContext, setDisplayScale } = useContext(ScaleContext);
 
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
+  const [openModalAutomaticDay, setOpenModalAutomaticDay] = useState(false);
   const [daysList, setDaysList] = useState<IDay[]>([]);
   const [dayToEdit, setDayToEdit] = useState<IDay>(initialStateDay);
   const [isGenerationScale, setIsGenerationScale] = useState(false)
@@ -252,6 +254,12 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             <Button
               size='small'
               variant="contained"
+              onClick={() => { setOpenModalAutomaticDay(!openModalAutomaticDay) }}
+              style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginBottom: '4%', marginRight: '15px' })}
+            >Adição automática</Button>
+            <Button
+              size='small'
+              variant="contained"
               onClick={() => { setOpenModalNewDay(!openModalNewDay) }}
               style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginBottom: '4%' })}
             >Adicionar novo dia</Button>
@@ -298,6 +306,13 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
           />
         </Box>
       </Modal>
+      {
+        openModalAutomaticDay ? 
+          <ModalAutomaticDay 
+            openModal={openModalAutomaticDay}
+            openModalState={setOpenModalAutomaticDay}
+          /> : ''
+      }
       {
         openModalNewDay ?
           <ModalDay
