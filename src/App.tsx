@@ -9,7 +9,8 @@ import { ThemeProvider, createTheme } from "@mui/material"
 export const theme = createTheme({
   palette: {
     success: {
-      main: 'rgb(14, 202, 101)'
+      main: 'rgb(14, 202, 101)',
+      contrastText: '#FFFFFF'
     }
   },
   typography: {
