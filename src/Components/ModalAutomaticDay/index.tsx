@@ -10,6 +10,7 @@ import IconDelete from '../../Assets/icon_trash.svg'
 import IconEdit from '../../Assets/icon_user_edit.svg'
 import IconWarning from '../../Assets/icon_warning.svg'
 import { DayOfWeek } from "../../@types/DayOfWeek"
+import { InformationsDayStyle } from "./style"
 
 
 const style = {
@@ -94,8 +95,8 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <InformationsDayStyle>
+          <InformationsDayStyle>
             <Autocomplete
               disablePortal
               sx={{ minWidth: 170 }}
@@ -130,7 +131,7 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
                 />
               }
             />
-          </div>
+          </InformationsDayStyle>
           <Button
             sx={{
               borderRadius: '10px',
@@ -148,7 +149,7 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
                 CustomToast({ message: 'Preencha todos os campos para adicionar um dia.', duration: 1000, icon: String(IconWarning) })
               } else {
                 day.isNew = true
-  
+
                 if (days.length === 0) {
                   setDays([day])
                 } else if (positionEdit !== null) {
@@ -163,7 +164,7 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
               setPositionEdit(null)
             }}
           >{!day.isNew ? 'Adicionar' : 'Atualizar'}</Button>
-        </div>
+        </InformationsDayStyle>
         <TableContainer component={Paper} sx={{ maxHeight: 300, marginTop: '5%' }} >
           <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
