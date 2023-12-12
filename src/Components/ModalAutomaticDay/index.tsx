@@ -3,6 +3,7 @@ import { Input } from "../Input"
 import { useEffect, useState } from "react"
 import { TimePicker } from "@mui/x-date-pickers"
 import { CustomToast } from "../CustomToast"
+import { ActionButtons } from "../ActionButtons"
 import { Icon } from "../Img"
 import dayjs from "dayjs"
 
@@ -180,42 +181,12 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          margin: '50px 0px 0px 0px'
-        }}>
-          <Button
-            sx={{
-              textTransform: 'none',
-              fontSize: '1rem',
-              fontWeight: '600',
-              borderRadius: '10px',
-              marginRight: '10px'
-            }}
-            variant="outlined"
-            size='small'
-            color='error'
-            fullWidth
-            onClick={() => { HandlerClose() }}
-          >Cancelar</Button>
-          <Button
-            style={{
-              textTransform: 'none',
-              fontSize: '1rem',
-              fontWeight: '600',
-              borderRadius: '10px',
-              marginLeft: '10px'
-            }}
-            // onClick={() => { GenerationScale() }}
-            variant="contained"
-            color="success"
-            size='small'
-            fullWidth
-          >
-            Gerar inclusão de dias
-          </Button>
-        </div>
+        <ActionButtons
+          nameLeft="Cancelar"
+          nameRight="Gerar inclusão de dias"
+          actionLeft={() => { HandlerClose() }}
+          actionRight={() => { }}
+        />
       </Box>
     </Modal>
   )
