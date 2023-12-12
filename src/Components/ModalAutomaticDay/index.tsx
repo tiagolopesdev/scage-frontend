@@ -34,8 +34,8 @@ const DayOfWeek = [
 
 interface IDay {
   day: string,
-  name: string | undefined,
-  time: string | undefined,
+  name: string | null,
+  time: string | null,
   isNew: boolean
 }
 
@@ -50,14 +50,14 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
 
   const initialStateDay: IDay = {
     day: '',
-    name: undefined,
-    time: undefined,
+    name: null,
+    time: null,
     isNew: false
   }
   const [days, setDays] = useState<IDay[]>([]);
   const [day, setDay] = useState<IDay>(initialStateDay);
   const [removeDay, setRemoveDay] = useState(false)
-  const [positionEdit, setPositionEdit] = useState(0)
+  const [positionEdit, setPositionEdit] = useState<IDay | null>(null)
 
   const HandlerClose = () => {
     openModalState(!openModal)
@@ -72,7 +72,7 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
         <TableCell align="right" style={{ padding: '0rem 0.4rem 0rem 0.4rem' }}>
           <IconButton onClick={() => {
             setDay(item)
-            setPositionEdit(index)
+            setPositionEdit(item)
           }}>
             <Icon src={String(IconEdit)} />
           </IconButton>
@@ -115,7 +115,7 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
             />
             <Input
               style={{ margin: '0px 5px', minWidth: '40%', width: '100%' }}
-              value={day?.name}
+              value={day?.name ?? ''}
               label='Nome do evento'
               onChange={(event: any) => {
                 setDay({ ...day as IDay, name: event.target.value })
@@ -159,8 +159,8 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
               if (days.length === 0) {
                 setDays([day])
               } else {
-                if (positionEdit > 0) {                  
-                  let newDays = days.filter((item, index) => { if (index !== positionEdit) return item })
+                if (positionEdit !== null) {                  
+                  let newDays = days.filter((item, index) => { return item !== positionEdit })
                   newDays.push(day)
                   setDays(newDays)
                 } else {
@@ -168,7 +168,7 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
                 }
               }
               setDay(initialStateDay)
-              setPositionEdit(0)
+              setPositionEdit(null)
             }}
           >{!day.isNew ? 'Adicionar' : 'Atualizar'}</Button>
         </div>
