@@ -21,7 +21,7 @@ export const Input = (props: IInputProps) => {
       fullWidth
       onClick={props.onClick}
       onChange={props.onChange}
-      defaultValue={props.value}
+      value={props.value}
     />
   )
 }
