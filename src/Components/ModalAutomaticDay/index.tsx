@@ -1,13 +1,15 @@
 import { Autocomplete, Box, Button, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material"
 import { Input } from "../Input"
-import { Toaster } from "react-hot-toast"
 import { useEffect, useState } from "react"
 import { TimePicker } from "@mui/x-date-pickers"
+import { CustomToast } from "../CustomToast"
+import { Icon } from "../Img"
 import dayjs from "dayjs"
 
 import IconDelete from '../../Assets/icon_trash.svg'
 import IconEdit from '../../Assets/icon_user_edit.svg'
-import { Icon } from "../Img"
+import IconWarning from '../../Assets/icon_warning.svg'
+import { DayOfWeek } from "../../@types/DayOfWeek"
 
 
 const style = {
@@ -22,15 +24,6 @@ const style = {
   width: 750
 }
 
-const DayOfWeek = [
-  { label: 'Segunda-feira' },
-  { label: 'Terça-feira' },
-  { label: 'Quarta-feira' },
-  { label: 'Quinta-feira' },
-  { label: 'Sexta-feira' },
-  { label: 'Sábado' },
-  { label: 'Domingo' }
-]
 
 interface IDay {
   day: string,
@@ -151,18 +144,17 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
             size='small'
             color="success"
             onClick={() => {
-
-              //TODO -> Incluse validation don't insert object with field null or empty
-
-              day.isNew = true
-
-              if (days.length === 0) {
-                setDays([day])
+              if ((day.name === '' || day.name === null) || day.time === null || day.day === null) {
+                CustomToast({ message: 'Preencha todos os campos para adicionar um dia.', duration: 1000, icon: String(IconWarning) })
               } else {
-                if (positionEdit !== null) {                  
-                  let newDays = days.filter((item, index) => { return item !== positionEdit })
-                  newDays.push(day)
-                  setDays(newDays)
+                day.isNew = true
+  
+                if (days.length === 0) {
+                  setDays([day])
+                } else if (positionEdit !== null) {
+                  let positionToRemove = days.findIndex((item: IDay) => { return item === positionEdit })
+                  days.splice(positionToRemove, 1, day)
+                  setDays(days)
                 } else {
                   setDays([...days, ...[day]])
                 }
@@ -223,10 +215,6 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
             Gerar inclusão de dias
           </Button>
         </div>
-        <Toaster
-          position="bottom-center"
-          reverseOrder={false}
-        />
       </Box>
     </Modal>
   )
