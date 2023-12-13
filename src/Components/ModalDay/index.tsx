@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Modal, TextField } from "@mui/material"
+import { Box, Modal, TextField } from "@mui/material"
 import { IDay } from "../../@types/IScaleMonth";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { CustomToast } from "../CustomToast";
@@ -7,11 +7,13 @@ import { useContext, useState } from "react";
 import { ScaleContext } from "../../Context/scale";
 import { Icon } from "../Img";
 import { initialStateDay } from "../../@types/InitialStateDay";
+import { ActionButtons } from "../ActionButtons";
 
 import { ContainerElementsStyle, DateTimeGroupStyle } from "./style";
 import SelectIcon from "../../Assets/icon_success_white.svg"
 import CloseIcon from "../../Assets/icon_user_delete.svg"
 import IconWarning from '../../Assets/icon_warning.svg'
+import { Input } from "../Input";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -46,16 +48,6 @@ export const ModalDay = (props: IModalGenerationScale) => {
     setManipulationDay(initialStateDay)
   }
 
-  const ButtonStyleCustom = (customStyle: any) => ({
-    borderRadius: '12px',
-    fontFamily: 'Dosis',
-    textTransform: 'none',
-    fontSize: '1rem',
-    fontWeight: '600',
-    padding: '5px 0px',
-    ...customStyle
-  })
-
   return (
     <Modal
       open={openModal}
@@ -65,13 +57,10 @@ export const ModalDay = (props: IModalGenerationScale) => {
     >
       <Box sx={style}>
         <ContainerElementsStyle>
-          <TextField
+          <Input
             label="Nome"
-            variant="standard"
-            id="standard-basic"
             value={eventName}
             onChange={(event: any) => { setEventName(event.target.value) }}
-            style={{ marginTop: '20px' }}
           />
           <DateTimeGroupStyle>
             <DatePicker
@@ -84,7 +73,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
               renderInput={(params) => <TextField style={{ width: '200px', marginRight: '10px' }} {...params} />}
             />
             <TimePicker
-              label="Hora do evento"
+              label="Horário do evento"
               value={selectedDateTime}
               onChange={(newValue) => {
                 newValue ? setSelectedDateTime(newValue) : setSelectedDateTime(newValue)
@@ -92,75 +81,65 @@ export const ModalDay = (props: IModalGenerationScale) => {
               renderInput={(params) => <TextField style={{ width: '200px', marginLeft: '10px' }} {...params} />}
             />
           </DateTimeGroupStyle>
-          <ButtonGroup style={{ marginTop: '40px' }}>
-            <Button
-              style={ButtonStyleCustom({ marginRight: '10px', backgroundColor: 'rgb(14, 202, 101)', border: '1px solid rgb(14, 202, 101)' })}
-              variant="outlined"
-              size='small'
-              fullWidth
-              onClick={() => {
-                if (!eventName || !selectedDateTime?.format('DD/MM/YYYY') || !selectedDateTime?.format('h:mm A')) {
-                  CustomToast({ duration: 2000, message: 'Preencha todos os campos', icon: String(IconWarning) })
+          <ActionButtons
+            nameLeft={<Icon src={String(CloseIcon)} />}
+            nameRight={<Icon src={String(SelectIcon)} />}
+            actionLeft={() => { HandlerClose() }}
+            actionRight={() => {
+              if (!eventName || !selectedDateTime?.format('DD/MM/YYYY') || !selectedDateTime?.format('h:mm A')) {
+                CustomToast({ duration: 2000, message: 'Preencha todos os campos', icon: String(IconWarning) })
+              } else {
+                const elementExist = scaleContext.days.findIndex((item: IDay) => { return item === manipulationDay });
+                if (elementExist >= 0) {
+
+                  const days = scaleContext.days;
+
+                  days.splice(elementExist, 1, {
+                    id: manipulationDay.id,
+                    name: eventName,
+                    dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
+                    cameraOne: manipulationDay.cameraOne,
+                    cameraTwo: manipulationDay.cameraTwo,
+                    cutDesk: manipulationDay.cutDesk,
+                    isEnable: manipulationDay.isEnable
+                  });
+
+                  setScaleContext({
+                    ...scaleContext, ...{
+                      id: scaleContext.id,
+                      name: scaleContext.name,
+                      start: scaleContext.start,
+                      end: scaleContext.end,
+                      days: days,
+                      isEnable: scaleContext.isEnable
+                    }
+                  })
                 } else {
-                  const elementExist = scaleContext.days.findIndex((item: IDay) => { return item === manipulationDay });
-                  if (elementExist >= 0) {
-                    
-                    const days = scaleContext.days;
 
-                    days.splice(elementExist, 1, {
-                      id: manipulationDay.id,
-                      name: eventName,
-                      dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
-                      cameraOne: manipulationDay.cameraOne,
-                      cameraTwo: manipulationDay.cameraTwo,
-                      cutDesk: manipulationDay.cutDesk,
-                      isEnable: manipulationDay.isEnable
-                    });
+                  let daysToInclude: IDay[] = [...scaleContext.days, ...[{
+                    name: eventName,
+                    dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
+                    cameraOne: manipulationDay.cameraOne,
+                    cameraTwo: manipulationDay.cameraTwo,
+                    cutDesk: manipulationDay.cutDesk,
+                    isEnable: manipulationDay.isEnable
+                  }]]
 
-                    setScaleContext({
-                      ...scaleContext, ...{
-                        id: scaleContext.id,
-                        name: scaleContext.name,
-                        start: scaleContext.start,
-                        end: scaleContext.end,
-                        days: days,   
-                        isEnable: scaleContext.isEnable                     
-                      }
-                    })
-                  } else {
-
-                    let daysToInclude: IDay[] = [...scaleContext.days, ...[{
-                      name: eventName,
-                      dateTime: selectedDateTime.format('YYYY-MM-DDTHH:mm:ss'),
-                      cameraOne: manipulationDay.cameraOne,
-                      cameraTwo: manipulationDay.cameraTwo,
-                      cutDesk: manipulationDay.cutDesk,      
-                      isEnable: manipulationDay.isEnable     
-                    }]]
-
-                    setScaleContext({
-                      ...scaleContext, ...{
-                        id: scaleContext.id,
-                        name: scaleContext.name,
-                        start: scaleContext.start,
-                        end: scaleContext.end,
-                        days: daysToInclude,
-                        isEnable: scaleContext.isEnable
-                      }
-                    })
-                  }
+                  setScaleContext({
+                    ...scaleContext, ...{
+                      id: scaleContext.id,
+                      name: scaleContext.name,
+                      start: scaleContext.start,
+                      end: scaleContext.end,
+                      days: daysToInclude,
+                      isEnable: scaleContext.isEnable
+                    }
+                  })
                 }
-                HandlerClose()
-              }}
-            ><Icon src={String(SelectIcon)} /></Button>
-            <Button
-              style={ButtonStyleCustom({ marginLeft: '10px', color: '#CA0E0E', border: '1px solid #CA0E0E' })}
-              variant="outlined"
-              size='small'
-              fullWidth
-              onClick={() => { HandlerClose() }}
-            ><Icon src={String(CloseIcon)} /></Button>
-          </ButtonGroup>
+              }
+              HandlerClose()
+            }}
+          />
         </ContainerElementsStyle>
       </Box>
     </Modal >
