@@ -3,9 +3,9 @@ import { GroupButtonStyle } from "./style"
 
 
 interface IActionButtons {
-  nameLeft: string,
+  nameLeft: string | JSX.Element,
   actionLeft: () => void
-  nameRight: string,
+  nameRight: string | JSX.Element,
   actionRight: () => void
 }
 
