@@ -37,6 +37,7 @@ import IconWarning from '../../Assets/icon_warning.svg'
 import IconDelete from '../../Assets/icon_trash.svg'
 import { Input } from "../Input";
 import { ModalAutomaticDay } from "../ModalAutomaticDay";
+import { IGeneratedDays } from "../../@types/IGeneratedDays";
 
 
 const style = {
@@ -61,6 +62,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   const { openModal, openModalState } = props
   const { scaleContext, setScaleContext, setDisplayScale } = useContext(ScaleContext);
 
+  const [generatedDays, setGeneratedDays] = useState<IGeneratedDays[]>([])
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
   const [openModalAutomaticDay, setOpenModalAutomaticDay] = useState(false);
   const [daysList, setDaysList] = useState<IDay[]>([]);
@@ -254,7 +256,17 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             <Button
               size='small'
               variant="contained"
-              onClick={() => { setOpenModalAutomaticDay(!openModalAutomaticDay) }}
+              onClick={() => { 
+                if (!dayjs(selectedStartDate).isValid() || !dayjs(selectedEndDate).isValid()) {
+                  CustomToast({ 
+                    message: 'Insira a data de início de fim da escala',
+                    duration: 1000,
+                    icon: String(IconWarning)
+                  })
+                  return 
+                }
+                setOpenModalAutomaticDay(!openModalAutomaticDay) 
+              }}
               style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginBottom: '4%', marginRight: '15px' })}
             >Adição automática</Button>
             <Button
@@ -311,6 +323,9 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
           <ModalAutomaticDay 
             openModal={openModalAutomaticDay}
             openModalState={setOpenModalAutomaticDay}
+            periodEnd={dayjs(selectedEndDate).format()}
+            periodStart={dayjs(selectedStartDate).format()}
+            generatedDays={setGeneratedDays}
           /> : ''
       }
       {
