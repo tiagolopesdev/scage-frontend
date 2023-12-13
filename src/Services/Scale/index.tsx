@@ -1,6 +1,16 @@
+import { IGenerationAutomaticDays } from "../../@types/IGenerationAutomaticDays"
 import { IScaleMonthSendApi } from "../../@types/IScaleMonthSendApi"
 import { scaleChannel } from "../Bases/api"
 
+
+export const GenerationAutomaticDays = async (props: IGenerationAutomaticDays) => {
+  try {
+    const response = await scaleChannel.post('/api/Scale/generationDays', props)
+    return response.data.data
+  } catch (error) {
+    return error
+  }
+}
 
 export const GetScale = (scaleId: string) => {
   return scaleChannel.get(`api/Scale/${scaleId}`)
