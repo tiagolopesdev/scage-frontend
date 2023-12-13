@@ -22,7 +22,6 @@ import { getAllUsersService } from "../../Services/Users";
 import { GenerationPreviewScale } from "../../Services/Scale";
 import { IScaleMonthPreview } from "../../@types/IScaleMonthPreview";
 import { CustomToast } from "../CustomToast";
-import { Toaster } from "react-hot-toast";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { IDay, IScaleMonth } from "../../@types/IScaleMonth";
@@ -30,14 +29,13 @@ import { initialStateDay } from "../../@types/InitialStateDay";
 import { ScaleContext } from "../../Context/scale";
 import { IsNewDay } from "../../Utils/isNewDay";
 
-import { ButtonGroup, ContainerNewDay, DataGenerationScaleStyle, DateGroupStyle } from "./style";
+import { ContainerNewDay, DataGenerationScaleStyle, DateGroupStyle } from "./style";
 import IconEdit from '../../Assets/icon_user_edit.svg'
 import IconError from '../../Assets/icon_error.svg'
 import IconWarning from '../../Assets/icon_warning.svg'
 import IconDelete from '../../Assets/icon_trash.svg'
 import { Input } from "../Input";
 import { ModalAutomaticDay } from "../ModalAutomaticDay";
-import { IGeneratedDays } from "../../@types/IGeneratedDays";
 import { ActionButtons } from "../ActionButtons";
 
 
@@ -160,8 +158,15 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   })
 
   const DeleteDay = (dayToRemove: IScaleMonthPreview) => {
-    const newListDay = daysList?.filter((item) => { return item !== dayToRemove });
-    setDaysList(newListDay)
+    const newListDay = scaleContext.days?.filter((item) => { return item !== dayToRemove });
+    setScaleContext({...scaleContext, ...{
+      id: scaleContext.id,
+      name: scaleContext.name,
+      start: scaleContext.start,
+      end: scaleContext.end,
+      isEnable: scaleContext.isEnable,
+      days: newListDay
+    }})
   }
 
   const EditDay = (day: IDay) => {
@@ -299,10 +304,6 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             }
             actionLeft={() => { HandlerClose() }}
             actionRight={() => { GenerationScale() }}
-          />
-          <Toaster
-            position="bottom-center"
-            reverseOrder={false}
           />
         </Box>
       </Modal>

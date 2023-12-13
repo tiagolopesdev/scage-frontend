@@ -1,7 +1,6 @@
 import Popover from '@mui/material/Popover';
-import Button from '@mui/material/Button';
-import { FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
-import { ButtonContainer, TextFieldContainer } from './style';
+import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { TextFieldContainer } from './style';
 import { IUser } from '../../../@types/IUser';
 import { Sex } from '../../../@types/Sex';
 import { Dispatch, useState } from 'react';
@@ -10,6 +9,8 @@ import { Toaster } from 'react-hot-toast';
 import { CustomToast } from '../../CustomToast';
 import IconError from '../../../Assets/icon_error.svg'
 import IconSuccess from '../../../Assets/icon_success.svg'
+import { ActionButtons } from '../../ActionButtons';
+import { Input } from '../../Input';
 
 interface IManipulationUserProps {
   id: string | undefined,
@@ -67,16 +68,6 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
     }
   }
 
-  const StyleButtonCustom = (styleCustom?: any) => ({
-    borderRadius: '15px',
-    fontFamily: 'Dosis',
-    textTransform: 'none',
-    fontSize: '1rem',
-    fontWeight: '600',
-    padding: '0px',
-    ...styleCustom
-  })
-
   return (
     <Popover
       id={id}
@@ -126,43 +117,27 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
               }
             />
           </RadioGroup>
-          <TextField
+          <Input 
             label="E-mail"
-            variant="standard"
-            id="standard-basic"
-            defaultValue={user?.email}
-            style={{ marginTop: '20px' }}
+            value={user?.email}            
             onChange={(event: any) => { setUserManipulation({ ...userManipulation, email: event.target.value }) }}
-          />
-          <TextField
-            label="Nome"
-            variant="standard"
-            id="standard-basic"
-            defaultValue={user?.name}
             style={{ marginTop: '20px' }}
+          />
+          <Input 
+            label="Nome"
+            value={user?.name}            
             onChange={(event: any) => { setUserManipulation({ ...userManipulation, name: event.target.value }) }}
+            style={{ marginTop: '20px' }}
           />
         </TextFieldContainer>
-        <ButtonContainer>
-          <Button
-            variant="outlined"
-            size='small'
-            color='error'
-            onClick={() => { setAnchorEl(null) }}
-            fullWidth
-            style={StyleButtonCustom()}
-          >Cancelar</Button>
-          <Button
-            style={StyleButtonCustom({
-              marginLeft: '20px',
-              backgroundColor: 'rgb(14, 202, 101)',
-            })}
-            variant="contained"
-            size='small'
-            onClick={() => { handlerUser() }}
-            fullWidth
-          >Salvar</Button>
-        </ButtonContainer>
+        <div style={{ margin: '10px 20px' }}>
+          <ActionButtons 
+            nameLeft="Cancelar"
+            nameRight="Salvar"
+            actionLeft={() => { setAnchorEl(null) }}
+            actionRight={() => { handlerUser() }}            
+          />
+        </div>
       </div>
       <Toaster
         position="bottom-center"
