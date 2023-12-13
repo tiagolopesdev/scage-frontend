@@ -62,7 +62,6 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   const { openModal, openModalState } = props
   const { scaleContext, setScaleContext, setDisplayScale } = useContext(ScaleContext);
 
-  const [generatedDays, setGeneratedDays] = useState<IGeneratedDays[]>([])
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
   const [openModalAutomaticDay, setOpenModalAutomaticDay] = useState(false);
   const [daysList, setDaysList] = useState<IDay[]>([]);
@@ -325,7 +324,6 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             openModalState={setOpenModalAutomaticDay}
             periodEnd={dayjs(selectedEndDate).format()}
             periodStart={dayjs(selectedStartDate).format()}
-            generatedDays={setGeneratedDays}
           /> : ''
       }
       {

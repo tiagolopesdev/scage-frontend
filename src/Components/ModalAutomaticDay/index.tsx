@@ -1,6 +1,6 @@
 import { Autocomplete, Box, Button, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material"
 import { Input } from "../Input"
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { TimePicker } from "@mui/x-date-pickers"
 import { CustomToast } from "../CustomToast"
 import { ActionButtons } from "../ActionButtons"
@@ -16,6 +16,9 @@ import { InformationsDayStyle } from "./style"
 import { IGeneratedDays } from "../../@types/IGeneratedDays"
 import { IAutomaticDays } from "../../@types/IAutomaticDays"
 import { DayOfWeek } from "../../@types/DayOfWeek"
+import { IDay } from "../../@types/IScaleMonth"
+import { initialStateUser } from "../../@types/InitialStateDay"
+import { ScaleContext } from "../../Context/scale"
 
 
 const style = {
@@ -35,12 +38,13 @@ interface IModalAutomaticDay {
   openModalState: React.Dispatch<React.SetStateAction<boolean>>,
   periodStart: string,
   periodEnd: string,
-  generatedDays: React.Dispatch<React.SetStateAction<IGeneratedDays[]>> 
 }
 
 export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
 
-  const { openModal, openModalState, generatedDays } = props
+  const { openModal, openModalState } = props
+
+  const { scaleContext, setScaleContext } = useContext(ScaleContext);
 
   const initialStateDay: IAutomaticDays = {
     day: '',
@@ -186,15 +190,15 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
           actionLeft={() => { HandlerClose() }}
           actionRight={async () => {
             const dayToSend: IAutomaticDays[] = days.map((item) => {
-              
+
               delete item.isNew
-              
+
               item.time = dayjs(item.time).format('hh:mm:ss')
 
               const indexNameDay = Object.values(DayOfWeek).indexOf(item.day as unknown as DayOfWeek)
 
               item.day = Object.keys(DayOfWeek)[indexNameDay]
-              
+
               return item
             })
 
@@ -204,7 +208,32 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
               days: dayToSend
             })
 
-            generatedDays(responseApi)
+            let daysToInclude: IDay[] = []
+
+            responseApi.map((item: IGeneratedDays) => {
+              daysToInclude.push({
+                name: item.name,
+                dateTime: item.time,
+                cameraOne: initialStateUser,
+                cameraTwo: initialStateUser,
+                cutDesk: initialStateUser,
+                isEnable: true
+              })
+            })
+
+            daysToInclude = [...daysToInclude, ...scaleContext.days]
+
+            setScaleContext({
+              ...scaleContext, ...{
+                id: scaleContext.id,
+                name: scaleContext.name,
+                start: scaleContext.start,
+                end: scaleContext.end,
+                days: daysToInclude,
+                isEnable: scaleContext.isEnable
+              }
+            })
+
             HandlerClose()
           }}
         />
