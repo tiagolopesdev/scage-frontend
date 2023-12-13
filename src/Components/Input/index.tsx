@@ -6,7 +6,7 @@ interface IInputProps {
   value?: string,
   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
-  style?: any
+  style?: React.CSSProperties | undefined
 }
 
 export const Input = (props: IInputProps) => {
