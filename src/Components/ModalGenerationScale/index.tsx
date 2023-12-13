@@ -38,6 +38,7 @@ import IconDelete from '../../Assets/icon_trash.svg'
 import { Input } from "../Input";
 import { ModalAutomaticDay } from "../ModalAutomaticDay";
 import { IGeneratedDays } from "../../@types/IGeneratedDays";
+import { ActionButtons } from "../ActionButtons";
 
 
 const style = {
@@ -255,16 +256,16 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
             <Button
               size='small'
               variant="contained"
-              onClick={() => { 
+              onClick={() => {
                 if (!dayjs(selectedStartDate).isValid() || !dayjs(selectedEndDate).isValid()) {
-                  CustomToast({ 
+                  CustomToast({
                     message: 'Insira a data de início de fim da escala',
                     duration: 1000,
                     icon: String(IconWarning)
                   })
-                  return 
+                  return
                 }
-                setOpenModalAutomaticDay(!openModalAutomaticDay) 
+                setOpenModalAutomaticDay(!openModalAutomaticDay)
               }}
               style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginBottom: '4%', marginRight: '15px' })}
             >Adição automática</Button>
@@ -290,27 +291,15 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
               </TableBody>
             </Table>
           </TableContainer>
-          <ButtonGroup>
-            <Button
-              style={ButtonStyleCustom({ color: '#CA0E0E', border: '1px solid #CA0E0E' })}
-              variant="outlined"
-              size='small'
-              fullWidth
-              onClick={() => { HandlerClose() }}
-            >Cancelar</Button>
-            <Button
-              style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginLeft: '30px' })}
-              onClick={() => { GenerationScale() }}
-              variant="contained"
-              size='small'
-              fullWidth
-            >
-              {isGenerationScale ?
-                <CircularProgress style={{ color: 'white', width: '20px', height: '20px' }} color="secondary" />
-                : 'Gerar escala'
-              }
-            </Button>
-          </ButtonGroup>
+          <ActionButtons
+            nameLeft="Cancelar"
+            nameRight={isGenerationScale ?
+              <CircularProgress style={{ color: 'white', width: '20px', height: '20px' }} color="secondary" />
+              : 'Gerar escala'
+            }
+            actionLeft={() => { HandlerClose() }}
+            actionRight={() => { GenerationScale() }}
+          />
           <Toaster
             position="bottom-center"
             reverseOrder={false}
@@ -318,8 +307,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
         </Box>
       </Modal>
       {
-        openModalAutomaticDay ? 
-          <ModalAutomaticDay 
+        openModalAutomaticDay ?
+          <ModalAutomaticDay
             openModal={openModalAutomaticDay}
             openModalState={setOpenModalAutomaticDay}
             periodEnd={dayjs(selectedEndDate).format()}
