@@ -172,7 +172,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     return scaleContext.days?.map((item, index) => {
       return (
         <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-          <TableCell sx={{ fontWeight: 900 }} component="th" scope="row">
+          <TableCell sx={{ fontWeight: 600 }} component="th" scope="row">
             {item.name}
             {
               IsNewDay(item) ?
@@ -186,8 +186,8 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
                 ''
             }
           </TableCell>
-          <TableCell sx={{ fontWeight: 900 }} align="center">{dayjs(item.dateTime).format('DD/MM/YYYY')}</TableCell>
-          <TableCell sx={{ fontWeight: 900 }} align="center">{dayjs(item.dateTime).format('hh:mm:ss')}</TableCell>
+          <TableCell sx={{ fontWeight: 600 }} align="center">{dayjs(item.dateTime).format('DD/MM/YYYY')}</TableCell>
+          <TableCell sx={{ fontWeight: 600 }} align="center">{dayjs(item.dateTime).format('hh:mm:ss')}</TableCell>
           <TableCell align="right" style={{ padding: '0rem 0.5rem 0rem 0.5rem' }}>
             <IconButton onClick={() => {
               EditDay(item)
