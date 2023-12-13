@@ -213,7 +213,7 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
             responseApi.map((item: IGeneratedDays) => {
               daysToInclude.push({
                 name: item.name,
-                dateTime: item.time,
+                dateTime: item.dateTime,
                 cameraOne: initialStateUser,
                 cameraTwo: initialStateUser,
                 cutDesk: initialStateUser,
