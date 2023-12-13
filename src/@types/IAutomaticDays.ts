@@ -1,6 +1,6 @@
 export interface IAutomaticDays {
   day: string,
-  name: number | null,
+  nameEvent: string | null,
   time: string | null,
   isNew?: boolean
 }

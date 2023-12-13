@@ -1,9 +1,9 @@
-export const DayOfWeek = [
-  { label: 'Segunda-feira' },
-  { label: 'Terça-feira' },
-  { label: 'Quarta-feira' },
-  { label: 'Quinta-feira' },
-  { label: 'Sexta-feira' },
-  { label: 'Sábado' },
-  { label: 'Domingo' }
-]
+export enum DayOfWeek {
+  Sunday = 'Domingo',
+  Monday = 'Segunda-feira',
+  Tuesday = 'Terça-feira',
+  Wednesday = 'Quarta-feira',
+  Thursday = 'Quinta-feira',
+  Friday = 'Sexta-feira',
+  Saturday = 'Sábado'
+}
