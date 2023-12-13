@@ -1,17 +1,21 @@
 import { Autocomplete, Box, Button, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material"
 import { Input } from "../Input"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { TimePicker } from "@mui/x-date-pickers"
 import { CustomToast } from "../CustomToast"
 import { ActionButtons } from "../ActionButtons"
 import { Icon } from "../Img"
+import { GenerationAutomaticDays } from '../../Services/Scale'
 import dayjs from "dayjs"
 
 import IconDelete from '../../Assets/icon_trash.svg'
 import IconEdit from '../../Assets/icon_user_edit.svg'
 import IconWarning from '../../Assets/icon_warning.svg'
-import { DayOfWeek } from "../../@types/DayOfWeek"
+import { DayOfWeekOptions } from "../../@types/DayOfWeekOptions"
 import { InformationsDayStyle } from "./style"
+import { IGeneratedDays } from "../../@types/IGeneratedDays"
+import { IAutomaticDays } from "../../@types/IAutomaticDays"
+import { DayOfWeek } from "../../@types/DayOfWeek"
 
 
 const style = {
@@ -26,43 +30,38 @@ const style = {
   width: 750
 }
 
-
-interface IDay {
-  day: string,
-  name: string | null,
-  time: string | null,
-  isNew: boolean
-}
-
 interface IModalAutomaticDay {
   openModal: boolean,
-  openModalState: React.Dispatch<React.SetStateAction<boolean>>
+  openModalState: React.Dispatch<React.SetStateAction<boolean>>,
+  periodStart: string,
+  periodEnd: string,
+  generatedDays: React.Dispatch<React.SetStateAction<IGeneratedDays[]>> 
 }
 
 export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
 
-  const { openModal, openModalState } = props
+  const { openModal, openModalState, generatedDays } = props
 
-  const initialStateDay: IDay = {
+  const initialStateDay: IAutomaticDays = {
     day: '',
-    name: null,
+    nameEvent: null,
     time: null,
     isNew: false
   }
-  const [days, setDays] = useState<IDay[]>([]);
-  const [day, setDay] = useState<IDay>(initialStateDay);
+  const [days, setDays] = useState<IAutomaticDays[]>([]);
+  const [day, setDay] = useState<IAutomaticDays>(initialStateDay);
   const [removeDay, setRemoveDay] = useState(false)
-  const [positionEdit, setPositionEdit] = useState<IDay | null>(null)
+  const [positionEdit, setPositionEdit] = useState<IAutomaticDays | null>(null)
 
   const HandlerClose = () => {
     openModalState(!openModal)
   }
 
   const displayDaysAdded = (): JSX.Element[] => {
-    return days.map((item: IDay, index: number) => {
+    return days.map((item: IAutomaticDays, index: number) => {
       return <TableRow>
         <TableCell sx={{ fontWeight: 400 }} align="left">{item.day}</TableCell>
-        <TableCell sx={{ fontWeight: 400 }} align="left">{item.name}</TableCell>
+        <TableCell sx={{ fontWeight: 400 }} align="left">{item.nameEvent}</TableCell>
         <TableCell sx={{ fontWeight: 400 }} align="center">{dayjs(item.time).format('hh:mm:ss')}</TableCell>
         <TableCell align="right" style={{ padding: '0rem 0.4rem 0rem 0.4rem' }}>
           <IconButton onClick={() => {
@@ -102,7 +101,7 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
               disablePortal
               sx={{ minWidth: 170 }}
               id="combo-box-demo-two"
-              options={DayOfWeek}
+              options={DayOfWeekOptions}
               value={{ label: day.day }}
               isOptionEqualToValue={(option, value) => value.label === option.label}
               renderInput={(params) => <TextField {...params} label="Dia da semana" />}
@@ -110,10 +109,10 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
             />
             <Input
               style={{ margin: '0px 5px', minWidth: '40%', width: '100%' }}
-              value={day?.name ?? ''}
+              value={day.nameEvent ?? ''}
               label='Nome do evento'
               onChange={(event: any) => {
-                setDay({ ...day as IDay, name: event.target.value })
+                setDay({ ...day as IAutomaticDays, nameEvent: event.target.value })
               }}
             />
             <TimePicker
@@ -121,8 +120,8 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
               value={day?.time}
               onChange={(event) => {
                 event !== null ?
-                  setDay({ ...day as IDay, time: event as string }) :
-                  setDay({ ...day as IDay, time: '' })
+                  setDay({ ...day as IAutomaticDays, time: event as string }) :
+                  setDay({ ...day as IAutomaticDays, time: '' })
               }}
               renderInput={(params) =>
                 <TextField
@@ -146,7 +145,7 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
             size='small'
             color="success"
             onClick={() => {
-              if ((day.name === '' || day.name === null) || day.time === null || day.day === null) {
+              if ((day.nameEvent === null || day.nameEvent === null) || day.time === null || day.day === null) {
                 CustomToast({ message: 'Preencha todos os campos para adicionar um dia.', duration: 1000, icon: String(IconWarning) })
               } else {
                 day.isNew = true
@@ -154,7 +153,7 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
                 if (days.length === 0) {
                   setDays([day])
                 } else if (positionEdit !== null) {
-                  let positionToRemove = days.findIndex((item: IDay) => { return item === positionEdit })
+                  let positionToRemove = days.findIndex((item: IAutomaticDays) => { return item === positionEdit })
                   days.splice(positionToRemove, 1, day)
                   setDays(days)
                 } else {
@@ -185,7 +184,29 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
           nameLeft="Cancelar"
           nameRight="Gerar inclusão de dias"
           actionLeft={() => { HandlerClose() }}
-          actionRight={() => { }}
+          actionRight={async () => {
+            const dayToSend: IAutomaticDays[] = days.map((item) => {
+              
+              delete item.isNew
+              
+              item.time = dayjs(item.time).format('hh:mm:ss')
+
+              const indexNameDay = Object.values(DayOfWeek).indexOf(item.day as unknown as DayOfWeek)
+
+              item.day = Object.keys(DayOfWeek)[indexNameDay]
+              
+              return item
+            })
+
+            const responseApi: IGeneratedDays[] = await GenerationAutomaticDays({
+              periodStart: props.periodStart,
+              periodEnd: props.periodEnd,
+              days: dayToSend
+            })
+
+            generatedDays(responseApi)
+            HandlerClose()
+          }}
         />
       </Box>
     </Modal>
