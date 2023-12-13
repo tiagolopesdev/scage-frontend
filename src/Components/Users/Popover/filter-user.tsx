@@ -1,7 +1,8 @@
-import { Button, FormControlLabel, Popover, Radio, RadioGroup } from "@mui/material";
-import { ButtonContainer, TextFieldContainer } from "./style";
+import { FormControlLabel, Popover, Radio, RadioGroup } from "@mui/material";
+import { TextFieldContainer } from "./style";
 import { Sex } from "../../../@types/Sex";
 import { useState } from "react";
+import { ActionButtons } from "../../ActionButtons";
 
 interface IFilterUserProps {
   id: string | undefined,
@@ -19,21 +20,11 @@ export const FilterUser = (props: IFilterUserProps) => {
   const [sexFem, setSexFem] = useState(false);
 
   const applyingFilter = () => {
-    
+
     const sexSelected: string = sexMasc ? Sex.MASCULINO.toString() : Sex.FEMININO.toString()
-    
+
     setSexSelected(sexSelected)
   }
-
-  const StyleButtonCustom = (styleCustom?: any) => ({
-    borderRadius: '15px',
-    fontFamily: 'Dosis',
-    textTransform: 'none',
-    fontSize: '1rem',
-    fontWeight: '600',
-    padding: '0px',
-    ...styleCustom
-  })
 
   return (
     <Popover
@@ -60,8 +51,8 @@ export const FilterUser = (props: IFilterUserProps) => {
               control={
                 <Radio
                   checked={sexMasc}
-                  onClick={() => { 
-                    setSexMasc(!sexMasc) 
+                  onClick={() => {
+                    setSexMasc(!sexMasc)
                     setSexFem(false)
                   }}
                 />
@@ -72,8 +63,8 @@ export const FilterUser = (props: IFilterUserProps) => {
               control={
                 <Radio
                   checked={sexFem}
-                  onClick={() => { 
-                    setSexFem(!sexFem) 
+                  onClick={() => {
+                    setSexFem(!sexFem)
                     setSexMasc(false)
                   }}
                 />
@@ -81,26 +72,14 @@ export const FilterUser = (props: IFilterUserProps) => {
             />
           </RadioGroup>
         </TextFieldContainer>
-        <ButtonContainer>
-          <Button
-            variant="outlined"
-            size='small'
-            color='error'
-            onClick={() => { setAnchorEl(null) }}
-            fullWidth
-            style={StyleButtonCustom()}
-          >Cancelar</Button>
-          <Button
-            style={StyleButtonCustom({
-              marginLeft: '20px',
-              backgroundColor: 'rgb(14, 202, 101)',
-            })}
-            variant="contained"
-            size='small'
-            onClick={() => { applyingFilter() }}
-            fullWidth
-          >Aplicar</Button>
-        </ButtonContainer>
+        <div style={{ margin: '20px' }}>
+          <ActionButtons
+            nameLeft="Cancelar"
+            nameRight="Aplicar"
+            actionLeft={() => { setAnchorEl(null) }}
+            actionRight={() => { applyingFilter() }}
+          />
+        </div>
       </div>
     </Popover>
   );

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const TextFieldContainer = styled.div`
-  margin: 0px 20px 15px 20px;
+  margin: 0px 30px;
   display: flex;
   flex-direction: column-reverse
 `;
