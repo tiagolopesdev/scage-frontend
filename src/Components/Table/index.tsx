@@ -1,21 +1,5 @@
-import { TableContainer, Table, TableHead, TableCell, TableRow, TableBody, Paper, SxProps, Theme } from "@mui/material"
-
-
-interface ITableCellProps {
-  name: string
-  align: 'inherit' | 'left' | 'center' | 'right' | 'justify'
-}
-
-export interface ITableItensRowProps {
-  name: string
-  align: 'inherit' | 'left' | 'center' | 'right' | 'justify',
-  actions?: JSX.Element,
-  style?: SxProps<Theme> | undefined
-}
-
-export interface ITableRowProps {
-  rows: ITableItensRowProps[]
-}
+import { TableContainer, Table, TableHead, TableCell, TableRow, TableBody, Paper } from "@mui/material"
+import { ITableCellProps, ITableItensRowProps, ITableRowProps } from "../../@types/TableProps"
 
 interface ITableProps {
   tableCell: ITableCellProps[]
@@ -61,60 +45,3 @@ export const TableComponent = (props: ITableProps) => {
     </Table>
   </TableContainer>
 }
-/*
-
-  const propsCells = [
-    {name: 'Data', align: 'center'}
-    {name: 'Horario', align: 'left'}
-    {name: 'Nome do evento', align: 'left'}
-    {name: 'Ações', align: 'Right'}
-  ]
-  
-  const propsRows = [
-    [
-      {name: '00/00/0000', align: 'center'}
-      {name: '00:00', align: 'left'}
-      {name: 'Event name example', align: 'left'}    
-      {name: '', align: 'left', actions: {}}    
-    ]
-  ]
-
-*/
-
-
-/*
-const listDays = () => {
-    return scaleContext.days?.map((item, index) => {
-      return (
-        <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-          <TableCell sx={{ fontWeight: 600 }} component="th" scope="row">
-            {item.name}
-            {
-              IsNewDay(item) ?
-                <Chip
-                  style={{ marginLeft: '20px' }}
-                  size='small'
-                  color="primary"
-                  variant="outlined"
-                  label='Rascunho'
-                /> :
-                ''
-            }
-          </TableCell>
-          <TableCell sx={{ fontWeight: 600 }} align="center">{dayjs(item.dateTime).format('DD/MM/YYYY')}</TableCell>
-          <TableCell sx={{ fontWeight: 600 }} align="center">{dayjs(item.dateTime).format('hh:mm:ss')}</TableCell>
-          <TableCell align="right" style={{ padding: '0rem 0.5rem 0rem 0.5rem' }}>
-            <IconButton onClick={() => {
-              EditDay(item)
-            }}>
-              <Icon src={String(IconEdit)} />
-            </IconButton>
-            <IconButton onClick={() => { DeleteDay(item) }}>
-              <Icon src={String(IconDelete)} />
-            </IconButton>
-          </TableCell>
-        </TableRow>
-      )
-    })
-  }
-*/

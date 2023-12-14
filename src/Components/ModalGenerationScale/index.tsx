@@ -20,16 +20,17 @@ import { IDay, IScaleMonth } from "../../@types/IScaleMonth";
 import { initialStateDay } from "../../@types/InitialStateDay";
 import { ScaleContext } from "../../Context/scale";
 import { IsNewDay } from "../../Utils/isNewDay";
+import { Input } from "../Input";
+import { ModalAutomaticDay } from "../ModalAutomaticDay";
+import { ActionButtons } from "../ActionButtons";
+import { ITableRowProps } from "../../@types/TableProps";
+import { TableComponent } from "../Table";
 
 import { ContainerNewDay, DataGenerationScaleStyle, DateGroupStyle } from "./style";
 import IconEdit from '../../Assets/icon_user_edit.svg'
 import IconError from '../../Assets/icon_error.svg'
 import IconWarning from '../../Assets/icon_warning.svg'
 import IconDelete from '../../Assets/icon_trash.svg'
-import { Input } from "../Input";
-import { ModalAutomaticDay } from "../ModalAutomaticDay";
-import { ActionButtons } from "../ActionButtons";
-import { ITableRowProps, TableComponent } from "../Table";
 
 
 const style = {
