@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material"
+import { Autocomplete, Box, Button, IconButton, Modal, TextField } from "@mui/material"
 import { Input } from "../Input"
 import React, { useContext, useEffect, useState } from "react"
 import { TimePicker } from "@mui/x-date-pickers"
@@ -19,6 +19,8 @@ import { DayOfWeek } from "../../@types/DayOfWeek"
 import { IDay } from "../../@types/IScaleMonth"
 import { initialStateUser } from "../../@types/InitialStateDay"
 import { ScaleContext } from "../../Context/scale"
+import { TableComponent } from "../Table"
+import { ITableRowProps } from "../../@types/TableProps"
 
 
 const style = {
@@ -61,28 +63,36 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
     openModalState(!openModal)
   }
 
-  const displayDaysAdded = (): JSX.Element[] => {
-    return days.map((item: IAutomaticDays, index: number) => {
-      return <TableRow>
-        <TableCell sx={{ fontWeight: 400 }} align="left">{item.day}</TableCell>
-        <TableCell sx={{ fontWeight: 400 }} align="left">{item.nameEvent}</TableCell>
-        <TableCell sx={{ fontWeight: 400 }} align="center">{dayjs(item.time).format('hh:mm:ss')}</TableCell>
-        <TableCell align="right" style={{ padding: '0rem 0.4rem 0rem 0.4rem' }}>
-          <IconButton onClick={() => {
-            setDay(item)
-            setPositionEdit(item)
-          }}>
-            <Icon src={String(IconEdit)} />
-          </IconButton>
-          <IconButton onClick={() => {
-            days.splice(index, 1)
-            setRemoveDay(!removeDay)
-          }}>
-            <Icon src={String(IconDelete)} />
-          </IconButton>
-        </TableCell>
-      </TableRow>
+  const displayDaysAdded = (): ITableRowProps[] => {
+
+    let row: ITableRowProps[] = []
+
+    days.map((item, index) => {
+      row.push({
+        rows: [
+          { name: item.day, align: "left", style: { paddingLeft: '15px' } },
+          { name: item.nameEvent as string, align: "left", style: { paddingLeft: '15px' } },
+          { name: dayjs(item.time).format('hh:mm:ss'), align: "center" },
+          {
+            name: '', align: "right", actions: <>
+              <IconButton onClick={() => {
+                setDay(item)
+                setPositionEdit(item)
+              }}>
+                <Icon src={String(IconEdit)} />
+              </IconButton>
+              <IconButton onClick={() => {
+                days.splice(index, 1)
+                setRemoveDay(!removeDay)
+              }}>
+                <Icon src={String(IconDelete)} />
+              </IconButton>
+            </>
+          }
+        ]
+      })
     })
+    return row
   }
 
   useEffect(() => {
@@ -169,21 +179,16 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
             }}
           >{!day.isNew ? 'Adicionar' : 'Atualizar'}</Button>
         </InformationsDayStyle>
-        <TableContainer component={Paper} sx={{ maxHeight: 300, marginTop: '5%' }} >
-          <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 600, fontSize: 'larger', width: '20%' }} >Dia</TableCell>
-                <TableCell sx={{ fontWeight: 600, fontSize: 'larger' }} align="left">Nome do evento</TableCell>
-                <TableCell sx={{ fontWeight: 600, fontSize: 'larger', width: '40px' }} align="center">Horário</TableCell>
-                <TableCell sx={{ fontWeight: 600, fontSize: 'larger', width: '80px' }} align="right">Ações</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {displayDaysAdded()}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <TableComponent
+          style={{ marginTop: '20px' }}
+          tableCell={[
+            { name: 'Dia', align: 'left' },
+            { name: 'Nome do evento', align: 'left' },
+            { name: 'Horário', align: 'center' },
+            { name: 'Ações', align: 'right' }
+          ]}
+          tableRows={displayDaysAdded()}
+        />
         <ActionButtons
           nameLeft="Cancelar"
           nameRight="Gerar inclusão de dias"
