@@ -1,17 +1,9 @@
 import {
   Box,
   Button,
-  Chip,
   CircularProgress,
   IconButton,
   Modal,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField
 } from "@mui/material";
 import { Icon } from "../Img";
@@ -37,6 +29,7 @@ import IconDelete from '../../Assets/icon_trash.svg'
 import { Input } from "../Input";
 import { ModalAutomaticDay } from "../ModalAutomaticDay";
 import { ActionButtons } from "../ActionButtons";
+import { ITableRowProps, TableComponent } from "../Table";
 
 
 const style = {
@@ -159,14 +152,16 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
   const DeleteDay = (dayToRemove: IScaleMonthPreview) => {
     const newListDay = scaleContext.days?.filter((item) => { return item !== dayToRemove });
-    setScaleContext({...scaleContext, ...{
-      id: scaleContext.id,
-      name: scaleContext.name,
-      start: scaleContext.start,
-      end: scaleContext.end,
-      isEnable: scaleContext.isEnable,
-      days: newListDay
-    }})
+    setScaleContext({
+      ...scaleContext, ...{
+        id: scaleContext.id,
+        name: scaleContext.name,
+        start: scaleContext.start,
+        end: scaleContext.end,
+        isEnable: scaleContext.isEnable,
+        days: newListDay
+      }
+    })
   }
 
   const EditDay = (day: IDay) => {
@@ -174,39 +169,30 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
     setOpenModalNewDay(true)
   }
 
-  const listDays = () => {
-    return scaleContext.days?.map((item, index) => {
-      return (
-        <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-          <TableCell sx={{ fontWeight: 600 }} component="th" scope="row">
-            {item.name}
-            {
-              IsNewDay(item) ?
-                <Chip
-                  style={{ marginLeft: '20px' }}
-                  size='small'
-                  color="primary"
-                  variant="outlined"
-                  label='Rascunho'
-                /> :
-                ''
-            }
-          </TableCell>
-          <TableCell sx={{ fontWeight: 600 }} align="center">{dayjs(item.dateTime).format('DD/MM/YYYY')}</TableCell>
-          <TableCell sx={{ fontWeight: 600 }} align="center">{dayjs(item.dateTime).format('hh:mm:ss')}</TableCell>
-          <TableCell align="right" style={{ padding: '0rem 0.5rem 0rem 0.5rem' }}>
-            <IconButton onClick={() => {
-              EditDay(item)
-            }}>
-              <Icon src={String(IconEdit)} />
-            </IconButton>
-            <IconButton onClick={() => { DeleteDay(item) }}>
-              <Icon src={String(IconDelete)} />
-            </IconButton>
-          </TableCell>
-        </TableRow>
-      )
+  const listDays = (): ITableRowProps[] => {
+
+    let row: ITableRowProps[] = []
+
+    scaleContext.days.map((item) => {
+      row.push({
+        rows: [
+          { name: item.name, align: "left", style: { paddingLeft: '15px' } },
+          { name: dayjs(item.dateTime).format('DD/MM/YYYY'), align: "center" },
+          { name: dayjs(item.dateTime).format('hh:mm:ss'), align: "center" },
+          {
+            name: '', align: "right", actions: <>
+              <IconButton onClick={() => { EditDay(item) }}>
+                <Icon src={String(IconEdit)} />
+              </IconButton>
+              <IconButton onClick={() => { DeleteDay(item) }}>
+                <Icon src={String(IconDelete)} />
+              </IconButton>
+            </>
+          }
+        ]
+      })
     })
+    return row
   }
 
   useEffect(() => { listDays() }, [scaleContext.days])
@@ -281,21 +267,15 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
               style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginBottom: '4%' })}
             >Adicionar novo dia</Button>
           </ContainerNewDay>
-          <TableContainer component={Paper} sx={{ maxHeight: 300 }} >
-            <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 600, fontSize: 'larger' }} >Nome</TableCell>
-                  <TableCell sx={{ fontWeight: 600, fontSize: 'larger' }} align="center">Data</TableCell>
-                  <TableCell sx={{ fontWeight: 600, fontSize: 'larger' }} align="center">Horário</TableCell>
-                  <TableCell sx={{ fontWeight: 600, fontSize: 'larger' }} align="right">Ações</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {listDays()}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <TableComponent
+            tableCell={[
+              { name: 'Nome', align: 'left' },
+              { name: 'Data', align: 'center' },
+              { name: 'Horário', align: 'center' },
+              { name: 'Ações', align: 'right' }
+            ]}
+            tableRows={listDays()}
+          />
           <ActionButtons
             nameLeft="Cancelar"
             nameRight={isGenerationScale ?
