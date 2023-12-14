@@ -1,14 +1,15 @@
-import { TableContainer, Table, TableHead, TableCell, TableRow, TableBody, Paper } from "@mui/material"
+import { TableContainer, Table, TableHead, TableCell, TableRow, TableBody, Paper, SxProps, Theme } from "@mui/material"
 import { ITableCellProps, ITableItensRowProps, ITableRowProps } from "../../@types/TableProps"
 
 interface ITableProps {
   tableCell: ITableCellProps[]
-  tableRows: ITableRowProps[]
+  tableRows: ITableRowProps[],
+  style?: SxProps<Theme> | undefined
 }
 
 export const TableComponent = (props: ITableProps) => {
 
-  return <TableContainer component={Paper} sx={{ maxHeight: 300 }} >
+  return <TableContainer component={Paper} sx={{ maxHeight: 300, ...props.style }} >
     <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
       <TableHead>
         <TableRow>
