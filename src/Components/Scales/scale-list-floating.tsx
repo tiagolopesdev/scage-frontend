@@ -10,6 +10,7 @@ import { ISingleScale } from "../../@types/ISingleScale"
 import { Months } from "../../@types/Months"
 import { ScaleContext } from "../../Context/scale"
 import { Input } from "../Input"
+import { CustomMessageError } from "../CustomMessageError"
 
 
 export const ScaleListFloating = () => {
@@ -51,11 +52,12 @@ export const ScaleListFloating = () => {
           </div>
         })}
       </div>
-    } else {
-      return selectedMonth === '' ?
-        <Alert severity="warning">Não foi possível obter as escalas</Alert> :
-        <Alert severity="info">Escala de <strong>{selectedMonth}</strong> não encontrada</Alert>
     }
+    // else {
+    //   return selectedMonth === '' ?
+    //     <CustomMessageError message="Não foi possível exibir as escalas" /> :
+    //     <Alert severity="info">Escala de <strong>{selectedMonth}</strong> não encontrada</Alert>
+    // }
   }
 
   return (
@@ -65,12 +67,20 @@ export const ScaleListFloating = () => {
           value={selectedMonth}
           label='Mês'
           onChange={(event: any) => {
-            setSelectedMonth(event.target.value ?? '') 
+            setSelectedMonth(event.target.value ?? '')
           }}
         />
       </ContainerComboBoxStyle>
-      <ScroolCustom >
-        {managerScaleRender()}
+      <ScroolCustom style={scales.length === 0 && isLoading ? undefined : {
+        display: 'flex', alignItems: 'center',
+        alignContent: 'center',
+        justifyContent: 'center'
+      }} >
+        {
+          scales.length !== 0 && !isLoading ?
+            <CustomMessageError message="Não foi possível exibir as escalas." /> :
+            managerScaleRender()
+        }
       </ScroolCustom>
     </ContainerScaleList>
   )

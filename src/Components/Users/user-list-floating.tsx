@@ -13,6 +13,7 @@ import { CustomToast } from "../CustomToast"
 import toast from "react-hot-toast"
 import { ScroolCustom } from "../../Styles/index"
 import IconError from '../../Assets/icon_error.svg'
+import { CustomMessageError } from "../CustomMessageError"
 
 
 export const UserListFloating = () => {
@@ -89,14 +90,14 @@ export const UserListFloating = () => {
   const managerUserRender = () => {
     if (users.length > 0) {
       return users.map((user) => {
-          return <div key={user.id} style={{ maxWidth: '25vw' }}>
-            <User
-              user={user}
-              setUserWasManipuled={setUserWasManipuled}
-              onDelete={deleteUser}
-            />
-          </div>
-        })
+        return <div key={user.id} style={{ maxWidth: '25vw' }}>
+          <User
+            user={user}
+            setUserWasManipuled={setUserWasManipuled}
+            onDelete={deleteUser}
+          />
+        </div>
+      })
     } else {
       return (
         <Skeleton variant="rounded" width='100%' height='60vh' />
@@ -135,8 +136,16 @@ export const UserListFloating = () => {
           }
         </BadgeSizeFixed>
       </Box>
-      <ScroolCustom>
-        {managerUserRender()}
+      <ScroolCustom style={users.length > 0 || users.length !== undefined ? undefined : {
+        display: 'flex', alignItems: 'center',
+        alignContent: 'center',
+        justifyContent: 'center'
+      }}>
+        {
+          users.length <= 0 || users.length === undefined ?
+            <CustomMessageError message="Não foi possível exibir os usuários." /> :
+            managerUserRender()
+        }
       </ScroolCustom>
       <Button
         style={{
