@@ -1,5 +1,5 @@
 import { ContainerComboBoxStyle, ContainerScaleList } from "./style"
-import { Alert, Autocomplete, Skeleton, TextField } from "@mui/material"
+import { Alert, Skeleton } from "@mui/material"
 import { Scale } from "./scale"
 import { useContext, useEffect, useState } from "react"
 import { CustomToast } from "../CustomToast"
@@ -7,7 +7,6 @@ import { ScroolCustom } from "../../Styles/index"
 import IconError from '../../Assets/icon_error.svg'
 import { GetSingleScales } from "../../Services/Scale"
 import { ISingleScale } from "../../@types/ISingleScale"
-import { Months } from "../../@types/Months"
 import { ScaleContext } from "../../Context/scale"
 import { Input } from "../Input"
 import { CustomMessageError } from "../CustomMessageError"
@@ -34,6 +33,7 @@ export const ScaleListFloating = () => {
         icon: String(IconError),
         message: 'Não foi possível obter escalas'
       })
+      setIsLoading(false)
     }
   }
 
@@ -52,12 +52,11 @@ export const ScaleListFloating = () => {
           </div>
         })}
       </div>
+    } else {
+      return selectedMonth === '' ?
+        <CustomMessageError message="Não foi possível exibir as escalas." /> :
+        <Alert severity="info">Escala de <strong>{selectedMonth}</strong> não encontrada</Alert>
     }
-    // else {
-    //   return selectedMonth === '' ?
-    //     <CustomMessageError message="Não foi possível exibir as escalas" /> :
-    //     <Alert severity="info">Escala de <strong>{selectedMonth}</strong> não encontrada</Alert>
-    // }
   }
 
   return (
@@ -71,16 +70,12 @@ export const ScaleListFloating = () => {
           }}
         />
       </ContainerComboBoxStyle>
-      <ScroolCustom style={scales.length === 0 && isLoading ? undefined : {
+      <ScroolCustom style={!isLoading && (scales.length === 0 || scales.length === undefined) ? {
         display: 'flex', alignItems: 'center',
         alignContent: 'center',
         justifyContent: 'center'
-      }} >
-        {
-          scales.length !== 0 && !isLoading ?
-            <CustomMessageError message="Não foi possível exibir as escalas." /> :
-            managerScaleRender()
-        }
+      } : undefined} >
+        {managerScaleRender()}
       </ScroolCustom>
     </ContainerScaleList>
   )
