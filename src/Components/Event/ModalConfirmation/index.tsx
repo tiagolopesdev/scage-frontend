@@ -1,4 +1,4 @@
-import { Button, Popover } from "@mui/material";
+import { Box, Button, Modal, Popover, Typography } from "@mui/material";
 import { useContext } from "react";
 import { ScaleContext } from "../../../Context/scale";
 import { ObjectIsEquals } from "../../../Utils/objectIsEquals";
@@ -7,28 +7,45 @@ import { CustomToast } from "../../CustomToast";
 
 import IconWarning from "../../../Assets/icon_warning.svg"
 import { ISerfHandler } from "../../../@types/IFromDay";
+import { EventSerf } from "..";
 
 
 function AlocationNewSerf(toDay: ISerfHandler, fromDay: ISerfHandler) {
   if (toDay.day.cameraOne?.id === toDay.serf.id) {
-    toDay.day.cameraOne = fromDay.serf    
+    toDay.day.cameraOne = fromDay.serf
   } else if (toDay.day.cameraTwo?.id === toDay.serf.id) {
     toDay.day.cameraTwo = fromDay.serf
-  } else if (toDay.day.cutDesk?.id === toDay.serf.id){
+  } else if (toDay.day.cutDesk?.id === toDay.serf.id) {
     toDay.day.cutDesk = fromDay.serf
   }
 }
 
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
+  borderRadius: '15px',
+  boxShadow: 24,
+  minWidth: 500,
+  width: 600,
+  minHeight: 200,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  p: 4,
+};
+
 interface IChangeSerfPopoverProps {
-  id?: string | undefined,
-  open: boolean,
-  setAnchorEl: React.Dispatch<React.SetStateAction<HTMLButtonElement | null>>
-  anchorEl?: HTMLButtonElement | null
+  openModal: boolean,
+  openModalState: React.Dispatch<React.SetStateAction<boolean>>
 }
+
 
 export const ChangeSerfPopover = (props: IChangeSerfPopoverProps) => {
 
-  const { id, anchorEl, open, setAnchorEl } = props
+  const { openModal, openModalState } = props
 
   const { scaleContext, fromDay, toDay, setScaleContext } = useContext(ScaleContext);
 
@@ -41,6 +58,10 @@ export const ChangeSerfPopover = (props: IChangeSerfPopoverProps) => {
     padding: '0px',
     ...styleCustom
   })
+
+  const HandlerClose = () => {
+    openModalState(!openModal)
+  }
 
   const changeSerf = () => {
 
@@ -86,46 +107,60 @@ export const ChangeSerfPopover = (props: IChangeSerfPopoverProps) => {
   }
 
   return (
-    <Popover
-      id={id}
-      open={open}
-      anchorEl={anchorEl}
-      onClose={() => { setAnchorEl(null) }}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'left',
-      }}
+    <Modal
+      open={openModal}
+      onClose={() => { HandlerClose() }}
+      aria-labelledby="modal-confirmation-title"
+      aria-describedby="modal-confirmation-description"
     >
-      <div style={{ padding: '5%' }}>
-        <div style={{ minWidth: '18rem' }}>
-          <p>Confirmar mudança de servo?</p>
-          <p>{`${fromDay.serf.name} por ${toDay.serf.name}`}</p>
-          <p>{`Do dia ${fromDay.day.dateTime}, ${fromDay.day.name}. Para o dia ${toDay.day.dateTime}, ${toDay.day.name}`}</p>
+      <Box sx={style}>
+        <div>
+          <div style={{ minWidth: '18rem' }}>
+            <Typography style={{ fontWeight: 600, fontSize: 19 }} >Confirmar mudança de servo?</Typography>
+            <Typography style={{ fontWeight: 500, fontSize: 16 }} >{`${fromDay.serf.name} por ${toDay.serf.name}`}</Typography>
+            <div style={{ display: 'flex', flexDirection: "row", width: '100%' }}>
+              <EventSerf
+                day={fromDay.day}
+                user={fromDay.serf}
+                isNotChange={true}
+                />
+              <EventSerf
+                day={toDay.day}
+                user={toDay.serf}
+                isNotChange={true}
+              />
+            </div>
+          </div>
+          <div style={{ display: 'flex', paddingTop: '5%' }}>
+            {/*
+
+              TODO -> Change estructure below, use the component already created
+
+            */}
+            <Button
+              variant="outlined"
+              size='small'
+              color='error'
+              onClick={() => { HandlerClose() }}
+              fullWidth
+              style={StyleButtonCustom()}
+            >Cancelar</Button>
+            <Button
+              style={StyleButtonCustom({
+                marginLeft: '20px',
+                backgroundColor: 'rgb(14, 202, 101)',
+              })}
+              variant="contained"
+              size='small'
+              onClick={() => {
+                changeSerf()
+                HandlerClose()
+              }}
+              fullWidth
+            >Confirmar</Button>
+          </div>
         </div>
-        <div style={{ display: 'flex', paddingTop: '5%' }}>
-          <Button
-            variant="outlined"
-            size='small'
-            color='error'
-            onClick={() => { setAnchorEl(null) }}
-            fullWidth
-            style={StyleButtonCustom()}
-          >Cancelar</Button>
-          <Button
-            style={StyleButtonCustom({
-              marginLeft: '20px',
-              backgroundColor: 'rgb(14, 202, 101)',
-            })}
-            variant="contained"
-            size='small'
-            onClick={() => {
-              changeSerf()
-              setAnchorEl(null)
-            }}
-            fullWidth
-          >Confirmar</Button>
-        </div>
-      </div>
-    </Popover>
-  );
+      </Box>
+    </Modal>
+  )
 }
