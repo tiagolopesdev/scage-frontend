@@ -8,6 +8,7 @@ import { CustomToast } from "../../CustomToast";
 import IconWarning from "../../../Assets/icon_warning.svg"
 import { ISerfHandler } from "../../../@types/IFromDay";
 import { EventSerf } from "..";
+import { ActionButtons } from "../../ActionButtons";
 
 
 function AlocationNewSerf(toDay: ISerfHandler, fromDay: ISerfHandler) {
@@ -123,7 +124,7 @@ export const ChangeSerfPopover = (props: IChangeSerfPopoverProps) => {
                 day={fromDay.day}
                 user={fromDay.serf}
                 isNotChange={true}
-                />
+              />
               <EventSerf
                 day={toDay.day}
                 user={toDay.serf}
@@ -131,34 +132,15 @@ export const ChangeSerfPopover = (props: IChangeSerfPopoverProps) => {
               />
             </div>
           </div>
-          <div style={{ display: 'flex', paddingTop: '5%' }}>
-            {/*
-
-              TODO -> Change estructure below, use the component already created
-
-            */}
-            <Button
-              variant="outlined"
-              size='small'
-              color='error'
-              onClick={() => { HandlerClose() }}
-              fullWidth
-              style={StyleButtonCustom()}
-            >Cancelar</Button>
-            <Button
-              style={StyleButtonCustom({
-                marginLeft: '20px',
-                backgroundColor: 'rgb(14, 202, 101)',
-              })}
-              variant="contained"
-              size='small'
-              onClick={() => {
-                changeSerf()
-                HandlerClose()
-              }}
-              fullWidth
-            >Confirmar</Button>
-          </div>
+          <ActionButtons
+            nameLeft="Cancelar"
+            nameRight="Confirmar"
+            actionLeft={() => { HandlerClose() }}
+            actionRight={() => {
+              changeSerf()
+              HandlerClose()
+            }}
+          />
         </div>
       </Box>
     </Modal>
