@@ -14,25 +14,20 @@ import { ScaleContext } from "../../Context/scale"
 
 interface IEventSerf {
   day: IDay,
-  user: IUser
+  user: IUser,
+  isNotChange?: boolean
 }
 
-export const EventSerf = ({ day, user }: IEventSerf) => {
+export const EventSerf = ({ day, user, isNotChange }: IEventSerf) => {
 
-  const date = dayjs(day.dateTime).format('DD/MM/YYYY')  
+  const date = dayjs(day.dateTime).format('DD/MM/YYYY')
   const hour = dayjs(day.dateTime).format('HH:mm')
 
   const { setToDay } = useContext(ScaleContext);
-  
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover-day' : undefined;
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false)
 
-  return <div key={`${day.id}-${user.id}`} style={{ display: 'flex' }}>
+  return <div key={`${day.id}-${user.id}`} style={{ display: 'flex', width: '100%' }}>
     <InformationContainerStyle>
       <TextStyle fontSize={15} isBold={true} >{day.name}</TextStyle>
       <InformationGroupStyle>
@@ -46,24 +41,24 @@ export const EventSerf = ({ day, user }: IEventSerf) => {
         </InformationStyle>
       </InformationGroupStyle>
     </InformationContainerStyle>
-    <IconButton aria-describedby={id}
-      onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+    <IconButton
+      style={isNotChange ? { display: 'none' } : undefined}
+      onClick={() => {
         setToDay({
           day: day,
           serf: user
         })
-        handleClick(event)
+        setOpenConfirmationModal(!openConfirmationModal)
       }}
     >
       <Icon src={String(IconChange)} />
     </IconButton>
     {
-      <ChangeSerfPopover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        setAnchorEl={setAnchorEl}
-      />
+      openConfirmationModal ?
+        <ChangeSerfPopover
+          openModal={openConfirmationModal}
+          openModalState={setOpenConfirmationModal}
+        /> : ''
     }
   </div>
 }
