@@ -6,7 +6,7 @@ import { InformationContainerStyle, InformationGroupStyle, InformationStyle, Tex
 import { IconButton } from "@mui/material"
 import React, { useContext, useState } from "react"
 import dayjs from "dayjs"
-import { ChangeSerfPopover } from "./Popover"
+import { ChangeSerfPopover } from "./ModalConfirmation"
 import { IDay } from "../../@types/IScaleMonth"
 import { IUser } from "../../@types/IUser"
 import { ScaleContext } from "../../Context/scale"
