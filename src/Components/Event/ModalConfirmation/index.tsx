@@ -1,4 +1,4 @@
-import { Box, Button, Modal, Popover, Typography } from "@mui/material";
+import { Box, Modal, Typography } from "@mui/material";
 import { useContext } from "react";
 import { ScaleContext } from "../../../Context/scale";
 import { ObjectIsEquals } from "../../../Utils/objectIsEquals";
@@ -11,6 +11,7 @@ import { ISerfHandler } from "../../../@types/IFromDay";
 import { EventSerf } from "..";
 import { ActionButtons } from "../../ActionButtons";
 import { Icon } from "../../Img";
+import { GroupEventAndTextStyle, GroupInformationChangeStyle } from "./style";
 
 
 function AlocationNewSerf(toDay: ISerfHandler, fromDay: ISerfHandler) {
@@ -100,14 +101,14 @@ export const ChangeSerfPopover = (props: IChangeSerfPopoverProps) => {
   }
 
   const managerDisplayUserAndEvent = (serfAndDay: ISerfHandler): JSX.Element => {
-    return <div style={{ display: 'flex', width: '100%', flexDirection: "column", justifyItems: "left", alignItems: "flex-start" }}>
+    return <GroupEventAndTextStyle>
       <Typography style={{ fontWeight: 500, fontSize: 17, paddingLeft: '10px' }} >{serfAndDay.serf.name}</Typography>
       <EventSerf
         day={serfAndDay.day}
         user={serfAndDay.serf}
         isNotChange={true}
       />
-    </div>
+    </GroupEventAndTextStyle>
   }
 
   return <Modal
@@ -119,11 +120,11 @@ export const ChangeSerfPopover = (props: IChangeSerfPopoverProps) => {
     <Box sx={style}>
       <div style={{ minWidth: '18rem' }}>
         <Typography style={{ fontWeight: 600, fontSize: 20 }} >Confirmar mudança de servo?</Typography>
-        <div style={{ marginTop: '5%', display: 'flex', flexDirection: "row", width: '100%' }}>
+        <GroupInformationChangeStyle>
           {managerDisplayUserAndEvent(fromDay)}
           <Icon src={String(IconChangeSerf)} style={{ margin: '0px 8px', width: '4%' }} />
-          {managerDisplayUserAndEvent(toDay)}
-        </div>
+          {managerDisplayUserAndEvent(toDay)}        
+        </GroupInformationChangeStyle>
       </div>
       <ActionButtons
         nameLeft="Cancelar"
