@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Serving } from "../Users/Serving";
 import { managementFindUsers } from "../../Handlers/users";
 import { initialStateUser } from "../../@types/InitialStateDay";
@@ -10,9 +10,13 @@ import { BadgeSizeFixedStyle, ContainerFiltersStyle, SearchStyle } from "./style
 import { FilterUser } from "../Users/Popover/filter-user";
 import IconFilter from "../../Assets/filter_search.svg"
 import { Icon } from "../Img";
+import { CustomMessageError } from "../CustomMessageError";
+import { ScaleContext } from "../../Context/scale";
 
 
 export const StatisticsList = () => {
+
+  const { scaleContext } = useContext(ScaleContext);
 
   const [nameFilter, setNameFilter] = useState('')
   const [sexFilter, setSexFilter] = useState('')
@@ -32,10 +36,10 @@ export const StatisticsList = () => {
   };
 
   useEffect(() => {
-    usersFounded()
+    if (scaleContext.days.length !== 0) usersFounded()
   }, [nameFilter, sexFilter])
 
-  return <>
+  return <div style={{ width: '25vw' }}>
     <ContainerFiltersStyle >
       <SearchStyle>
         <Input
@@ -57,8 +61,12 @@ export const StatisticsList = () => {
         }
       </BadgeSizeFixedStyle>
     </ContainerFiltersStyle>
-    <ScroolCustom style={{ width: '25vw', height: '60vh' }}>
-      <Serving users={users} isStatistics={true} />
+    <ScroolCustom style={scaleContext.days.length !== 0 ? { width: '25vw', height: '60vh' } : undefined}>
+      {
+        scaleContext.days.length !== 0 ?
+        <Serving users={users} isStatistics={true} /> :
+        <CustomMessageError message="Não foi possível exibir os usuários, selecione uma escala." />
+      }
     </ScroolCustom>
     {
       openFilterPopover ?
@@ -70,5 +78,5 @@ export const StatisticsList = () => {
           setSexSelected={setSexFilter}
         /> : ''
     }
-  </>
+  </div>
 }
