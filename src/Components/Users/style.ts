@@ -24,7 +24,7 @@ export const BadgeSizeFixed = styled.div`
 
 export const Search = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   max-width: 100%;
   width: 100%;
 `;
