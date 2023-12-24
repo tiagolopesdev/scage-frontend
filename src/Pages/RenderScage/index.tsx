@@ -233,6 +233,7 @@ export const RenderScale = () => {
             <ScaleListFloating />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
+            {/* TODO -> apply validation to when don't there scale */}
             <StatisticsList />
           </CustomTabPanel>
         </SidebarContainer>
