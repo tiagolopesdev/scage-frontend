@@ -1,19 +1,19 @@
-import { BadgeSizeFixed, ContainerUserList, Search } from "./style"
 import { Input } from "../Input"
 import { Box, Button, Chip, IconButton, Skeleton } from "@mui/material"
-import IconFilter from "../../Assets/filter_search.svg"
 import { Icon } from "../Img"
 import { User } from "../Users/user"
 import { useEffect, useState } from "react"
-import { getAllUsersByFiltersService, getAllUsersService, updateUser } from "../../Services/Users"
-import { IUser } from "../../@types/IUser"
+import { updateUser } from "../../Services/Users"
 import { ManipulationUser } from "./Popover/manipulation-user"
 import { FilterUser } from "./Popover/filter-user"
-import { CustomToast } from "../CustomToast"
 import toast from "react-hot-toast"
-import { ScroolCustom } from "../../Styles/index"
-import IconError from '../../Assets/icon_error.svg'
 import { CustomMessageError } from "../CustomMessageError"
+import { managementFindUsers } from "../../Handlers/users"
+
+import { BadgeSizeFixed, ContainerUserList, Search } from "./style"
+import { ScroolCustom } from "../../Styles/index"
+import { IUser } from "../../@types/IUser"
+import IconFilter from "../../Assets/filter_search.svg"
 
 
 export const UserListFloating = () => {
@@ -37,30 +37,13 @@ export const UserListFloating = () => {
       setAnchorFilterPopover(event.currentTarget);
   };
 
-  const managementFindUsers = async () => {
-    try {
-
-      let responseApi: IUser[] = [];
-
-      if (nameToFilter === '' && sexFilter === '') {
-        responseApi = await getAllUsersService();
-      } else {
-        responseApi = await getAllUsersByFiltersService(nameToFilter, sexFilter)
-      }
-
-      setUsers(responseApi);
-
-    } catch (exception) {
-      CustomToast({
-        duration: 2000,
-        icon: String(IconError),
-        message: 'Não foi possível obter usuários'
-      })
-    }
+  const usersFounded = async () => {
+    const result = await managementFindUsers({ name: nameToFilter, sex: sexFilter })
+    setUsers(result as IUser[])
   }
 
   useEffect(() => {
-    managementFindUsers()
+    usersFounded()
     if (userWasManipuled) setUserWasManipuled(false)
   }, [nameToFilter, userWasManipuled, sexFilter])
 
@@ -118,7 +101,7 @@ export const UserListFloating = () => {
       }}>
         <Search>
           <Input
-            label="Digite o nome do servo"
+            label="Digite o nome do colaborador"
             onChange={(event: any) => { setNameToFilter(event.target.value) }}
           />
           <IconButton onClick={(event: any) => { handleClick(event, false) }} >
