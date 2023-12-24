@@ -2,7 +2,7 @@ import * as React from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import { Button, Chip } from '@mui/material';
+import { Badge, Button, Chip } from '@mui/material';
 import { EventSerf } from '../../Event';
 import './style.css';
 import { Icon } from '../../Img';
@@ -16,10 +16,11 @@ import { ScaleContext } from '../../../Context/scale';
 import { IDay } from '../../../@types/IScaleMonth';
 
 interface IServing {
-  users: IUser[]
+  users: IUser[],
+  isStatistics?: boolean
 }
 
-export const Serving = ({ users }: IServing) => {
+export const Serving = ({ users, isStatistics }: IServing) => {
 
   const { scaleContext, fromDay, setScaleContext } = useContext(ScaleContext);
 
@@ -94,20 +95,33 @@ export const Serving = ({ users }: IServing) => {
             </InformationSerfGroupStyle>
           </InformationSerfContainerStyle>
           <InclusionSerfStyle>
-            <Button
-              size='small'
-              color='success'
-              variant='contained'
-              sx={{ fontWeight: 'bolder', color: '#FFFFFF', fontSize: 14, borderRadius: 2 }}
-              onClick={() => { serfInclusion(item) }}
-            >{`Incluí-lo(a)`}</Button>
-            <Chip
-              size='small'
-              color="success"
-              variant="outlined"
-              sx={{ fontWeight: 'bolder', marginTop: 1, height: 18 }}
-              label={`${quantityInsideDays} dias para servir`}
-            />
+            {
+              isStatistics === true ?
+                <Badge
+                  badgeContent={quantityInsideDays}
+                  color='success'
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left'
+                  }}
+                /> :
+                <>
+                  <Button
+                    size='small'
+                    color='success'
+                    variant='contained'
+                    sx={{ fontWeight: 'bolder', color: '#FFFFFF', fontSize: 14, borderRadius: 2 }}
+                    onClick={() => { serfInclusion(item) }}
+                  >{`Incluí-lo(a)`}</Button>
+                  <Chip
+                    size='small'
+                    color="success"
+                    variant="outlined"
+                    sx={{ fontWeight: 'bolder', marginTop: 1, height: 18 }}
+                    label={`${quantityInsideDays} dias para servir`}
+                  />
+                </>
+            }
           </InclusionSerfStyle>
         </AccordionSummary>
         {
