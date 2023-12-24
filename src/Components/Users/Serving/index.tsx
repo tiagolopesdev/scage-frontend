@@ -2,7 +2,7 @@ import * as React from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import { Button, Chip, ThemeProvider } from '@mui/material';
+import { Button, Chip } from '@mui/material';
 import { EventSerf } from '../../Event';
 import './style.css';
 import { Icon } from '../../Img';
@@ -14,7 +14,6 @@ import { IUser } from '../../../@types/IUser';
 import { useContext, useState } from 'react';
 import { ScaleContext } from '../../../Context/scale';
 import { IDay } from '../../../@types/IScaleMonth';
-import { theme } from '../../../App';
 
 interface IServing {
   users: IUser[]

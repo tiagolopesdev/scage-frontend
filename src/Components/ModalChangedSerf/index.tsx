@@ -1,12 +1,9 @@
 import {
   Alert,
   Box,
-  Button,
-  Modal,
-  Paper,
-  TableContainer
+  Modal
 } from "@mui/material";
-import { ButtonGroup, InputStyle, WarningGroupStyle } from "./style";
+import { InputStyle, WarningGroupStyle } from "./style";
 import { ModalDay } from "../ModalDay";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
@@ -16,6 +13,8 @@ import { Input } from "../Input";
 import { Serving } from "../Users/Serving";
 import { IUser } from "../../@types/IUser";
 import { getAllUsersByFiltersService, getAllUsersService } from "../../Services/Users";
+import { ActionButtons } from "../ActionButtons";
+import { ScroolCustom } from "../../Styles";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -51,15 +50,6 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
   const HandlerClose = () => {
     openModalState(!openModal)
   }
-
-  const ButtonStyleCustom = (customStyle: any) => ({
-    borderRadius: '12px',
-    fontFamily: 'Dosis',
-    textTransform: 'none',
-    fontSize: '1rem',
-    fontWeight: '600',
-    ...customStyle
-  })
 
   const findUsers = async () => {
     try {
@@ -113,27 +103,15 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
               onChange={(event: any) => { setNameSerfToFind(event.target.value) }}
             />
           </InputStyle>
-          <TableContainer component={Paper} sx={{ maxHeight: 350 }} >
+          <ScroolCustom style={{ height: '22rem' }}>
             {ManagerInformations()}
-          </TableContainer>
-          <ButtonGroup>
-            <Button
-              style={ButtonStyleCustom({ color: '#CA0E0E', border: '1px solid #CA0E0E' })}
-              variant="outlined"
-              size='small'
-              fullWidth
-              onClick={() => { HandlerClose() }}
-            >Cancelar</Button>
-            <Button
-              color="primary"
-              style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginLeft: '30px' })}
-              variant="contained"
-              size='small'
-              fullWidth
-              onClick={() => { HandlerClose() }}
-            >Concluir
-            </Button>
-          </ButtonGroup>
+          </ScroolCustom>
+          <ActionButtons
+            nameLeft="Cancelar"
+            nameRight="Concluir"
+            actionLeft={() => { HandlerClose() }}
+            actionRight={() => { HandlerClose() }}
+          />
           <Toaster
             position="bottom-center"
             reverseOrder={false}
