@@ -23,6 +23,7 @@ import IconError from '../../Assets/icon_error.svg'
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
 import { initialStateScale } from '../../@types/InitialStateDay';
 import { IsVisibleComponents } from '../../Utils/isVisibleComponents';
+import { StatisticsList } from '../../Components/Statistics/statistics-list';
 
 
 function a11yProps(index: number) {
@@ -232,7 +233,7 @@ export const RenderScale = () => {
             <ScaleListFloating />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
-            Item Three
+            <StatisticsList />
           </CustomTabPanel>
         </SidebarContainer>
       </div>
