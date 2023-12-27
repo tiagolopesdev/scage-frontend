@@ -132,6 +132,7 @@ export const Serving = ({ users, isStatistics }: IServing) => {
                   return <EventSerf
                     day={itemDay}
                     user={item}
+                    isNotChange={isStatistics}
                   />
                 })
               }
