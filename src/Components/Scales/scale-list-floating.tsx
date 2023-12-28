@@ -10,6 +10,7 @@ import { ISingleScale } from "../../@types/ISingleScale"
 import { ScaleContext } from "../../Context/scale"
 import { Input } from "../Input"
 import { CustomMessageError } from "../CustomMessageError"
+import { ScalesMock } from "../../mocks/scales"
 
 
 export const ScaleListFloating = () => {
@@ -42,21 +43,28 @@ export const ScaleListFloating = () => {
   }, [selectedMonth, scaleContext])
 
   const managerScaleRender = () => {
-    if (scales.length === 0) {
-      return <Skeleton variant="rounded" width="100%" height='50rem' />
-    } else if (!isLoading && scales.length > 0) {
-      return <div id="group-scales-single">
-        {scales.map((scale) => {
-          return <div key={scale.id}>
-            <Scale scale={scale} />
-          </div>
-        })}
-      </div>
-    } else {
-      return selectedMonth === '' ?
-        <CustomMessageError message="Não foi possível exibir as escalas." /> :
-        <Alert severity="info">Escala de <strong>{selectedMonth}</strong> não encontrada</Alert>
-    }
+    return <div id="group-scales-single">
+      {ScalesMock.map((scale) => {
+        return <div key={scale.id}>
+          <Scale scale={scale} />
+        </div>
+      })}
+    </div>
+    // if (scales.length === 0) {
+    //   return <Skeleton variant="rounded" width="100%" height='50rem' />
+    // } else if (!isLoading && scales.length > 0) {
+    //   return <div id="group-scales-single">
+    //     {scales.map((scale) => {
+    //       return <div key={scale.id}>
+    //         <Scale scale={scale} />
+    //       </div>
+    //     })}
+    //   </div>
+    // } else {
+    //   return selectedMonth === '' ?
+    //     <CustomMessageError message="Não foi possível exibir as escalas." /> :
+    //     <Alert severity="info">Escala de <strong>{selectedMonth}</strong> não encontrada</Alert>
+    // }
   }
 
   return (
@@ -70,13 +78,16 @@ export const ScaleListFloating = () => {
           }}
         />
       </ContainerComboBoxStyle>
-      <ScroolCustom style={!isLoading && (scales.length === 0 || scales.length === undefined) ? {
+      <ScroolCustom >
+        {managerScaleRender()}
+      </ScroolCustom>
+      {/* <ScroolCustom style={!isLoading && (scales.length === 0 || scales.length === undefined) ? {
         display: 'flex', alignItems: 'center',
         alignContent: 'center',
         justifyContent: 'center'
       } : undefined} >
         {managerScaleRender()}
-      </ScroolCustom>
+      </ScroolCustom> */}
     </ContainerScaleList>
   )
 }
