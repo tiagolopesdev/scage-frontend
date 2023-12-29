@@ -77,7 +77,7 @@ export function downloadPDF(data: IScaleMonth) {
 
     column.push(dayElement(
       item.name,
-      `${dayjs(item.dateTime).format('DD/MM/YYYY')} às ${dayjs(item.dateTime).format('HH:mm')}`,
+      `${dayjs(item.dateTime).format('DD/MM/YYYY')} às ${dayjs(item.dateTime).format('HH:mm A')}`,
       item.cameraOne?.name as string,
       item.cameraTwo?.name as string,
       item.cutDesk?.name as string)
