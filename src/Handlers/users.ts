@@ -20,10 +20,10 @@ export const managementFindUsers = async (props: IManagerFindUsers) => {
     return responseApi;
 
   } catch (exception) {
-    CustomToast({
+    throw CustomToast({
       duration: 2000,
       icon: String(IconError),
-      message: 'Não foi possível obter usuários'
-    })
+      message: exception as string
+    })    
   }
 }

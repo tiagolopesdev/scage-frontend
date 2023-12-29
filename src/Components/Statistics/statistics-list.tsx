@@ -27,8 +27,11 @@ export const StatisticsList = () => {
   const idFilter = openFilterPopover ? 'simple-popover-filter' : undefined;
 
   const usersFounded = async () => {
-    const result = await managementFindUsers({ name: nameFilter, sex: sexFilter })
-    setUsers(result as IUser[])
+    try {
+      const result = await managementFindUsers({ name: nameFilter, sex: sexFilter })
+      setUsers(result as IUser[])      
+    } catch (error) {    
+    }
   }
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

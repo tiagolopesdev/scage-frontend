@@ -38,8 +38,11 @@ export const UserListFloating = () => {
   };
 
   const usersFounded = async () => {
-    const result = await managementFindUsers({ name: nameToFilter, sex: sexFilter })
-    setUsers(result as IUser[])
+    try {
+      const result = await managementFindUsers({ name: nameToFilter, sex: sexFilter })
+      setUsers(result as IUser[])      
+    } catch (error) {    
+    }
   }
 
   useEffect(() => {

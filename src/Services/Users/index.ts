@@ -14,14 +14,28 @@ export const updateUser = (user: IUser) => {
     .catch((error) => error.response.data)
 }
 
-export const getAllUsersByFiltersService = (name?: string, sex?: string) => {
-  return userChannel.get('api/User/filters', { params: { name, sex } })
-    .then((response) => response.data.data)
-    .catch((response) => response.message);
+export const getAllUsersByFiltersService = async (name?: string, sex?: string) => {
+  try {
+    const response = await userChannel.get('api/User/filters', { params: { name, sex } });
+    return response.data.data;
+  } catch (error: any) {
+    if (error.code === "ERR_NETWORK") {
+      throw "Não foi possível se comunicar com o recurso de colaboradores"
+    } else {
+      throw error.response.data
+    }
+  }
 }
 
-export const getAllUsersService = () => {  
-  return userChannel.get("api/User")
-    .then((response) => response.data.data)
-    .catch((response) => { return response });
+export const getAllUsersService = async () => {  
+  try {
+    const response = await userChannel.get("api/User");
+    return response.data.data;
+  } catch (error: any) {
+    if (error.code === "ERR_NETWORK") {
+      throw "Não foi possível se comunicar com o recurso de colaboradores"
+    } else {
+      throw error.response.data
+    }
+  }
 }
