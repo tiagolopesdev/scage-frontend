@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Chip } from "@mui/material"
+import { Button, Card, CardContent, Chip, Tooltip } from "@mui/material"
 import { Icon } from "../../Img"
 import { Reorder, motion, useDragControls } from "framer-motion"
 import { useContext, useEffect, useState } from "react"
@@ -188,7 +188,9 @@ export const CardDay = ({ day }: ICardDay) => {
                       style={{ width: '25px' }}
                       className="action-icon-indication"
                     />
-                    <NamePeopleStyle>{item.name}</NamePeopleStyle>
+                    <Tooltip title={item.name} arrow >
+                      <NamePeopleStyle>{item.name}</NamePeopleStyle>
+                    </Tooltip>
                   </InformationPeopleContainer>
                   <IconSelectUserStyle >
                     <motion.div
