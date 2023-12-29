@@ -14,6 +14,7 @@ import { BadgeSizeFixed, ContainerUserList, Search } from "./style"
 import { ScroolCustom } from "../../Styles/index"
 import { IUser } from "../../@types/IUser"
 import IconFilter from "../../Assets/filter_search.svg"
+import { conditionHandling } from "../../Utils/conditionHandling"
 
 
 export const UserListFloating = () => {
@@ -40,8 +41,8 @@ export const UserListFloating = () => {
   const usersFounded = async () => {
     try {
       const result = await managementFindUsers({ name: nameToFilter, sex: sexFilter })
-      setUsers(result as IUser[])      
-    } catch (error) {    
+      setUsers(result as IUser[])
+    } catch (error) {
     }
   }
 
@@ -112,14 +113,12 @@ export const UserListFloating = () => {
           </IconButton>
         </Search>
         <BadgeSizeFixed>
-          {sexFilter ?
-            <Chip
-              size="small"
-              label={sexFilter}
-              sx={{ marginTop: '8px', fontWeight: 600 }}
-              onDelete={() => { setSexFilter('') }} /> :
-            ''
-          }
+          {conditionHandling(sexFilter !== '', <Chip
+            size="small"
+            label={sexFilter}
+            sx={{ marginTop: '8px', fontWeight: 600 }}
+            onDelete={() => { setSexFilter('') }} />
+          )}
         </BadgeSizeFixed>
       </Box>
       <ScroolCustom style={users.length > 0 || users.length !== undefined ? undefined : {
@@ -136,7 +135,6 @@ export const UserListFloating = () => {
       <Button
         style={{
           borderRadius: '12px',
-          fontFamily: 'Dosis',
           textTransform: 'none',
           fontSize: '1rem',
           fontWeight: '600',
@@ -151,26 +149,20 @@ export const UserListFloating = () => {
         onClick={(event: any) => { handleClick(event, true) }}
         fullWidth
       >Adicionar novo colaborador</Button>
-      {
-        openManipulationPopover ?
-          <ManipulationUser
-            id={idManipulation}
-            anchorEl={anchorManipulationPopover}
-            open={openManipulationPopover}
-            setAnchorEl={setAnchorManipulationPopover}
-            setUserWasManipuled={setUserWasManipuled}
-          /> : ''
-      }
-      {
-        openFilterPopover ?
-          <FilterUser
-            id={idFilter}
-            anchorEl={anchorFilterPopover}
-            open={openFilterPopover}
-            setAnchorEl={setAnchorFilterPopover}
-            setSexSelected={setSexFilter}
-          /> : ''
-      }
+      {conditionHandling(openManipulationPopover, <ManipulationUser
+        id={idManipulation}
+        anchorEl={anchorManipulationPopover}
+        open={openManipulationPopover}
+        setAnchorEl={setAnchorManipulationPopover}
+        setUserWasManipuled={setUserWasManipuled}
+      />)}
+      {conditionHandling(openFilterPopover, <FilterUser
+        id={idFilter}
+        anchorEl={anchorFilterPopover}
+        open={openFilterPopover}
+        setAnchorEl={setAnchorFilterPopover}
+        setSexSelected={setSexFilter}
+      />)}
     </ContainerUserList>
   )
 }
