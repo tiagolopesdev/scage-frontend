@@ -14,7 +14,7 @@ export const CustomToast = (props: ICustomToast) => {
   return toast.custom(
     <ToastContainer>
       <img src={icon}
-        style={{ width: '25px', marginLeft: '15px' }}
+        style={{ width: '15px', marginLeft: '15px' }}
         alt={message}
       />
       <TextStyle>{message}</TextStyle>

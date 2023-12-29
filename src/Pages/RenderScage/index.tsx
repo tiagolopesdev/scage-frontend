@@ -110,7 +110,7 @@ export const RenderScale = () => {
       CustomToast({ duration: 2000, message: 'Escala salva com sucesso', icon: String(IconSuccess) })
 
     } catch (error) {
-      CustomToast({ duration: 2000, message: 'Não foi possível salvar a escala', icon: String(IconError) })
+      CustomToast({ duration: 2000, message: error as string, icon: String(IconError) })
     }
   }
 

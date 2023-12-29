@@ -33,10 +33,13 @@ export const UpdateScaleService = async (scale: IScaleMonthSendApi) => {
   }
 }
 
-export const SaveScaleService = (scale: IScaleMonthSendApi) => {
-  return scaleChannel.post('api/Scale/createScale', scale)
-    .then((response) => response.data.data)
-    .catch((error) => error)
+export const SaveScaleService = async (scale: IScaleMonthSendApi) => {
+  try {
+    const response = await scaleChannel.post('api/Scale/createScale', scale)
+    return response.data.data
+  } catch (error: any) {
+    throw error.response.data
+  }
 }
 
 export const GenerationPreviewScale = async (scale: any) => {
