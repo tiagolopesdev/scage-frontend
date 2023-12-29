@@ -64,7 +64,7 @@ export const ScaleListFloating = () => {
       <ContainerComboBoxStyle>
         <Input
           value={selectedMonth}
-          label='Mês'
+          label='Digite o nome do mês'
           onChange={(event: any) => {
             setSelectedMonth(event.target.value ?? '')
           }}
