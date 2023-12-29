@@ -55,10 +55,10 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
         message: responseApi,
         icon: String(IconSuccess)
       });
-      
+
       setAnchorEl(null)
       setUserWasManipuled(true);
-      
+
     } catch (error: any) {
       CustomToast({
         duration: 2000,
@@ -68,81 +68,79 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
     }
   }
 
-  return (
-    <Popover
-      id={id}
-      open={open}
-      anchorEl={anchorEl}
-      onClose={() => { setAnchorEl(null) }}
-      anchorOrigin={{
-        vertical: 'center',
-        horizontal: 'left',
-      }}
-    >
-      <div style={{ minWidth: '17rem' }}>
-        <TextFieldContainer>
-          <RadioGroup
-            style={{ marginTop: '10px' }}
-          >
-            <FormControlLabel
-              label={Sex.MASCULINO.toString()}
-              control={
-                <Radio
-                  checked={optionMasc}
-                  onClick={() => {
-                    if (!optionMasc && !optionFem) {
-                      setOptionMasc(!optionMasc)
-                      return
-                    }
+  return <Popover
+    id={id}
+    open={open}
+    anchorEl={anchorEl}
+    onClose={() => { setAnchorEl(null) }}
+    anchorOrigin={{
+      vertical: 'center',
+      horizontal: 'left',
+    }}
+  >
+    <div style={{ minWidth: '17rem' }}>
+      <TextFieldContainer>
+        <RadioGroup
+          style={{ marginTop: '10px' }}
+        >
+          <FormControlLabel
+            label={Sex.MASCULINO.toString()}
+            control={
+              <Radio
+                checked={optionMasc}
+                onClick={() => {
+                  if (!optionMasc && !optionFem) {
                     setOptionMasc(!optionMasc)
+                    return
+                  }
+                  setOptionMasc(!optionMasc)
+                  setOptionFem(!optionFem)
+                }}
+              />
+            }
+          />
+          <FormControlLabel
+            label={Sex.FEMININO.toString()}
+            control={
+              <Radio
+                checked={optionFem}
+                onClick={() => {
+                  if (!optionMasc && !optionFem) {
                     setOptionFem(!optionFem)
-                  }}
-                />
-              }
-            />
-            <FormControlLabel
-              label={Sex.FEMININO.toString()}
-              control={
-                <Radio
-                  checked={optionFem}
-                  onClick={() => {
-                    if (!optionMasc && !optionFem) {
-                      setOptionFem(!optionFem)
-                      return
-                    }
-                    setOptionFem(!optionFem)
-                    setOptionMasc(!optionMasc)
-                  }}
-                />
-              }
-            />
-          </RadioGroup>
-          <Input 
-            label="E-mail"
-            value={user?.email}            
-            onChange={(event: any) => { setUserManipulation({ ...userManipulation, email: event.target.value }) }}
-            style={{ marginTop: '20px' }}
+                    return
+                  }
+                  setOptionFem(!optionFem)
+                  setOptionMasc(!optionMasc)
+                }}
+              />
+            }
           />
-          <Input 
-            label="Nome"
-            value={user?.name}            
-            onChange={(event: any) => { setUserManipulation({ ...userManipulation, name: event.target.value }) }}
-            style={{ marginTop: '20px' }}
-          />
-        </TextFieldContainer>
-        <div style={{ margin: '10px 20px' }}>
-          <ActionButtons 
-            nameLeft="Cancelar"
-            nameRight="Salvar"
-            actionLeft={() => { setAnchorEl(null) }}
-            actionRight={() => { handlerUser() }}            
-          />
-        </div>
+        </RadioGroup>
+        <Input
+          label="E-mail"
+          value={user?.email}
+          onChange={(event: any) => { setUserManipulation({ ...userManipulation, email: event.target.value }) }}
+          style={{ marginTop: '20px' }}
+        />
+        <Input
+          label="Nome"
+          value={user?.name}
+          onChange={(event: any) => { setUserManipulation({ ...userManipulation, name: event.target.value }) }}
+          style={{ marginTop: '20px' }}
+        />
+      </TextFieldContainer>
+      <div style={{ margin: '10px 20px' }}>
+        <ActionButtons
+          nameLeft="Cancelar"
+          nameRight="Salvar"
+          actionLeft={() => { setAnchorEl(null) }}
+          actionRight={() => { handlerUser() }}
+        />
       </div>
-      <Toaster
-        position="bottom-center"
-        reverseOrder={false}
-      />
-    </Popover>
-  );
+    </div>
+    <Toaster
+      position="bottom-center"
+      reverseOrder={false}
+    />
+  </Popover>
 }

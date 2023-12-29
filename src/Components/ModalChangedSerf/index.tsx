@@ -15,6 +15,7 @@ import { IUser } from "../../@types/IUser";
 import { getAllUsersByFiltersService, getAllUsersService } from "../../Services/Users";
 import { ActionButtons } from "../ActionButtons";
 import { ScroolCustom } from "../../Styles";
+import { conditionHandling } from "../../Utils/conditionHandling";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -87,48 +88,43 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
     ManagerInformations()
   }, [nameSerfToFind])
 
-  return (
-    <>
-      <Modal
-        open={openModal}
-        onClose={() => { HandlerClose() }}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <InputStyle>
-            <Input
-              label="Digite o nome do colaborador"
-              style={{ width: '55%' }}
-              onChange={(event: any) => { setNameSerfToFind(event.target.value) }}
-            />
-          </InputStyle>
-          <ScroolCustom style={{ height: '22rem' }}>
-            {ManagerInformations()}
-          </ScroolCustom>
-          <ActionButtons
-            nameLeft="Cancelar"
-            nameRight="Concluir"
-            actionLeft={() => { HandlerClose() }}
-            actionRight={() => { HandlerClose() }}
+  return <div>
+    <Modal
+      open={openModal}
+      onClose={() => { HandlerClose() }}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        <InputStyle>
+          <Input
+            label="Digite o nome do colaborador"
+            style={{ width: '55%' }}
+            onChange={(event: any) => { setNameSerfToFind(event.target.value) }}
           />
-          <Toaster
-            position="bottom-center"
-            reverseOrder={false}
-          />
-        </Box>
-      </Modal>
-      {
-        openModalNewDay ?
-          <ModalDay
-            openModal={openModalNewDay}
-            setOpenModal={setOpenModalNewDay}
-            manipulationDay={dayToEdit}
-            setManipulationDay={setDayToEdit}
-            listManipulationDay={daysList}
-            setListManipulationDay={setDaysList}
-          /> : ''
-      }
-    </>
-  )
+        </InputStyle>
+        <ScroolCustom style={{ height: '22rem' }}>
+          {ManagerInformations()}
+        </ScroolCustom>
+        <ActionButtons
+          nameLeft="Cancelar"
+          nameRight="Concluir"
+          actionLeft={() => { HandlerClose() }}
+          actionRight={() => { HandlerClose() }}
+        />
+        <Toaster
+          position="bottom-center"
+          reverseOrder={false}
+        />
+      </Box>
+    </Modal>
+    {conditionHandling(openModalNewDay, <ModalDay
+      openModal={openModalNewDay}
+      setOpenModal={setOpenModalNewDay}
+      manipulationDay={dayToEdit}
+      setManipulationDay={setDayToEdit}
+      listManipulationDay={daysList}
+      setListManipulationDay={setDaysList} />
+    )}
+  </div>
 }

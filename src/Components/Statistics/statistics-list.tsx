@@ -12,6 +12,7 @@ import IconFilter from "../../Assets/filter_search.svg"
 import { Icon } from "../Img";
 import { CustomMessageError } from "../CustomMessageError";
 import { ScaleContext } from "../../Context/scale";
+import { conditionHandling } from "../../Utils/conditionHandling";
 
 
 export const StatisticsList = () => {
@@ -29,8 +30,8 @@ export const StatisticsList = () => {
   const usersFounded = async () => {
     try {
       const result = await managementFindUsers({ name: nameFilter, sex: sexFilter })
-      setUsers(result as IUser[])      
-    } catch (error) {    
+      setUsers(result as IUser[])
+    } catch (error) {
     }
   }
 
@@ -54,32 +55,27 @@ export const StatisticsList = () => {
         </IconButton>
       </SearchStyle>
       <BadgeSizeFixedStyle>
-        {sexFilter ?
-          <Chip
-            size="small"
-            label={sexFilter}
-            sx={{ marginTop: '8px', fontWeight: 600 }}
-            onDelete={() => { setSexFilter('') }} /> :
-          ''
-        }
+        {conditionHandling(sexFilter !== '', <Chip
+          size="small"
+          label={sexFilter}
+          sx={{ marginTop: '8px', fontWeight: 600 }}
+          onDelete={() => { setSexFilter('') }} />
+        )}
       </BadgeSizeFixedStyle>
     </ContainerFiltersStyle>
     <ScroolCustom style={scaleContext.days.length !== 0 ? { width: '25vw', height: '60vh' } : undefined}>
       {
         scaleContext.days.length !== 0 ?
-        <Serving users={users} isStatistics={true} /> :
-        <CustomMessageError message="Não foi possível exibir os colaboradores, selecione uma escala." />
+          <Serving users={users} isStatistics={true} /> :
+          <CustomMessageError message="Não foi possível exibir os colaboradores, selecione uma escala." />
       }
     </ScroolCustom>
-    {
-      openFilterPopover ?
-        <FilterUser
-          id={idFilter}
-          anchorEl={anchorFilterPopover}
-          open={openFilterPopover}
-          setAnchorEl={setAnchorFilterPopover}
-          setSexSelected={setSexFilter}
-        /> : ''
-    }
+    {conditionHandling(openFilterPopover, <FilterUser
+      id={idFilter}
+      anchorEl={anchorFilterPopover}
+      open={openFilterPopover}
+      setAnchorEl={setAnchorFilterPopover}
+      setSexSelected={setSexFilter} />
+    )}
   </div>
 }

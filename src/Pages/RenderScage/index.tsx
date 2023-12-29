@@ -14,6 +14,10 @@ import { GetScale, SaveScaleService, UpdateScaleService } from '../../Services/S
 import { IsNewDay } from '../../Utils/isNewDay';
 import { IDaySendApi, IScaleMonthSendApi } from '../../@types/IScaleMonthSendApi';
 import { downloadPDF } from '../../Utils/pdfGeneration';
+import { conditionHandling } from '../../Utils/conditionHandling';
+import { initialStateScale } from '../../@types/InitialStateDay';
+import { IsVisibleComponents } from '../../Utils/isVisibleComponents';
+import { StatisticsList } from '../../Components/Statistics/statistics-list';
 
 import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, TextStyle } from './style';
 import { SidebarContainer } from './style';
@@ -21,9 +25,6 @@ import { ScroolCustom } from '../../Styles';
 import IconSuccess from "../../Assets/icon_success.svg";
 import IconError from '../../Assets/icon_error.svg'
 import ScaleNotFoundIcon from '../../Assets/icon_scale_notFound.svg'
-import { initialStateScale } from '../../@types/InitialStateDay';
-import { IsVisibleComponents } from '../../Utils/isVisibleComponents';
-import { StatisticsList } from '../../Components/Statistics/statistics-list';
 
 
 function a11yProps(index: number) {
@@ -51,7 +52,7 @@ function CustomTabPanel(props: TabPanelProps) {
       {...other}
       style={{
         width: '85vw',
-        height: '85vh',        
+        height: '85vh',
         padding: '0.5rem'
       }}
     >
@@ -142,15 +143,11 @@ export const RenderScale = () => {
             overflowY: 'scroll'
           }}
         >
-          {
-            scaleContext?.days.length === 0 ?
-              '' :
-              scaleContext?.days.map((item: IDay, index: number) => {
-                if (item.isEnable && !IsNewDay(item)) {
-                  return <CardDay key={index} day={item} />
-                }
-              })
-          }
+          {conditionHandling(scaleContext?.days.length !== 0, scaleContext?.days.map((item: IDay, index: number) => {
+            if (item.isEnable && !IsNewDay(item)) {
+              return <CardDay key={index} day={item} />;
+            }
+          }) as unknown as JSX.Element)}
         </ScroolCustom>
       </CardDayContainer>
   }
@@ -237,13 +234,11 @@ export const RenderScale = () => {
           </CustomTabPanel>
         </SidebarContainer>
       </div>
-      {openModalGenerationScale ?
-        <ModalGenerationScale
-          openModal={openModalGenerationScale}
-          openModalState={setOpenModalGenerationScale}
-          setScalePreview={setScaleContext}
-        /> : ''
-      }
+      {conditionHandling(openModalGenerationScale, <ModalGenerationScale
+        openModal={openModalGenerationScale}
+        openModalState={setOpenModalGenerationScale}
+        setScalePreview={setScaleContext} />
+      )}
       <Toaster position="bottom-center" reverseOrder={false} />
     </div>
   );

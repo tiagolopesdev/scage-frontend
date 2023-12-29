@@ -6,14 +6,16 @@ import { Badge, Button, Chip } from '@mui/material';
 import { EventSerf } from '../../Event';
 import './style.css';
 import { Icon } from '../../Img';
-import IconExpand from '../../../Assets/icon_arrow.svg';
-import IconUser from '../../../Assets/icon_user.svg';
 import { TextBaseStyle } from '../../../Styles';
 import { InclusionSerfStyle, InformationSerfContainerStyle, InformationSerfGroupStyle } from './style';
 import { IUser } from '../../../@types/IUser';
 import { useContext, useState } from 'react';
 import { ScaleContext } from '../../../Context/scale';
 import { IDay } from '../../../@types/IScaleMonth';
+import { conditionHandling } from '../../../Utils/conditionHandling';
+
+import IconExpand from '../../../Assets/icon_arrow.svg';
+import IconUser from '../../../Assets/icon_user.svg';
 
 interface IServing {
   users: IUser[],
@@ -124,20 +126,13 @@ export const Serving = ({ users, isStatistics }: IServing) => {
             }
           </InclusionSerfStyle>
         </AccordionSummary>
-        {
-          isInsideScale ?
-            <AccordionDetails>
-              {
-                insideDays.map((itemDay) => {
-                  return <EventSerf
-                    day={itemDay}
-                    user={item}
-                    isNotChange={isStatistics}
-                  />
-                })
-              }
-            </AccordionDetails> :
-            ''
+        {conditionHandling(isInsideScale, <AccordionDetails>{insideDays.map((itemDay) => {
+          return <EventSerf
+            day={itemDay}
+            user={item}
+            isNotChange={isStatistics}
+          />
+        })}</AccordionDetails>)
         }
       </Accordion>
     })

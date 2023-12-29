@@ -7,6 +7,7 @@ import { IUser } from "../../@types/IUser"
 import { ManipulationUser } from "./Popover/manipulation-user"
 import { Dispatch, useState } from "react"
 import { GroupFieldStyle } from "./style"
+import { conditionHandling } from "../../Utils/conditionHandling"
 
 interface IUsersProps {
   user: IUser,
@@ -28,8 +29,7 @@ export const User = (usersProps: IUsersProps) => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  return (
-    <>
+  return <div>
       <Card
         style={{
           borderRadius: '15px',
@@ -82,16 +82,13 @@ export const User = (usersProps: IUsersProps) => {
           </CardActions>
         </CardContent>
       </Card>
-      {open ?
-        <ManipulationUser
-          id={id}
-          anchorEl={anchorEl}
-          open={open}
-          setAnchorEl={setAnchorEl}
-          user={userManipulation as IUser}
-          setUserWasManipuled={setUserWasManipuled}
-        /> : ''
-      }
-    </>
-  )
+      {conditionHandling(open, <ManipulationUser
+        id={id}
+        anchorEl={anchorEl}
+        open={open}
+        setAnchorEl={setAnchorEl}
+        user={userManipulation as IUser}
+        setUserWasManipuled={setUserWasManipuled} />
+      )}
+    </div>
 }

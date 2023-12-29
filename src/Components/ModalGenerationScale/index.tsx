@@ -25,6 +25,7 @@ import { ModalAutomaticDay } from "../ModalAutomaticDay";
 import { ActionButtons } from "../ActionButtons";
 import { ITableRowProps } from "../../@types/TableProps";
 import { TableComponent } from "../Table";
+import { conditionHandling } from "../../Utils/conditionHandling";
 
 import { ContainerNewDay, DataGenerationScaleStyle, DateGroupStyle } from "./style";
 import IconEdit from '../../Assets/icon_user_edit.svg'
@@ -198,116 +199,108 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
 
   useEffect(() => { listDays() }, [scaleContext.days])
 
-  return (
-    <>
-      <Modal
-        open={openModal}
-        onClose={() => { HandlerClose() }}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <DataGenerationScaleStyle>
-            <Input
-              value={scaleMonth.name}
-              label='Mês'
-              onChange={(event: any) => {
-                setScaleMonth({ ...scaleMonth, name: event.target.value as string })
-              }}
+  return <div>
+    <Modal
+      open={openModal}
+      onClose={() => { HandlerClose() }}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        <DataGenerationScaleStyle>
+          <Input
+            value={scaleMonth.name}
+            label='Mês'
+            onChange={(event: any) => {
+              setScaleMonth({ ...scaleMonth, name: event.target.value as string })
+            }}
+          />
+          <DateGroupStyle>
+            <DatePicker
+              inputFormat="DD/MM/YYYY"
+              label="Inicio do mês"
+              value={selectedStartDate}
+              onChange={(newValue) => { setSelectedStartDate(newValue) }}
+              renderInput={(params) =>
+                <TextField
+                  {...params}
+                  error={params.focused}
+                  style={{ width: '200px', margin: '0px 10px' }}
+                />
+              }
             />
-            <DateGroupStyle>
-              <DatePicker
-                inputFormat="DD/MM/YYYY"
-                label="Inicio do mês"
-                value={selectedStartDate}
-                onChange={(newValue) => { setSelectedStartDate(newValue) }}
-                renderInput={(params) =>
-                  <TextField
-                    {...params}
-                    error={params.focused}
-                    style={{ width: '200px', margin: '0px 10px' }}
-                  />
-                }
-              />
-              <DatePicker
-                inputFormat="DD/MM/YYYY"
-                label="Fim do mês"
-                value={selectedEndDate}
-                onChange={(newValue) => { setSelectedEndDate(newValue) }}
-                renderInput={(params) =>
-                  <TextField
-                    {...params}
-                    error={params.focused}
-                    style={{ width: '200px', marginRight: '10px' }}
-                  />
-                }
-              />
-            </DateGroupStyle>
-          </DataGenerationScaleStyle>
-          <ContainerNewDay>
-            <Button
-              size='small'
-              variant="contained"
-              onClick={() => {
-                if (!dayjs(selectedStartDate).isValid() || !dayjs(selectedEndDate).isValid()) {
-                  CustomToast({
-                    message: 'Insira a data de início de fim da escala',
-                    duration: 1000,
-                    icon: String(IconWarning)
-                  })
-                  return
-                }
-                setOpenModalAutomaticDay(!openModalAutomaticDay)
-              }}
-              style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginBottom: '4%', marginRight: '15px' })}
-            >Adição automática</Button>
-            <Button
-              size='small'
-              variant="contained"
-              onClick={() => { setOpenModalNewDay(!openModalNewDay) }}
-              style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginBottom: '4%' })}
-            >Adicionar novo dia</Button>
-          </ContainerNewDay>
-          <TableComponent
-            tableCell={[
-              { name: 'Nome', align: 'left' },
-              { name: 'Data', align: 'center' },
-              { name: 'Horário', align: 'center' },
-              { name: 'Ações', align: 'right' }
-            ]}
-            tableRows={listDays()}
-          />
-          <ActionButtons
-            nameLeft="Cancelar"
-            nameRight={isGenerationScale ?
-              <CircularProgress style={{ color: 'white', width: '20px', height: '20px' }} color="secondary" />
-              : 'Gerar escala'
-            }
-            actionLeft={() => { HandlerClose() }}
-            actionRight={() => { GenerationScale() }}
-          />
-        </Box>
-      </Modal>
-      {
-        openModalAutomaticDay ?
-          <ModalAutomaticDay
-            openModal={openModalAutomaticDay}
-            openModalState={setOpenModalAutomaticDay}
-            periodEnd={dayjs(selectedEndDate).format()}
-            periodStart={dayjs(selectedStartDate).format()}
-          /> : ''
-      }
-      {
-        openModalNewDay ?
-          <ModalDay
-            openModal={openModalNewDay}
-            setOpenModal={setOpenModalNewDay}
-            manipulationDay={dayToEdit}
-            setManipulationDay={setDayToEdit}
-            listManipulationDay={daysList}
-            setListManipulationDay={setDaysList}
-          /> : ''
-      }
-    </>
-  )
+            <DatePicker
+              inputFormat="DD/MM/YYYY"
+              label="Fim do mês"
+              value={selectedEndDate}
+              onChange={(newValue) => { setSelectedEndDate(newValue) }}
+              renderInput={(params) =>
+                <TextField
+                  {...params}
+                  error={params.focused}
+                  style={{ width: '200px', marginRight: '10px' }}
+                />
+              }
+            />
+          </DateGroupStyle>
+        </DataGenerationScaleStyle>
+        <ContainerNewDay>
+          <Button
+            size='small'
+            variant="contained"
+            onClick={() => {
+              if (!dayjs(selectedStartDate).isValid() || !dayjs(selectedEndDate).isValid()) {
+                CustomToast({
+                  message: 'Insira a data de início de fim da escala',
+                  duration: 1000,
+                  icon: String(IconWarning)
+                })
+                return
+              }
+              setOpenModalAutomaticDay(!openModalAutomaticDay)
+            }}
+            style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginBottom: '4%', marginRight: '15px' })}
+          >Adição automática</Button>
+          <Button
+            size='small'
+            variant="contained"
+            onClick={() => { setOpenModalNewDay(!openModalNewDay) }}
+            style={ButtonStyleCustom({ backgroundColor: 'rgb(14, 202, 101)', marginBottom: '4%' })}
+          >Adicionar novo dia</Button>
+        </ContainerNewDay>
+        <TableComponent
+          tableCell={[
+            { name: 'Nome', align: 'left' },
+            { name: 'Data', align: 'center' },
+            { name: 'Horário', align: 'center' },
+            { name: 'Ações', align: 'right' }
+          ]}
+          tableRows={listDays()}
+        />
+        <ActionButtons
+          nameLeft="Cancelar"
+          nameRight={isGenerationScale ?
+            <CircularProgress style={{ color: 'white', width: '20px', height: '20px' }} color="secondary" />
+            : 'Gerar escala'
+          }
+          actionLeft={() => { HandlerClose() }}
+          actionRight={() => { GenerationScale() }}
+        />
+      </Box>
+    </Modal>
+    {conditionHandling(openModalAutomaticDay, <ModalAutomaticDay
+      openModal={openModalAutomaticDay}
+      openModalState={setOpenModalAutomaticDay}
+      periodEnd={dayjs(selectedEndDate).format()}
+      periodStart={dayjs(selectedStartDate).format()} />
+    )}
+    {conditionHandling(openModalNewDay, <ModalDay
+      openModal={openModalNewDay}
+      setOpenModal={setOpenModalNewDay}
+      manipulationDay={dayToEdit}
+      setManipulationDay={setDayToEdit}
+      listManipulationDay={daysList}
+      setListManipulationDay={setDaysList} />
+    )}
+  </div>
 }
