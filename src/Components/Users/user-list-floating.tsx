@@ -126,7 +126,7 @@ export const UserListFloating = () => {
       }}>
         {
           users.length <= 0 || users.length === undefined ?
-            <CustomMessageError message="Não foi possível exibir os usuários." /> :
+            <CustomMessageError message="Não foi possível exibir os colaboradores." /> :
             managerUserRender()
         }
       </ScroolCustom>
@@ -147,7 +147,7 @@ export const UserListFloating = () => {
         size='small'
         onClick={(event: any) => { handleClick(event, true) }}
         fullWidth
-      >Adicionar novo servo</Button>
+      >Adicionar novo colaborador</Button>
       {
         openManipulationPopover ?
           <ManipulationUser

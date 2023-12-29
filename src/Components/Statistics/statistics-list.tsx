@@ -65,7 +65,7 @@ export const StatisticsList = () => {
       {
         scaleContext.days.length !== 0 ?
         <Serving users={users} isStatistics={true} /> :
-        <CustomMessageError message="Não foi possível exibir os usuários, selecione uma escala." />
+        <CustomMessageError message="Não foi possível exibir os colaboradores, selecione uma escala." />
       }
     </ScroolCustom>
     {

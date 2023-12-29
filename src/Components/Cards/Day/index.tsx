@@ -202,7 +202,7 @@ export const CardDay = ({ day }: ICardDay) => {
                         src={String(SelectNewUserIcon)}
                         onClick={() => {
                           if (!day.id) {
-                            CustomToast({ duration: 3000, message: "Salve a escala para mudar os servos", icon: String(IconWarning) })
+                            CustomToast({ duration: 3000, message: "Salve a escala para mudar os colaboradores", icon: String(IconWarning) })
                             return
                           }
                           setModalIsVisible(!modalIsVisible)

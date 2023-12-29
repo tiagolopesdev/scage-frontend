@@ -221,9 +221,9 @@ export const RenderScale = () => {
         <SidebarContainer>
           <Box sx={{ borderColor: 'divider', justifyContent: 'space-between' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-              <Tab style={{ fontFamily: 'Dosis', fontWeight: '600', fontSize: '1rem' }} label="Servos" {...a11yProps(0)} />
-              <Tab style={{ fontFamily: 'Dosis', fontWeight: '600', fontSize: '1rem' }} label="Escalas" {...a11yProps(2)} onClick={() => { setValue(1) }} />
-              <Tab style={{ fontFamily: 'Dosis', fontWeight: '600', fontSize: '1rem' }} label="Estatísticas" {...a11yProps(1)} />
+              <Tab style={{ fontWeight: '600', fontSize: '1rem' }} label="Colaborador" {...a11yProps(0)} />
+              <Tab style={{ fontWeight: '600', fontSize: '1rem' }} label="Escalas" {...a11yProps(2)} onClick={() => { setValue(1) }} />
+              <Tab style={{ fontWeight: '600', fontSize: '1rem' }} label="Estatísticas" {...a11yProps(1)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
@@ -233,7 +233,6 @@ export const RenderScale = () => {
             <ScaleListFloating />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
-            {/* TODO -> apply validation to when don't there scale */}
             <StatisticsList />
           </CustomTabPanel>
         </SidebarContainer>

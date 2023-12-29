@@ -78,7 +78,7 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
             justifyContent: 'center'
           }}
         >{
-            <strong>Servo não encontrado no sistema.</strong>}
+            <strong>Colaborador não encontrado no sistema.</strong>}
         </Alert>
       </WarningGroupStyle>
   }
@@ -98,7 +98,7 @@ export const ModalChangedSerf = (props: IModalGenerationScale) => {
         <Box sx={style}>
           <InputStyle>
             <Input
-              label="Digite o nome do servo"
+              label="Digite o nome do colaborador"
               style={{ width: '55%' }}
               onChange={(event: any) => { setNameSerfToFind(event.target.value) }}
             />

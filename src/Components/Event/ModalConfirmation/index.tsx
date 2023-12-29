@@ -67,7 +67,7 @@ export const ChangeSerfPopover = (props: IChangeSerfPopoverProps) => {
       ObjectIsEquals(toDay.serf, fromDay.day.cameraTwo as IUser) ||
       ObjectIsEquals(toDay.serf, fromDay.day.cutDesk as IUser)
     ) {
-      CustomToast({ duration: 3000, message: "Um dos servos já está no evento. Troca não possível!", icon: String(IconWarning) })
+      CustomToast({ duration: 3000, message: "Um dos colaboradores já está no evento. Troca não possível!", icon: String(IconWarning) })
       return
     }
 
@@ -119,7 +119,7 @@ export const ChangeSerfPopover = (props: IChangeSerfPopoverProps) => {
   >
     <Box sx={style}>
       <div style={{ minWidth: '18rem' }}>
-        <Typography style={{ fontWeight: 600, fontSize: 20 }} >Confirmar mudança de servo?</Typography>
+        <Typography style={{ fontWeight: 600, fontSize: 20 }} >Confirmar mudança de colaborador?</Typography>
         <GroupInformationChangeStyle>
           {managerDisplayUserAndEvent(fromDay)}
           <Icon src={String(IconChangeSerf)} style={{ margin: '0px 8px', width: '4%' }} />
