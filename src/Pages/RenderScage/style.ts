@@ -1,6 +1,26 @@
 import styled from "styled-components";
 
 
+export const AllInformationsContainerStyle = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: stretch;
+  max-height: 90vh;
+  min-height: 90vh;
+  height: 100%;
+  width: 100vw;
+`
+
+export const ScaleAndActionsContainerStyle = styled.div`
+  min-width: 71vw;
+  max-width: 71vw;
+  width: 100%;
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`
+
 export const SidebarContainer = styled.div`
   background-color: #d1d1d1;
   min-height: 90vh;

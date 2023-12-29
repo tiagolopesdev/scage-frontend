@@ -19,7 +19,7 @@ import { initialStateScale } from '../../@types/InitialStateDay';
 import { IsVisibleComponents } from '../../Utils/isVisibleComponents';
 import { StatisticsList } from '../../Components/Statistics/statistics-list';
 
-import { ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, TextStyle } from './style';
+import { AllInformationsContainerStyle, ButtonGroupContainer, CardDayContainer, NotFoundContainerStyle, ScaleAndActionsContainerStyle, TextStyle } from './style';
 import { SidebarContainer } from './style';
 import { ScroolCustom } from '../../Styles';
 import IconSuccess from "../../Assets/icon_success.svg";
@@ -189,57 +189,39 @@ export const RenderScale = () => {
     visibleButtons()
   }, [scaleContext?.days])
 
-  return (
-    <div style={{ overflow: 'hidden' }}>
-      <NavBar />
-      <div style={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'stretch',
-        maxHeight: '90vh',
-        minHeight: '90vh',
-        height: '100%',
-        width: '100vw'
-      }}>
-        <div style={{
-          minWidth: '71vw',
-          maxWidth: '71vw',
-          width: '100%',
-          flex: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100%'
-        }}>
-          {existScale()}
-          <ButtonGroupContainer>
-            {visibleButtons()}
-          </ButtonGroupContainer>
-        </div>
-        <SidebarContainer>
-          <Box sx={{ borderColor: 'divider', justifyContent: 'space-between' }}>
-            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-              <Tab style={{ fontWeight: '600', fontSize: '1rem' }} label="Colaborador" {...a11yProps(0)} />
-              <Tab style={{ fontWeight: '600', fontSize: '1rem' }} label="Escalas" {...a11yProps(2)} onClick={() => { setValue(1) }} />
-              <Tab style={{ fontWeight: '600', fontSize: '1rem' }} label="Estatísticas" {...a11yProps(1)} />
-            </Tabs>
-          </Box>
-          <CustomTabPanel value={value} index={0}>
-            <UserListFloating />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={1}>
-            <ScaleListFloating />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
-            <StatisticsList />
-          </CustomTabPanel>
-        </SidebarContainer>
-      </div>
-      {conditionHandling(openModalGenerationScale, <ModalGenerationScale
-        openModal={openModalGenerationScale}
-        openModalState={setOpenModalGenerationScale}
-        setScalePreview={setScaleContext} />
-      )}
-      <Toaster position="bottom-center" reverseOrder={false} />
-    </div>
-  );
+  return <div style={{ overflow: 'hidden' }}>
+    <NavBar />
+    <AllInformationsContainerStyle>
+      <ScaleAndActionsContainerStyle>
+        {existScale()}
+        <ButtonGroupContainer>
+          {visibleButtons()}
+        </ButtonGroupContainer>
+      </ScaleAndActionsContainerStyle>
+      <SidebarContainer>
+        <Box sx={{ borderColor: 'divider', justifyContent: 'space-between' }}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tab style={{ fontWeight: '600', fontSize: '1rem' }} label="Colaborador" {...a11yProps(0)} />
+            <Tab style={{ fontWeight: '600', fontSize: '1rem' }} label="Escalas" {...a11yProps(2)} onClick={() => { setValue(1) }} />
+            <Tab style={{ fontWeight: '600', fontSize: '1rem' }} label="Estatísticas" {...a11yProps(1)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          <UserListFloating />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <ScaleListFloating />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+          <StatisticsList />
+        </CustomTabPanel>
+      </SidebarContainer>
+    </AllInformationsContainerStyle>
+    {conditionHandling(openModalGenerationScale, <ModalGenerationScale
+      openModal={openModalGenerationScale}
+      openModalState={setOpenModalGenerationScale}
+      setScalePreview={setScaleContext} />
+    )}
+    <Toaster position="bottom-center" reverseOrder={false} />
+  </div>
 }
