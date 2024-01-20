@@ -3,10 +3,11 @@ import CalendarIcon from "../../Assets/icon-calendar.svg"
 import { Badge, Card, CardActions, CardContent, IconButton, Typography } from "@mui/material"
 import { useContext, useState } from "react"
 import { ContainerBadgeStyle, GroupFieldStyle } from "./style"
-import EyeScaleIcon from '../../Assets/icon_eye_scale.svg'
+import BulletPointIcon from '../../Assets/icon_bullet_point.svg'
 import { ISingleScale } from "../../@types/ISingleScale"
 import { ScaleContext } from "../../Context/scale"
 import dayjs from "dayjs"
+import { ScaleEvents } from "./Popover/scale-events"
 
 interface IUsersProps {
   scale?: ISingleScale
@@ -19,6 +20,10 @@ export const Scale = (scalesProps: IUsersProps) => {
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [isProgress] = useState(dayjs().isBefore(dayjs(scalesProps.scale?.end, 'YYYY-MM-DD')))
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
@@ -79,13 +84,23 @@ export const Scale = (scalesProps: IUsersProps) => {
               onClick={(event: any) => {
                 setScaleId(scale?.id as string)
                 setDisplayScale(true)
+                handleClick(event)
               }}
             >
-              <Icon style={{ width: '25px' }} src={String(EyeScaleIcon)} />
+              <Icon style={{ width: '25px' }} src={String(BulletPointIcon)} />
             </IconButton>
           </CardActions>
         </CardContent>
       </Card>
+      { open ?
+        <ScaleEvents
+          id={id}
+          anchorEl={anchorEl}
+          open={open}
+          setAnchorEl={setAnchorEl}
+        />
+        : ''
+      }
     </div>
   )
 }
