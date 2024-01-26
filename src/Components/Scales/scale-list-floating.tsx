@@ -9,6 +9,9 @@ import { ISingleScale } from "../../@types/ISingleScale"
 import { ScaleContext } from "../../Context/scale"
 import { Input } from "../Input"
 import { Element, manageFeedbackDisplay } from "../../Utils/manageFeedbackDisplay"
+import { Alert, Skeleton } from "@mui/material"
+import { CustomMessageError } from "../CustomMessageError"
+import { conditionHandling } from "../../Utils/conditionHandling"
 
 
 export const ScaleListFloating = () => {
@@ -40,16 +43,18 @@ export const ScaleListFloating = () => {
     managementFindScales()
   }, [selectedMonth, scaleContext])
 
-  const managerScaleRender = () => manageFeedbackDisplay(
-    Boolean(scales.length === 0),
-    Boolean(!isLoading && scales.length > 0),
+  const managerScaleRender = manageFeedbackDisplay(
+    scales.length === 0,
+    !isLoading && scales.length > 0,
     selectedMonth,
     Element.SCALE,
-    scales.map((scale) => {
-      return <div key={scale.id}>
-        <Scale scale={scale} />
-      </div>
-    })
+    <div id="group-scales-single">
+      {scales.map((scale) => {
+        return <div key={scale.id}>
+          <Scale scale={scale} />
+        </div>
+      })}
+    </div>
   )
 
   return <ContainerScaleList>
@@ -67,7 +72,7 @@ export const ScaleListFloating = () => {
       alignContent: 'center',
       justifyContent: 'center'
     } : undefined} >
-      {managerScaleRender()}
+      {managerScaleRender}
     </ScroolCustom>
   </ContainerScaleList>
 }

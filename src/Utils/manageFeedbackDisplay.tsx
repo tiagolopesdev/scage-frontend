@@ -12,17 +12,15 @@ export function manageFeedbackDisplay(
   conditionDisplayElement: boolean,
   conditionFilter: string,
   typeElement: Element,
-  elements: JSX.Element[]
+  elements: JSX.Element
 ) {
   if (conditionDisplaySkeleton) {
     return <Skeleton variant="rounded" width="100%" height='50rem' />
-  } else if (conditionDisplayElement) {
-    return <div id={`group-${typeElement.toString()}-single`}>
-      {elements}
-    </div>
-  } else {
-    return conditionFilter === '' ?
-      <CustomMessageError message={`${typeElement} não foram possíveis serem exibidas`} /> :
-      <Alert severity="info">{`${typeElement}, {conditionFilter} não encontrada!`}</Alert>
+  } 
+  else if (conditionDisplayElement) {
+    return elements
   }
+  return conditionFilter === '' ?
+    <CustomMessageError message={`${typeElement} não foram possíveis serem exibidas`} /> :
+    <Alert severity="info">{`${typeElement}, {conditionFilter} não encontrada!`}</Alert>
 }
