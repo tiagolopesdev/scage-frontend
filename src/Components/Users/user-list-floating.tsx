@@ -1,5 +1,5 @@
 import { Input } from "../Input"
-import { Box, Button, Chip, IconButton, Skeleton } from "@mui/material"
+import { Box, Button, Chip, IconButton } from "@mui/material"
 import { Icon } from "../Img"
 import { User } from "../Users/user"
 import { useEffect, useState } from "react"
@@ -7,18 +7,18 @@ import { updateUser } from "../../Services/Users"
 import { ManipulationUser } from "./Popover/manipulation-user"
 import { FilterUser } from "./Popover/filter-user"
 import toast from "react-hot-toast"
-import { CustomMessageError } from "../CustomMessageError"
 import { managementFindUsers } from "../../Handlers/users"
-
 import { BadgeSizeFixed, ContainerUserList, Search } from "./style"
 import { ScroolCustom } from "../../Styles/index"
 import { IUser } from "../../@types/IUser"
 import IconFilter from "../../Assets/filter_search.svg"
 import { conditionHandling } from "../../Utils/conditionHandling"
+import { Element, manageFeedbackDisplay } from "../../Utils/manageFeedbackDisplay"
 
 
 export const UserListFloating = () => {
 
+  const [isLoading, setIsLoading] = useState(false)
   const [users, setUsers] = useState<IUser[]>([]);
   const [nameToFilter, setNameToFilter] = useState('');
   const [sexFilter, setSexFilter] = useState('');
@@ -40,9 +40,12 @@ export const UserListFloating = () => {
 
   const usersFounded = async () => {
     try {
+      setIsLoading(!isLoading)
       const result = await managementFindUsers({ name: nameToFilter, sex: sexFilter })
-      setUsers(result as IUser[])
+      setUsers(result)
+      setIsLoading(!isLoading)
     } catch (error) {
+      setIsLoading(false)
     }
   }
 
@@ -51,6 +54,7 @@ export const UserListFloating = () => {
     if (userWasManipuled) setUserWasManipuled(false)
   }, [nameToFilter, userWasManipuled, sexFilter])
 
+  // TODO -> change for handler
   const deleteUser = async (user: IUser) => {
     try {
 
@@ -74,9 +78,9 @@ export const UserListFloating = () => {
     }
   }
 
-  const managerUserRender = () => {
-    if (users.length > 0) {
-      return users.map((user) => {
+  const managerUserRender = manageFeedbackDisplay({
+    elements: <div id="group-collaborators-group">
+      {users.map((user) => {
         return <div key={user.id} style={{ maxWidth: '25vw' }}>
           <User
             user={user}
@@ -84,85 +88,79 @@ export const UserListFloating = () => {
             onDelete={deleteUser}
           />
         </div>
-      })
-    } else {
-      return (
-        <Skeleton variant="rounded" width='100%' height='60vh' />
-      )
-    }
-  }
+      })}
+    </div>,
+    typeElement: Element.COLLABORATORS,
+    showSkeleton: isLoading,
+    showElement: !isLoading && users.length > 0,
+    showFilter: nameToFilter
+  })
 
-  return (
-    <ContainerUserList>
-      <Box sx={{
-        maxWidth: '25vw',
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        flexDirection: 'column',
-        marginBottom: '25px'
-      }}>
-        <Search>
-          <Input
-            label="Digite o nome do colaborador"
-            onChange={(event: any) => { setNameToFilter(event.target.value) }}
-          />
-          <IconButton onClick={(event: any) => { handleClick(event, false) }} >
-            <Icon src={String(IconFilter)} />
-          </IconButton>
-        </Search>
-        <BadgeSizeFixed>
-          {conditionHandling(sexFilter !== '', <Chip
-            size="small"
-            label={sexFilter}
-            sx={{ marginTop: '8px', fontWeight: 600 }}
-            onDelete={() => { setSexFilter('') }} />
-          )}
-        </BadgeSizeFixed>
-      </Box>
-      <ScroolCustom style={users.length > 0 || users.length !== undefined ? undefined : {
-        display: 'flex', alignItems: 'center',
-        alignContent: 'center',
-        justifyContent: 'center'
-      }}>
-        {
-          users.length <= 0 || users.length === undefined ?
-            <CustomMessageError message="Não foi possível exibir os colaboradores." /> :
-            managerUserRender()
-        }
-      </ScroolCustom>
-      <Button
-        style={{
-          borderRadius: '12px',
-          textTransform: 'none',
-          fontSize: '1rem',
-          fontWeight: '600',
-          padding: '3px',
-          backgroundColor: 'rgb(14, 202, 101)',
-          position: 'sticky',
-          left: 10,
-          bottom: 10
-        }}
-        variant="contained"
-        size='small'
-        onClick={(event: any) => { handleClick(event, true) }}
-        fullWidth
-      >Adicionar novo colaborador</Button>
-      {conditionHandling(openManipulationPopover, <ManipulationUser
-        id={idManipulation}
-        anchorEl={anchorManipulationPopover}
-        open={openManipulationPopover}
-        setAnchorEl={setAnchorManipulationPopover}
-        setUserWasManipuled={setUserWasManipuled}
-      />)}
-      {conditionHandling(openFilterPopover, <FilterUser
-        id={idFilter}
-        anchorEl={anchorFilterPopover}
-        open={openFilterPopover}
-        setAnchorEl={setAnchorFilterPopover}
-        setSexSelected={setSexFilter}
-      />)}
-    </ContainerUserList>
-  )
+  return <ContainerUserList>
+    <Box sx={{
+      maxWidth: '25vw',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start',
+      flexDirection: 'column',
+      marginBottom: '25px'
+    }}>
+      <Search>
+        <Input
+          label="Digite o nome do colaborador"
+          onChange={(event: any) => { setNameToFilter(event.target.value) }}
+        />
+        <IconButton onClick={(event: any) => { handleClick(event, false) }} >
+          <Icon src={String(IconFilter)} />
+        </IconButton>
+      </Search>
+      <BadgeSizeFixed>
+        {conditionHandling(sexFilter !== '', <Chip
+          size="small"
+          label={sexFilter}
+          sx={{ marginTop: '8px', fontWeight: 600 }}
+          onDelete={() => { setSexFilter('') }} />
+        )}
+      </BadgeSizeFixed>
+    </Box>
+    <ScroolCustom style={users.length > 0 || users.length !== undefined ? undefined : {
+      display: 'flex', alignItems: 'center',
+      alignContent: 'center',
+      justifyContent: 'center'
+    }}>
+      {managerUserRender}
+    </ScroolCustom>
+    <Button
+      style={{
+        borderRadius: '12px',
+        textTransform: 'none',
+        fontSize: '1rem',
+        fontWeight: '600',
+        padding: '3px',
+        backgroundColor: 'rgb(14, 202, 101)',
+        position: 'sticky',
+        left: 10,
+        bottom: 10
+      }}
+      variant="contained"
+      size='small'
+      onClick={(event: any) => { handleClick(event, true) }}
+      fullWidth
+    >Adicionar novo colaborador</Button>
+    {conditionHandling(openManipulationPopover, <ManipulationUser
+      id={idManipulation}
+      anchorEl={anchorManipulationPopover}
+      open={openManipulationPopover}
+      setAnchorEl={setAnchorManipulationPopover}
+      setUserWasManipuled={setUserWasManipuled}
+    />)}
+    {conditionHandling(openFilterPopover, <FilterUser
+      id={idFilter}
+      anchorEl={anchorFilterPopover}
+      open={openFilterPopover}
+      setAnchorEl={setAnchorFilterPopover}
+      setSexSelected={setSexFilter}
+    />)}
+  </ContainerUserList>
 }

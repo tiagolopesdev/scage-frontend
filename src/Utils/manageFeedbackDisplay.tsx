@@ -7,20 +7,24 @@ export enum Element {
   STATISTICS = "Estatisticas"
 }
 
-export function manageFeedbackDisplay(
-  conditionDisplaySkeleton: boolean,
-  conditionDisplayElement: boolean,
-  conditionFilter: string,
+interface IManagerFeedbackDisplay {
+  showSkeleton?: boolean,
+  showElement?: boolean,
+  showFilter?: string,
   typeElement: Element,
-  elements: JSX.Element
-) {
-  if (conditionDisplaySkeleton) {
-    return <Skeleton variant="rounded" width="100%" height='50rem' />
-  } 
-  else if (conditionDisplayElement) {
-    return elements
-  }
-  return conditionFilter === '' ?
+  elements: React.ReactNode
+}
+
+export function manageFeedbackDisplay({
+  typeElement,
+  elements,
+  showSkeleton,
+  showElement,
+  showFilter,
+}: IManagerFeedbackDisplay) {
+  if (showSkeleton) return <Skeleton variant="rounded" width="100%" height='50rem' />
+  if (showElement) return elements  
+  return showFilter === '' || showFilter === undefined ?
     <CustomMessageError message={`${typeElement} não foram possíveis serem exibidas`} /> :
-    <Alert severity="info">{`${typeElement}, {conditionFilter} não encontrada!`}</Alert>
+    <Alert severity="info">{`${typeElement}, ${showFilter} não encontrada!`}</Alert>
 }

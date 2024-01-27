@@ -9,9 +9,6 @@ import { ISingleScale } from "../../@types/ISingleScale"
 import { ScaleContext } from "../../Context/scale"
 import { Input } from "../Input"
 import { Element, manageFeedbackDisplay } from "../../Utils/manageFeedbackDisplay"
-import { Alert, Skeleton } from "@mui/material"
-import { CustomMessageError } from "../CustomMessageError"
-import { conditionHandling } from "../../Utils/conditionHandling"
 
 
 export const ScaleListFloating = () => {
@@ -23,6 +20,7 @@ export const ScaleListFloating = () => {
 
   const managementFindScales = async () => {
     try {
+      setIsLoading(!isLoading)
       const responseApi = selectedMonth === '' ?
         await GetSingleScales() :
         await GetSingleScales(selectedMonth)
@@ -43,19 +41,19 @@ export const ScaleListFloating = () => {
     managementFindScales()
   }, [selectedMonth, scaleContext])
 
-  const managerScaleRender = manageFeedbackDisplay(
-    scales.length === 0,
-    !isLoading && scales.length > 0,
-    selectedMonth,
-    Element.SCALE,
-    <div id="group-scales-single">
-      {scales.map((scale) => {
+  const managerScaleRender = manageFeedbackDisplay({
+    elements: <div id="group-scales-single">
+      {([] as ISingleScale[]).concat(scales ?? [])?.map((scale) => {
         return <div key={scale.id}>
           <Scale scale={scale} />
         </div>
       })}
-    </div>
-  )
+    </div>,
+    typeElement: Element.SCALE,
+    showSkeleton: isLoading,
+    showElement: !isLoading && scales.length > 0,
+    showFilter: selectedMonth
+  })
 
   return <ContainerScaleList>
     <ContainerComboBoxStyle>
