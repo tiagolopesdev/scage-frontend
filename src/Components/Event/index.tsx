@@ -10,6 +10,7 @@ import { ChangeSerfPopover } from "./ModalConfirmation"
 import { IDay } from "../../@types/IScaleMonth"
 import { IUser } from "../../@types/IUser"
 import { ScaleContext } from "../../Context/scale"
+import { HoursAndMinutes } from "../../@types/HoursFormat"
 
 
 interface IEventSerf {
@@ -21,7 +22,7 @@ interface IEventSerf {
 export const EventSerf = ({ day, user, isNotChange }: IEventSerf) => {
 
   const date = dayjs(day.dateTime).format('DD/MM/YYYY')
-  const hour = dayjs(day.dateTime).format('HH:mm')
+  const hour = dayjs(day.dateTime).format(HoursAndMinutes)
 
   const { setToDay } = useContext(ScaleContext);
 

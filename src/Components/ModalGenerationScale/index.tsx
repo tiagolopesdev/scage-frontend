@@ -32,6 +32,7 @@ import IconEdit from '../../Assets/icon_user_edit.svg'
 import IconError from '../../Assets/icon_error.svg'
 import IconWarning from '../../Assets/icon_warning.svg'
 import IconDelete from '../../Assets/icon_trash.svg'
+import { HoursAndMinutes } from "../../@types/HoursFormat";
 
 
 const style = {
@@ -180,7 +181,7 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
         rows: [
           { name: item.name, align: "left", style: { paddingLeft: '15px' } },
           { name: dayjs(item.dateTime).format('DD/MM/YYYY'), align: "center" },
-          { name: dayjs(item.dateTime).format('hh:mm:ss'), align: "center" },
+          { name: dayjs(item.dateTime).format(HoursAndMinutes), align: "center" },
           {
             name: '', align: "right", actions: <>
               <IconButton onClick={() => { EditDay(item) }}>

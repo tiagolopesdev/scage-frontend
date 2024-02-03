@@ -14,6 +14,7 @@ import SelectIcon from "../../Assets/icon_success_white.svg"
 import CloseIcon from "../../Assets/icon_user_delete.svg"
 import IconWarning from '../../Assets/icon_warning.svg'
 import { Input } from "../Input";
+import { HoursAndMinutes } from "../../@types/HoursFormat";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -85,7 +86,7 @@ export const ModalDay = (props: IModalGenerationScale) => {
           nameRight={<Icon src={String(SelectIcon)} />}
           actionLeft={() => { HandlerClose() }}
           actionRight={() => {
-            if (!eventName || !selectedDateTime?.format('DD/MM/YYYY') || !selectedDateTime?.format('h:mm A')) {
+            if (!eventName || !selectedDateTime?.format('DD/MM/YYYY') || !selectedDateTime?.format(HoursAndMinutes)) {
               CustomToast({ duration: 2000, message: 'Preencha todos os campos', icon: String(IconWarning) })
             } else {
               const elementExist = scaleContext.days.findIndex((item: IDay) => { return item === manipulationDay });

@@ -28,6 +28,7 @@ import IconWarning from '../../../Assets/icon_warning.svg'
 import CameraIcon from '../../../Assets/camera_icon.svg'
 import DeskIcon from '../../../Assets/desk_icon.svg'
 import IconSave from '../../../Assets/icon_success_white.svg'
+import { HoursAndMinutes } from "../../../@types/HoursFormat"
 
 
 interface ICardDay {
@@ -42,7 +43,7 @@ export const CardDay = ({ day }: ICardDay) => {
   const [dayToEdit, setDayToEdit] = useState<IDay>(day);
   const [openModalNewDay, setOpenModalNewDay] = useState(false);
   const [elements, setElements] = useState<IUser[]>([]);
-  const [dateTimeFormated, setDateTimeFormated] = useState(`Dia ${dayjs(day.dateTime).format('DD/MM/YYYY')} às ${dayjs(day.dateTime).format('HH:mm')}`)
+  const [dateTimeFormated, setDateTimeFormated] = useState(`Dia ${dayjs(day.dateTime).format('DD/MM/YYYY')} às ${dayjs(day.dateTime).format(HoursAndMinutes)}`)
   const [daysList, setDaysList] = useState<IDay[]>([day]);
   const [isReorder, setIsReorder] = useState(false)
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -53,7 +54,7 @@ export const CardDay = ({ day }: ICardDay) => {
       day.cameraTwo as IUser,
       day.cutDesk as IUser
     ])
-    setDateTimeFormated(`Dia ${dayjs(day.dateTime).format('DD/MM/YYYY')} às ${dayjs(day.dateTime).format('HH:mm')}`)
+    setDateTimeFormated(`Dia ${dayjs(day.dateTime).format('DD/MM/YYYY')} às ${dayjs(day.dateTime).format(HoursAndMinutes)}`)
     setDayToEdit(day)
     setIsReorder(false)
   }, [daysList, day.cameraOne, day.cameraTwo, day.cutDesk, day.dateTime])

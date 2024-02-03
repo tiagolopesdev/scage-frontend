@@ -28,7 +28,7 @@ export const App = () => {
     <ThemeProvider theme={theme}>
       <ScaleProvider>
         <GlobalStyle />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
           <RenderScale />
         </LocalizationProvider>
       </ScaleProvider>

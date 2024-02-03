@@ -9,6 +9,7 @@ import { IconMonth } from "../Assets/Icons/month";
 import { IconCamera } from "../Assets/Icons/camera-day";
 import { IconCutDesk } from "../Assets/Icons/cut-desk-day";
 import { IconHorizontalPascom } from "../Assets/Icons/horizontal-logo";
+import { HoursAndMinutes } from "../@types/HoursFormat";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
@@ -77,7 +78,7 @@ export function downloadPDF(data: IScaleMonth) {
 
     column.push(dayElement(
       item.name,
-      `${dayjs(item.dateTime).format('DD/MM/YYYY')} às ${dayjs(item.dateTime).format('HH:mm A')}`,
+      `${dayjs(item.dateTime).format('DD/MM/YYYY')} às ${dayjs(item.dateTime).format(HoursAndMinutes)}`,
       item.cameraOne?.name as string,
       item.cameraTwo?.name as string,
       item.cutDesk?.name as string)

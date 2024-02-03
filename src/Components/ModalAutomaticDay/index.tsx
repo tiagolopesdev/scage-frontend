@@ -7,6 +7,7 @@ import { ActionButtons } from "../ActionButtons"
 import { Icon } from "../Img"
 import { GenerationAutomaticDays } from '../../Services/Scale'
 import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
 
 import IconDelete from '../../Assets/icon_trash.svg'
 import IconEdit from '../../Assets/icon_user_edit.svg'
@@ -21,7 +22,9 @@ import { initialStateUser } from "../../@types/InitialStateDay"
 import { ScaleContext } from "../../Context/scale"
 import { TableComponent } from "../Table"
 import { ITableRowProps } from "../../@types/TableProps"
+import { Hours, HoursAndMinutes } from "../../@types/HoursFormat"
 
+// var utc = require('dayjs/plugin/utc')
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -72,7 +75,7 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
         rows: [
           { name: item.day, align: "left", style: { paddingLeft: '15px' } },
           { name: item.nameEvent as string, align: "left", style: { paddingLeft: '15px' } },
-          { name: dayjs(item.time).format('hh:mm:ss'), align: "center" },
+          { name: dayjs(item.time).format(HoursAndMinutes), align: "center" },
           {
             name: '', align: "right", actions: <>
               <IconButton onClick={() => {
@@ -197,8 +200,8 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
             const dayToSend: IAutomaticDays[] = days.map((item) => {
 
               delete item.isNew
-
-              item.time = dayjs(item.time).format('hh:mm:ss')
+              
+              item.time = dayjs(item.time).format(Hours)
 
               const indexNameDay = Object.values(DayOfWeek).indexOf(item.day as unknown as DayOfWeek)
 
