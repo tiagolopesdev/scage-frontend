@@ -1,6 +1,6 @@
 import { FormControlLabel, Popover, Radio, RadioGroup } from "@mui/material";
 import { TextFieldContainer } from "./style";
-import { Sex } from "../../../@types/Sex";
+import { SexEnum } from "../../../@types/SexEnum";
 import { useState } from "react";
 import { ActionButtons } from "../../ActionButtons";
 
@@ -21,7 +21,7 @@ export const FilterUser = (props: IFilterUserProps) => {
 
   const applyingFilter = () => {
 
-    const sexSelected: string = sexMasc ? Sex.MASCULINO.toString() : Sex.FEMININO.toString()
+    const sexSelected: string = sexMasc ? SexEnum.MASCULINO.toString() : SexEnum.FEMININO.toString()
 
     setSexSelected(sexSelected)
   }
@@ -47,7 +47,7 @@ export const FilterUser = (props: IFilterUserProps) => {
             }}
           >
             <FormControlLabel
-              label={Sex.MASCULINO.toString()}
+              label={SexEnum.MASCULINO.toString()}
               control={
                 <Radio
                   checked={sexMasc}
@@ -59,7 +59,7 @@ export const FilterUser = (props: IFilterUserProps) => {
               }
             />
             <FormControlLabel
-              label={Sex.FEMININO.toString()}
+              label={SexEnum.FEMININO.toString()}
               control={
                 <Radio
                   checked={sexFem}

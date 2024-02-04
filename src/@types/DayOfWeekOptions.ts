@@ -1,11 +1,11 @@
-import { DayOfWeek } from "./DayOfWeek";
+import { DayOfWeekEnum } from "./DayOfWeekEnum";
 
-export const DayOfWeekOptions = [
-  { label: Object.values(DayOfWeek)[0] },
-  { label: Object.values(DayOfWeek)[1] },
-  { label: Object.values(DayOfWeek)[2] },
-  { label: Object.values(DayOfWeek)[3] },
-  { label: Object.values(DayOfWeek)[4] },
-  { label: Object.values(DayOfWeek)[5] },
-  { label: Object.values(DayOfWeek)[6] }
+export const DayOfWeekEnumOptions = [
+  { label: Object.values(DayOfWeekEnum)[0] },
+  { label: Object.values(DayOfWeekEnum)[1] },
+  { label: Object.values(DayOfWeekEnum)[2] },
+  { label: Object.values(DayOfWeekEnum)[3] },
+  { label: Object.values(DayOfWeekEnum)[4] },
+  { label: Object.values(DayOfWeekEnum)[5] },
+  { label: Object.values(DayOfWeekEnum)[6] }
 ]

@@ -2,7 +2,7 @@ import Popover from '@mui/material/Popover';
 import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import { TextFieldContainer } from './style';
 import { IUser } from '../../../@types/IUser';
-import { Sex } from '../../../@types/Sex';
+import { SexEnum } from '../../../@types/SexEnum';
 import { Dispatch, useState } from 'react';
 import { createUser, updateUser } from '../../../Services/Users';
 import { Toaster } from 'react-hot-toast';
@@ -25,8 +25,8 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
 
   const { id, anchorEl, open, setAnchorEl, user, setUserWasManipuled } = props
 
-  const [optionMasc, setOptionMasc] = useState(user?.sex === Sex.MASCULINO ? true : false);
-  const [optionFem, setOptionFem] = useState(user?.sex === Sex.FEMININO ? true : false);
+  const [optionMasc, setOptionMasc] = useState(user?.sex === SexEnum.MASCULINO ? true : false);
+  const [optionFem, setOptionFem] = useState(user?.sex === SexEnum.FEMININO ? true : false);
   const [userManipulation, setUserManipulation] = useState<IUser>({
     id: user?.id ?? '',
     email: user?.email ?? '',
@@ -42,7 +42,7 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
         id: userManipulation.id,
         name: userManipulation.name,
         email: userManipulation.email,
-        sex: optionMasc ? Sex.MASCULINO : Sex.FEMININO,
+        sex: optionMasc ? SexEnum.MASCULINO : SexEnum.FEMININO,
         isEnable: userManipulation.isEnable,
       }
 
@@ -84,7 +84,7 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
           style={{ marginTop: '10px' }}
         >
           <FormControlLabel
-            label={Sex.MASCULINO.toString()}
+            label={SexEnum.MASCULINO.toString()}
             control={
               <Radio
                 checked={optionMasc}
@@ -100,7 +100,7 @@ export const ManipulationUser = (props: IManipulationUserProps) => {
             }
           />
           <FormControlLabel
-            label={Sex.FEMININO.toString()}
+            label={SexEnum.FEMININO.toString()}
             control={
               <Radio
                 checked={optionFem}

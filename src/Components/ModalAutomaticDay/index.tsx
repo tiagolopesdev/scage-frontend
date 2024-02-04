@@ -12,11 +12,11 @@ import utc from "dayjs/plugin/utc"
 import IconDelete from '../../Assets/icon_trash.svg'
 import IconEdit from '../../Assets/icon_user_edit.svg'
 import IconWarning from '../../Assets/icon_warning.svg'
-import { DayOfWeekOptions } from "../../@types/DayOfWeekOptions"
+import { DayOfWeekEnumOptions } from "../../@types/DayOfWeekEnumOptions"
 import { InformationsDayStyle } from "./style"
 import { IGeneratedDays } from "../../@types/IGeneratedDays"
 import { IAutomaticDays } from "../../@types/IAutomaticDays"
-import { DayOfWeek } from "../../@types/DayOfWeek"
+import { DayOfWeekEnum } from "../../@types/DayOfWeekEnum"
 import { IDay } from "../../@types/IScaleMonth"
 import { initialStateUser } from "../../@types/InitialStateDay"
 import { ScaleContext } from "../../Context/scale"
@@ -118,7 +118,7 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
               disablePortal
               sx={{ minWidth: 170 }}
               id="combo-box-demo-two"
-              options={DayOfWeekOptions}
+              options={DayOfWeekEnumOptions}
               value={{ label: day.day }}
               isOptionEqualToValue={(option, value) => value.label === option.label}
               renderInput={(params) => <TextField {...params} label="Dia da semana" />}
@@ -203,9 +203,9 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
               
               item.time = dayjs(item.time).format(Hours)
 
-              const indexNameDay = Object.values(DayOfWeek).indexOf(item.day as unknown as DayOfWeek)
+              const indexNameDay = Object.values(DayOfWeekEnum).indexOf(item.day as unknown as DayOfWeekEnum)
 
-              item.day = Object.keys(DayOfWeek)[indexNameDay]
+              item.day = Object.keys(DayOfWeekEnum)[indexNameDay]
 
               return item
             })
