@@ -106,7 +106,6 @@ export const ModalAutomaticDay = (props: IModalAutomaticDay) => {
   return (
     <Modal
       open={openModal}
-      onClose={() => { HandlerClose() }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >

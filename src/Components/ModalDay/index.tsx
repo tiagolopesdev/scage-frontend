@@ -51,7 +51,6 @@ export const ModalDay = (props: IModalGenerationScale) => {
 
   return <Modal
     open={openModal}
-    onClose={() => { HandlerClose() }}
     aria-labelledby="modal-modal-title"
     aria-describedby="modal-modal-description"
   >

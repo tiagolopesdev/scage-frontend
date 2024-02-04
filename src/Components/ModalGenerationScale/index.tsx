@@ -203,7 +203,6 @@ export const ModalGenerationScale = (props: IModalGenerationScale) => {
   return <div>
     <Modal
       open={openModal}
-      onClose={() => { HandlerClose() }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
