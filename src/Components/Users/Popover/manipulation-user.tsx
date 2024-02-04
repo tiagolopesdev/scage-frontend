@@ -2,15 +2,17 @@ import Popover from '@mui/material/Popover';
 import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import { TextFieldContainer } from './style';
 import { IUser } from '../../../@types/IUser';
-import { SexEnum } from '../../../@types/SexEnum';
 import { Dispatch, useState } from 'react';
 import { createUser, updateUser } from '../../../Services/Users';
 import { Toaster } from 'react-hot-toast';
 import { CustomToast } from '../../CustomToast';
-import IconError from '../../../Assets/icon_error.svg'
-import IconSuccess from '../../../Assets/icon_success.svg'
 import { ActionButtons } from '../../ActionButtons';
 import { Input } from '../../Input';
+import { SexEnum } from '../../../@types/SexEnum';
+
+import IconError from '../../../Assets/icon_error.svg'
+import IconSuccess from '../../../Assets/icon_success.svg'
+
 
 interface IManipulationUserProps {
   id: string | undefined,

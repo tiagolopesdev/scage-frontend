@@ -12,7 +12,6 @@ import utc from "dayjs/plugin/utc"
 import IconDelete from '../../Assets/icon_trash.svg'
 import IconEdit from '../../Assets/icon_user_edit.svg'
 import IconWarning from '../../Assets/icon_warning.svg'
-import { DayOfWeekEnumOptions } from "../../@types/DayOfWeekEnumOptions"
 import { InformationsDayStyle } from "./style"
 import { IGeneratedDays } from "../../@types/IGeneratedDays"
 import { IAutomaticDays } from "../../@types/IAutomaticDays"
@@ -23,8 +22,8 @@ import { ScaleContext } from "../../Context/scale"
 import { TableComponent } from "../Table"
 import { ITableRowProps } from "../../@types/TableProps"
 import { Hours, HoursAndMinutes } from "../../@types/HoursFormat"
+import { DayOfWeekEnumOptions } from "../../@types/DayOfWeekOptions"
 
-// var utc = require('dayjs/plugin/utc')
 
 const style = {
   position: 'absolute' as 'absolute',
