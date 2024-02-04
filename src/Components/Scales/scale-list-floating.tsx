@@ -1,5 +1,4 @@
 import { ContainerComboBoxStyle, ContainerScaleList } from "./style"
-import { Alert, Skeleton } from "@mui/material"
 import { Scale } from "./scale"
 import { useContext, useEffect, useState } from "react"
 import { CustomToast } from "../CustomToast"
@@ -9,7 +8,7 @@ import { GetSingleScales } from "../../Services/Scale"
 import { ISingleScale } from "../../@types/ISingleScale"
 import { ScaleContext } from "../../Context/scale"
 import { Input } from "../Input"
-import { CustomMessageError } from "../CustomMessageError"
+import { Element, manageFeedbackDisplay } from "../../Utils/manageFeedbackDisplay"
 
 
 export const ScaleListFloating = () => {
@@ -21,6 +20,7 @@ export const ScaleListFloating = () => {
 
   const managementFindScales = async () => {
     try {
+      setIsLoading(!isLoading)
       const responseApi = selectedMonth === '' ?
         await GetSingleScales() :
         await GetSingleScales(selectedMonth)
@@ -41,42 +41,36 @@ export const ScaleListFloating = () => {
     managementFindScales()
   }, [selectedMonth, scaleContext])
 
-  const managerScaleRender = () => {
-    if (scales.length === 0) {
-      return <Skeleton variant="rounded" width="100%" height='50rem' />
-    } else if (!isLoading && scales.length > 0) {
-      return <div id="group-scales-single">
-        {scales.map((scale) => {
-          return <div key={scale.id}>
-            <Scale scale={scale} />
-          </div>
-        })}
-      </div>
-    } else {
-      return selectedMonth === '' ?
-        <CustomMessageError message="Não foi possível exibir as escalas." /> :
-        <Alert severity="info">Escala de <strong>{selectedMonth}</strong> não encontrada</Alert>
-    }
-  }
+  const managerScaleRender = manageFeedbackDisplay({
+    elements: <div id="group-scales-single">
+      {([] as ISingleScale[]).concat(scales ?? [])?.map((scale) => {
+        return <div key={scale.id}>
+          <Scale scale={scale} />
+        </div>
+      })}
+    </div>,
+    typeElement: Element.SCALE,
+    showSkeleton: isLoading,
+    showElement: !isLoading && scales.length > 0,
+    showFilter: selectedMonth
+  })
 
-  return (
-    <ContainerScaleList>
-      <ContainerComboBoxStyle>
-        <Input
-          value={selectedMonth}
-          label='Digite o nome do mês'
-          onChange={(event: any) => {
-            setSelectedMonth(event.target.value ?? '')
-          }}
-        />
-      </ContainerComboBoxStyle>
-      <ScroolCustom style={!isLoading && (scales.length === 0 || scales.length === undefined) ? {
-        display: 'flex', alignItems: 'center',
-        alignContent: 'center',
-        justifyContent: 'center'
-      } : undefined} >
-        {managerScaleRender()}
-      </ScroolCustom>
-    </ContainerScaleList>
-  )
+  return <ContainerScaleList>
+    <ContainerComboBoxStyle>
+      <Input
+        value={selectedMonth}
+        label='Digite o nome do mês'
+        onChange={(event: any) => {
+          setSelectedMonth(event.target.value ?? '')
+        }}
+      />
+    </ContainerComboBoxStyle>
+    <ScroolCustom style={!isLoading && (scales.length === 0 || scales.length === undefined) ? {
+      display: 'flex', alignItems: 'center',
+      alignContent: 'center',
+      justifyContent: 'center'
+    } : undefined} >
+      {managerScaleRender}
+    </ScroolCustom>
+  </ContainerScaleList>
 }
