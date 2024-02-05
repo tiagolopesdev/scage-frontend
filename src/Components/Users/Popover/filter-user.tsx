@@ -1,8 +1,8 @@
 import { FormControlLabel, Popover, Radio, RadioGroup } from "@mui/material";
 import { TextFieldContainer } from "./style";
-import { SexEnum } from "../../../@types/SexEnum";
 import { useState } from "react";
 import { ActionButtons } from "../../ActionButtons";
+import { SexEnum } from "../../../@types/SexEnum";
 
 interface IFilterUserProps {
   id: string | undefined,

@@ -1,12 +1,15 @@
 import { Icon } from "../Img"
-import CalendarIcon from "../../Assets/icon-calendar.svg"
 import { Badge, Card, CardActions, CardContent, IconButton, Typography } from "@mui/material"
 import { useContext, useState } from "react"
 import { ContainerBadgeStyle, GroupFieldStyle } from "./style"
-import EyeScaleIcon from '../../Assets/icon_eye_scale.svg'
 import { ISingleScale } from "../../@types/ISingleScale"
 import { ScaleContext } from "../../Context/scale"
 import dayjs from "dayjs"
+import { ScaleEvents } from "./Popover"
+import { conditionHandling } from "../../Utils/conditionHandling"
+
+import CalendarIcon from "../../Assets/icon-calendar.svg"
+import BulletPointIcon from '../../Assets/icon_bullet_point.svg'
 
 interface IUsersProps {
   scale?: ISingleScale
@@ -22,6 +25,10 @@ export const Scale = (scalesProps: IUsersProps) => {
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   return (
     <div id={id}>
@@ -77,15 +84,22 @@ export const Scale = (scalesProps: IUsersProps) => {
             <IconButton
               aria-describedby={id}
               onClick={(event: any) => {
-                setScaleId(scale?.id as string)
-                setDisplayScale(true)
+                // setScaleId(scale?.id as string)
+                // setDisplayScale(true)
+                handleClick(event)
               }}
             >
-              <Icon style={{ width: '25px' }} src={String(EyeScaleIcon)} />
+              <Icon style={{ width: '25px' }} src={String(BulletPointIcon)} />
             </IconButton>
           </CardActions>
         </CardContent>
       </Card>
+      {conditionHandling(open, <ScaleEvents
+        id={id}
+        anchorEl={anchorEl}
+        open={open}
+        setAnchorEl={setAnchorEl}
+      />)}
     </div>
   )
 }
