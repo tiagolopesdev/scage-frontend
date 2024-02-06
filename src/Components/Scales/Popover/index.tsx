@@ -6,6 +6,9 @@ import EyeIcon from "../../../Assets/icon_eye_scale.svg"
 import TrashIcon from "../../../Assets/icon_trash.svg"
 import YoutubeIcon from "../../../Assets/icon_youtube.svg"
 import styled from "styled-components";
+import { useState } from "react";
+import { conditionHandling } from "../../../Utils/conditionHandling";
+import { YoutubeEvent } from "../../ModalEvents/Youtube";
 
 
 const GroupButtonsStyle = styled.div`
@@ -35,13 +38,20 @@ const styleButtons = {
 }
 
 export const ScaleEvents = (props: IScaleEventsProps) => {
+
   const { id, anchorEl, open, setAnchorEl } = props
+
+  const [isOpenModal, setIsOpenModal] = useState(false)
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  return (
+  return <div>
     <Popover
       id={id}
       open={open}
@@ -74,6 +84,7 @@ export const ScaleEvents = (props: IScaleEventsProps) => {
           }}
         >Notificar em agenda</Button>
         <Button
+          onClick={() => { setIsOpenModal(!isOpenModal) }}
           startIcon={<Icon src={String(YoutubeIcon)} />}
           variant="contained"
           size='small'
@@ -107,5 +118,10 @@ export const ScaleEvents = (props: IScaleEventsProps) => {
         >Cancelar</Button>
       </GroupButtonsStyle>
     </Popover>
-  );
+    {conditionHandling(isOpenModal,
+      <YoutubeEvent
+        openModal={isOpenModal}
+        setOpenModal={setIsOpenModal} />
+    )}
+  </div>
 }
