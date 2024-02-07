@@ -21,11 +21,11 @@ const style = {
   borderRadius: '15px',
   boxShadow: 24,
   minWidth: 450,
-  minHeight: 400,
+  minHeight: 450,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  p: 4,
+  p: 5,
 };
 
 interface IModalGenerationScale {
