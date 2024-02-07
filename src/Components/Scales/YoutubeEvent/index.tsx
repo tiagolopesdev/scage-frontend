@@ -19,19 +19,9 @@ import { InclusionSerfStyle, InformationSerfContainerStyle, InformationSerfGroup
 import { Input } from '../../Input';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AlignGroupStyle } from './style';
+import { PrivacyEnumLive, PrivacyEnumLiveOptions } from '../../../@types/Youtube/PrivacyEnumLive';
+import { IYoutube } from '../../../@types/Youtube/IYoutube';
 
-
-export enum PrivacyEnumLive {
-  NotListaded = 'Não listado',
-  Public = 'Público',
-  Privacy = 'Privado',
-}
-
-export const PrivacyEnumLiveOptions = [
-  { label: Object.values(PrivacyEnumLive)[0] },
-  { label: Object.values(PrivacyEnumLive)[1] },
-  { label: Object.values(PrivacyEnumLive)[2] },
-]
 
 interface IServing {
   users: IUser[],
@@ -44,36 +34,17 @@ export const YoutubeAccordion = ({ users, isStatistics }: IServing) => {
 
   const [expanded, setExpanded] = useState<string | false>(false);
 
+  const [liveStream, setLiveStream] = useState<IYoutube>({
+    dateTime: '',
+    descrition: '',
+    title: '',
+    privacy: PrivacyEnumLive.Public       
+  })
+
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
-
-  const serfInclusion = (serf: IUser) => {
-
-    if (fromDay.serf.id === fromDay.day.cameraOne?.id) {
-      fromDay.day.cameraOne = serf
-    } else if (fromDay.serf.id === fromDay.day.cameraTwo?.id) {
-      fromDay.day.cameraTwo = serf
-    } else if (fromDay.serf.id === fromDay.day.cutDesk?.id) {
-      fromDay.day.cutDesk = serf
-    }
-
-    let scaleContextToUpdate = scaleContext.days
-
-    const indexFromDay = scaleContextToUpdate.findIndex((item) => { return item.id === fromDay.day.id })
-
-    scaleContextToUpdate.splice(indexFromDay, 1, fromDay.day)
-
-    setScaleContext({
-      id: scaleContext.id,
-      name: scaleContext.name,
-      start: scaleContext.start,
-      end: scaleContext.end,
-      isEnable: scaleContext.isEnable,
-      days: scaleContextToUpdate
-    })
-  }
 
   const managerAccordions = () => {
     return <Accordion
@@ -100,61 +71,54 @@ export const YoutubeAccordion = ({ users, isStatistics }: IServing) => {
         </InformationSerfContainerStyle>
       </AccordionSummary>
       <AccordionDetails style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-        <div >
           <AlignGroupStyle>
-          <Input
-            style={{ minWidth: '40%', width: '100%', marginRight: '10px' }}
-            // value={day.nameEvent ?? ''}
-            label='Título'
-            onChange={(event: any) => {
-              // setDay({ ...day as IAutomaticDays, nameEvent: event.target.value })
-            }}
-          />
-          <TimePicker
-            label="Hora do evento"
-            value={''}
-            onChange={(event) => {
-              // event !== null ?
-              //   setDay({ ...day as IAutomaticDays, time: event as string }) :
-              //   setDay({ ...day as IAutomaticDays, time: '' })
-            }}
-            renderInput={(params) =>
-              <TextField
-                style={{ width: '250px' }}
-                {...params}
-                error={false}
-              />
-            }
-          />          
-        </AlignGroupStyle>
-        <TextField
-          label='Descrição da live'
-          multiline
-          rows={3}
-          maxRows={4}
-          style={{ width: '32vw' }}
-        />
-        <AlignGroupStyle>
-          <Autocomplete
-            disablePortal
-            sx={{ minWidth: 170, marginRight: '10px' }}
-            id="combo-box-demo-two"
-            options={PrivacyEnumLiveOptions}
-            // value={{ label: day.day }}
-            isOptionEqualToValue={(option, value) => value.label === option.label}
-            renderInput={(params) => <TextField {...params} label="Privacidade" />}
-            // onChange={(event: any) => { setDay({ ...day, day: event.target.innerText as string }) }}
-          />
-          <Input
-              style={{ minWidth: '40%', width: '100%' }}
-              // value={day.nameEvent ?? ''}
+            <Input
+              style={{ minWidth: '40%', width: '100%', marginRight: '10px' }}
+              value={liveStream.title ?? ''}
               label='Título'
               onChange={(event: any) => {
-                // setDay({ ...day as IAutomaticDays, nameEvent: event.target.value })
+                setLiveStream({...liveStream, title: event as string})
               }}
+              />
+            <TimePicker
+              label="Hora do evento"
+              value={liveStream.dateTime}
+              onChange={(event) => {
+                setLiveStream({...liveStream, dateTime: event as string})
+              }}
+              renderInput={(params) =>
+                <TextField
+                  style={{ width: '250px' }}
+                  {...params}
+                  error={false}
+                />
+              }
             />
-        </AlignGroupStyle>
-        </div>        
+          </AlignGroupStyle>
+          <TextField
+            rows={3}
+            maxRows={4}
+            multiline
+            style={{ width: '32vw' }}
+            label='Descrição da live'
+            onChange={(event: any) => {
+              setLiveStream({...liveStream, descrition: event as string})
+            }}  
+            />
+          <AlignGroupStyle>
+            <Autocomplete
+              disablePortal
+              sx={{ minWidth: 170, marginRight: '10px' }}
+              id="combo-box-demo-two"
+              options={PrivacyEnumLiveOptions}
+              // value={{ label: day.day }}
+              isOptionEqualToValue={(option, value) => value.label === option.label}
+              renderInput={(params) => <TextField {...params} label="Privacidade" />}
+              onChange={(event: any) => { 
+                setLiveStream({...liveStream, privacy: PrivacyEnumLive[event.target.innerText as keyof typeof PrivacyEnumLive]})
+              }}
+            />            
+          </AlignGroupStyle>
       </AccordionDetails>
     </Accordion>
   }
