@@ -65,7 +65,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export const RenderScale = () => {
 
-  const { scaleContext, setScaleContext, setScaleId } = useContext(ScaleContext);
+  const { scaleContext, setScaleContext, setScaleId, isNotDisplayScale } = useContext(ScaleContext);
 
   const objectRef = useRef<HTMLDivElement | null>(null);
   const [openModalGenerationScale, setOpenModalGenerationScale] = useState(false);
@@ -128,6 +128,14 @@ export const RenderScale = () => {
   })
 
   const existScale = () => {
+    if (isNotDisplayScale) {
+      return <NotFoundContainerStyle>
+        <TextStyle size={15}>Uma escala ainda não foi selecionada para ser exibida</TextStyle>
+        <Icon src={String(ScaleNotFoundIcon)} style={{ width: '400px' }} />
+        <TextStyle size={18}>Acesse-a na side bar de escalas</TextStyle>
+      </NotFoundContainerStyle>
+    }
+    
     return scaleContext.days.length === 0 ?
       <NotFoundContainerStyle>
         <TextStyle size={15}>Uma escala ainda não foi selecionada para ser exibida</TextStyle>
@@ -169,11 +177,11 @@ export const RenderScale = () => {
       {buttons(() => { setOpenModalGenerationScale(!openModalGenerationScale) }, ButtonStyle('rgb(14, 202, 101)'), "Gerar preview da escala")}
       {IsVisibleComponents(
         buttons(() => { saveScale() }, ButtonStyle('rgb(14, 202, 101)'), "Salvar"),
-        Boolean(scaleContext.days.length !== 0)
+        Boolean(scaleContext.days.length !== 0 && !isNotDisplayScale)
       )}
       {IsVisibleComponents(
         buttons(() => { downloadPDF(scaleContext) }, ButtonStyle('#30B2DB'), "Exportar em PDF"),
-        Boolean(scaleContext.days.length !== 0)
+        Boolean(scaleContext.days.length !== 0 && !isNotDisplayScale)
       )}
       {IsVisibleComponents(
         buttons(() => {
@@ -181,7 +189,7 @@ export const RenderScale = () => {
           setScaleId('')
         },
           ButtonStyle('rgb(211, 47, 47)'), "Fechar escala"),
-        Boolean(scaleContext.days.length !== 0)
+        Boolean(scaleContext.days.length !== 0 && !isNotDisplayScale)
       )}
     </>
   }
@@ -201,9 +209,9 @@ export const RenderScale = () => {
         </ButtonGroupContainer>
       </ScaleAndActionsContainerStyle>
       <SidebarContainer>
-        <TabsComponent 
+        <TabsComponent
           nameTab={['Colaboradores', 'Escalas', 'Estatísticas']}
-          displayComponents={[<UserListFloating/>, <ScaleListFloating/>, <StatisticsList/>]}
+          displayComponents={[<UserListFloating />, <ScaleListFloating />, <StatisticsList />]}
         />
       </SidebarContainer>
     </AllInformationsContainerStyle>

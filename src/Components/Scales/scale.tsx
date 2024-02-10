@@ -5,7 +5,7 @@ import { ContainerBadgeStyle, GroupFieldStyle } from "./style"
 import { ISingleScale } from "../../@types/ISingleScale"
 import { ScaleContext } from "../../Context/scale"
 import dayjs from "dayjs"
-import { ScaleEvents } from "./Popover"
+import { ScaleEventsPopover } from "./Popover"
 import { conditionHandling } from "../../Utils/conditionHandling"
 
 import CalendarIcon from "../../Assets/icon-calendar.svg"
@@ -94,11 +94,12 @@ export const Scale = (scalesProps: IUsersProps) => {
           </CardActions>
         </CardContent>
       </Card>
-      {conditionHandling(open, <ScaleEvents
+      {conditionHandling(open, <ScaleEventsPopover
         id={id}
         anchorEl={anchorEl}
         open={open}
         setAnchorEl={setAnchorEl}
+        scale={scale as ISingleScale}
       />)}
     </div>
   )

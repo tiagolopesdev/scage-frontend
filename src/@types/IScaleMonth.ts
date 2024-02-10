@@ -4,6 +4,7 @@ export interface IDay {
   id?: string,
   name: string
   dateTime: string
+  liveStreamId?: string
   cameraOne?: IUser
   cameraTwo?: IUser
   cutDesk?: IUser

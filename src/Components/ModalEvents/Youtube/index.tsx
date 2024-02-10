@@ -3,14 +3,17 @@ import {
   Box,
   Modal
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { ActionButtons } from "../../ActionButtons";
 import { ScroolCustom } from "../../../Styles";
 import { InputStyle } from "../../ModalChangedSerf/style";
 import { Input } from "../../Input";
-import { YoutubeAccordion } from "../../Scales/YoutubeEvent";
 import { IUser } from "../../../@types/IUser";
+import { LiveStreamAccordion } from "../../Scales/YoutubeEvent";
+import { ScaleContext } from "../../../Context/scale";
+import { IDay } from "../../../@types/IScaleMonth";
+import { InitialStateScaleMonth } from "../../../@types/InitialStateScaleMonth";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -33,9 +36,11 @@ interface IModalGenerationScale {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const YoutubeEvent = (props: IModalGenerationScale) => {
+export const YoutubeModalEvent = (props: IModalGenerationScale) => {
 
   const { openModal, setOpenModal } = props
+
+  const { scaleContext, setIsNotDisplayScale, setScaleId, setScaleContext } = useContext(ScaleContext)
 
   // const [openModalNewDay, setOpenModalNewDay] = useState(false);
   // const [daysList, setDaysList] = useState<IDay[]>([]);
@@ -44,6 +49,9 @@ export const YoutubeEvent = (props: IModalGenerationScale) => {
 
   const HandlerClose = () => {
     setOpenModal(!openModal)
+    setIsNotDisplayScale(false)
+    setScaleId('')
+    setScaleContext(InitialStateScaleMonth)
   }
 
   // const findUsers = async () => {
@@ -63,9 +71,8 @@ export const YoutubeEvent = (props: IModalGenerationScale) => {
   // useEffect(() => { findUsers() }, [nameSerfToFind])
 
   const ManagerInformations = () => {
-    return <YoutubeAccordion 
-      users={[] as IUser[]}      
-    />
+
+    return <LiveStreamAccordion days={scaleContext.days} />
     // return users.length !== 0 ?
     //   <Serving users={users} /> :
     //   <WarningGroupStyle>

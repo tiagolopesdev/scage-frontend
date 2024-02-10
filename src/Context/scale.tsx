@@ -3,6 +3,7 @@ import { GetScale } from "../Services/Scale";
 import { IScaleMonth } from "../@types/IScaleMonth";
 import { initialStateDay, initialStateUser } from "../@types/InitialStateDay";
 import { ISerfHandler } from "../@types/IFromDay";
+import { InitialStateScaleMonth } from "../@types/InitialStateScaleMonth";
 
 
 const InitialState: ISerfHandler = {
@@ -25,6 +26,8 @@ interface IScaleContext {
   setToDay: React.Dispatch<React.SetStateAction<ISerfHandler>>,
   fromDay: ISerfHandler,
   setFromDay: React.Dispatch<React.SetStateAction<ISerfHandler>>
+  isNotDisplayScale: boolean
+  setIsNotDisplayScale: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const ScaleContext = createContext({} as IScaleContext)
@@ -34,14 +37,9 @@ export const ScaleProvider = ({ children }: IScaleContextProvider) => {
   const [fromDay, setFromDay] = useState<ISerfHandler>(InitialState);
   const [toDay, setToDay] = useState<ISerfHandler>(InitialState);
   const [scaleId, setScaleId] = useState('');
-  const [scaleContext, setScaleContext] = useState<IScaleMonth>({
-    name: '',
-    start: '',
-    end: '',
-    days: [],
-    isEnable: true
-  });
+  const [scaleContext, setScaleContext] = useState<IScaleMonth>(InitialStateScaleMonth);
   const [displayScale, setDisplayScale] = useState(false)
+  const [isNotDisplayScale, setIsNotDisplayScale] = useState(false)
 
   const getScale = async () => {
     try {
@@ -66,7 +64,9 @@ export const ScaleProvider = ({ children }: IScaleContextProvider) => {
       fromDay,
       setFromDay,
       toDay,
-      setToDay
+      setToDay,
+      isNotDisplayScale,
+      setIsNotDisplayScale
     }} >
       {children}
     </ScaleContext.Provider>

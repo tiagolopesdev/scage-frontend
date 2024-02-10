@@ -21,14 +21,14 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AlignGroupStyle } from './style';
 import { PrivacyEnumLive, PrivacyEnumLiveOptions } from '../../../@types/Youtube/PrivacyEnumLive';
 import { IYoutube } from '../../../@types/Youtube/IYoutube';
+import dayjs from 'dayjs';
 
 
-interface IServing {
-  users: IUser[],
-  isStatistics?: boolean
+interface ILiveStreamsAccordion {
+  days: IDay[]
 }
 
-export const YoutubeAccordion = ({ users, isStatistics }: IServing) => {
+export const LiveStreamAccordion = ({ days }: ILiveStreamsAccordion) => {
 
   const { scaleContext, fromDay, setScaleContext } = useContext(ScaleContext);
 
@@ -38,7 +38,7 @@ export const YoutubeAccordion = ({ users, isStatistics }: IServing) => {
     dateTime: '',
     descrition: '',
     title: '',
-    privacy: PrivacyEnumLive.Public       
+    privacy: PrivacyEnumLive.Public
   })
 
   const handleChange =
@@ -47,44 +47,58 @@ export const YoutubeAccordion = ({ users, isStatistics }: IServing) => {
     };
 
   const managerAccordions = () => {
-    return <Accordion
-      expanded={expanded === `panel${1}`}
-      onChange={handleChange(`panel${1}`)}
-      style={{ borderRadius: '5px', margin: '5px' }}
-      key={1}
-    >
-      <AccordionSummary
-        expandIcon={<Icon src={String(IconExpand)} />}
-        aria-controls={`panelindexbh-content`}
-        id={`panelindexbh-header`}
+    return days.map((day) => {
+      return <Accordion
+        expanded={expanded === `panel-${day.id}`}
+        onChange={handleChange(`panel-${day.id}`)}
+        style={{ borderRadius: '5px', margin: '5px' }}
+        key={day.id}
       >
-        <InformationSerfContainerStyle>
-          <Icon src={String(IconUser)} style={{ marginRight: '10px' }} />
-          <InformationSerfGroupStyle>
-            <TextBaseStyle fontSize={16} color='black' isBold={true}>
-              item.name
-            </TextBaseStyle>
-            <TextBaseStyle fontSize={12} color='black'>
-              item.email
-            </TextBaseStyle>
-          </InformationSerfGroupStyle>
-        </InformationSerfContainerStyle>
-      </AccordionSummary>
-      <AccordionDetails style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+        <AccordionSummary
+          expandIcon={<Icon src={String(IconExpand)} />}
+          aria-controls={`panel-index-${day.id}-content`}
+          id={`panelindexbh-${day.id}-header`}
+        >
+          <InformationSerfContainerStyle>
+            <Icon src={String(IconUser)} style={{ marginRight: '10px' }} />
+            <InformationSerfGroupStyle>
+              <TextBaseStyle fontSize={16} color='black' isBold={true}>
+                {day.name}
+              </TextBaseStyle>
+              <TextBaseStyle fontSize={12} color='black'>
+                {`${dayjs(day.dateTime).format('DD/MM/YYYY')} às ${dayjs(day.dateTime).format('HH:mm')}`}
+              </TextBaseStyle>
+            </InformationSerfGroupStyle>
+          </InformationSerfContainerStyle>
+          {
+            day.liveStreamId !== undefined && day.liveStreamId !== '' ?
+              "" :
+              <Badge
+                badgeContent='Live não criada'
+                color='success'
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left'
+                }}
+                sx={{ width: 100, margin: '0px 10px' }}
+              />
+          }
+        </AccordionSummary>
+        <AccordionDetails style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
           <AlignGroupStyle>
             <Input
               style={{ minWidth: '40%', width: '100%', marginRight: '10px' }}
               value={liveStream.title ?? ''}
               label='Título'
               onChange={(event: any) => {
-                setLiveStream({...liveStream, title: event as string})
+                setLiveStream({ ...liveStream, title: event as string })
               }}
-              />
+            />
             <TimePicker
               label="Hora do evento"
               value={liveStream.dateTime}
               onChange={(event) => {
-                setLiveStream({...liveStream, dateTime: event as string})
+                setLiveStream({ ...liveStream, dateTime: event as string })
               }}
               renderInput={(params) =>
                 <TextField
@@ -97,14 +111,14 @@ export const YoutubeAccordion = ({ users, isStatistics }: IServing) => {
           </AlignGroupStyle>
           <TextField
             rows={3}
-            maxRows={4}
+            // maxRows={4}
             multiline
             style={{ width: '32vw' }}
             label='Descrição da live'
             onChange={(event: any) => {
-              setLiveStream({...liveStream, descrition: event as string})
-            }}  
-            />
+              setLiveStream({ ...liveStream, descrition: event as string })
+            }}
+          />
           <AlignGroupStyle>
             <Autocomplete
               disablePortal
@@ -114,13 +128,14 @@ export const YoutubeAccordion = ({ users, isStatistics }: IServing) => {
               // value={{ label: day.day }}
               isOptionEqualToValue={(option, value) => value.label === option.label}
               renderInput={(params) => <TextField {...params} label="Privacidade" />}
-              onChange={(event: any) => { 
-                setLiveStream({...liveStream, privacy: PrivacyEnumLive[event.target.innerText as keyof typeof PrivacyEnumLive]})
+              onChange={(event: any) => {
+                setLiveStream({ ...liveStream, privacy: PrivacyEnumLive[event.target.innerText as keyof typeof PrivacyEnumLive] })
               }}
-            />            
+            />
           </AlignGroupStyle>
-      </AccordionDetails>
-    </Accordion>
+        </AccordionDetails>
+      </Accordion>
+    })
   }
 
   return <>{managerAccordions()}</>

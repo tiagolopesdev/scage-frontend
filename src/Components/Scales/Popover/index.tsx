@@ -6,9 +6,11 @@ import EyeIcon from "../../../Assets/icon_eye_scale.svg"
 import TrashIcon from "../../../Assets/icon_trash.svg"
 import YoutubeIcon from "../../../Assets/icon_youtube.svg"
 import styled from "styled-components";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { conditionHandling } from "../../../Utils/conditionHandling";
-import { YoutubeEvent } from "../../ModalEvents/Youtube";
+import { YoutubeModalEvent } from "../../ModalEvents/Youtube";
+import { ISingleScale } from "../../../@types/ISingleScale";
+import { ScaleContext } from "../../../Context/scale";
 
 
 const GroupButtonsStyle = styled.div`
@@ -18,11 +20,12 @@ const GroupButtonsStyle = styled.div`
   margin: 20px 20px 20px 20px;
 `
 
-interface IScaleEventsProps {
+interface IScaleEventsPopoverProps {
   id: string | undefined,
   open: boolean,
   anchorEl: HTMLButtonElement | null,
   setAnchorEl: React.Dispatch<React.SetStateAction<HTMLButtonElement | null>>
+  scale: ISingleScale
 }
 
 const styleButtons = {
@@ -37,11 +40,13 @@ const styleButtons = {
   boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
 }
 
-export const ScaleEvents = (props: IScaleEventsProps) => {
+export const ScaleEventsPopover = (props: IScaleEventsPopoverProps) => {
 
-  const { id, anchorEl, open, setAnchorEl } = props
+  const { id, anchorEl, open, setAnchorEl, scale } = props
 
   const [isOpenModal, setIsOpenModal] = useState(false)
+
+  const { setScaleId, setIsNotDisplayScale } = useContext(ScaleContext)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -64,6 +69,7 @@ export const ScaleEvents = (props: IScaleEventsProps) => {
     >
       <GroupButtonsStyle>
         <Button
+          onClick={() => { setScaleId(scale.id) }}
           startIcon={<Icon src={String(EyeIcon)} />}
           variant="contained"
           size='small'
@@ -84,7 +90,11 @@ export const ScaleEvents = (props: IScaleEventsProps) => {
           }}
         >Notificar em agenda</Button>
         <Button
-          onClick={() => { setIsOpenModal(!isOpenModal) }}
+          onClick={() => { 
+            setIsNotDisplayScale(true)
+            setScaleId(scale.id)
+            setIsOpenModal(!isOpenModal) 
+          }}
           startIcon={<Icon src={String(YoutubeIcon)} />}
           variant="contained"
           size='small'
@@ -119,7 +129,7 @@ export const ScaleEvents = (props: IScaleEventsProps) => {
       </GroupButtonsStyle>
     </Popover>
     {conditionHandling(isOpenModal,
-      <YoutubeEvent
+      <YoutubeModalEvent
         openModal={isOpenModal}
         setOpenModal={setIsOpenModal} />
     )}
