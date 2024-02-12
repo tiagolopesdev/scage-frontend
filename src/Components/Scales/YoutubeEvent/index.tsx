@@ -22,6 +22,7 @@ import { AlignGroupStyle } from './style';
 import { PrivacyEnumLive, PrivacyEnumLiveOptions } from '../../../@types/Youtube/PrivacyEnumLive';
 import { IYoutube } from '../../../@types/Youtube/IYoutube';
 import dayjs from 'dayjs';
+import { UploadFile } from '../../Upload';
 
 
 interface ILiveStreamsAccordion {
@@ -132,6 +133,7 @@ export const LiveStreamAccordion = ({ days }: ILiveStreamsAccordion) => {
                 setLiveStream({ ...liveStream, privacy: PrivacyEnumLive[event.target.innerText as keyof typeof PrivacyEnumLive] })
               }}
             />
+            <UploadFile />
           </AlignGroupStyle>
         </AccordionDetails>
       </Accordion>

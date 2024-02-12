@@ -71,21 +71,7 @@ export const YoutubeModalEvent = (props: IModalGenerationScale) => {
   // useEffect(() => { findUsers() }, [nameSerfToFind])
 
   const ManagerInformations = () => {
-
     return <LiveStreamAccordion days={scaleContext.days} />
-    // return users.length !== 0 ?
-    //   <Serving users={users} /> :
-    //   <WarningGroupStyle>
-    //     <Alert severity="warning"
-    //       style={{
-    //         width: '100%',
-    //         display: 'flex',
-    //         justifyContent: 'center'
-    //       }}
-    //     >{
-    //         <strong>Colaborador não encontrado no sistema.</strong>}
-    //     </Alert>
-    //   </WarningGroupStyle>
   }
 
   useEffect(() => {
@@ -102,7 +88,7 @@ export const YoutubeModalEvent = (props: IModalGenerationScale) => {
       <Box sx={style}>
         <InputStyle>
           <Input
-            label="Digite o nome do colaborador"
+            label="Digite o nome do evento"
             style={{ width: '55%' }}
             // onChange={(event: any) => { setNameSerfToFind(event.target.value) }}
           />
