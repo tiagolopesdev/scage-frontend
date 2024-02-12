@@ -2,27 +2,26 @@ import * as React from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import { Autocomplete, Badge, Button, Chip, TextField, TextareaAutosize } from '@mui/material';
-import { EventSerf } from '../../Event';
-// import './style.css';
+import { Autocomplete, Badge, TextField } from '@mui/material';
 import { Icon } from '../../Img';
 import { TextBaseStyle } from '../../../Styles';
-import { IUser } from '../../../@types/IUser';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ScaleContext } from '../../../Context/scale';
 import { IDay } from '../../../@types/IScaleMonth';
-import { conditionHandling } from '../../../Utils/conditionHandling';
 
 import IconExpand from '../../../Assets/icon_arrow.svg';
 import IconUser from '../../../Assets/icon_user.svg';
-import { InclusionSerfStyle, InformationSerfContainerStyle, InformationSerfGroupStyle } from '../../Users/Serving/style';
+import { InformationSerfContainerStyle, InformationSerfGroupStyle } from '../../Users/Serving/style';
 import { Input } from '../../Input';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AlignGroupStyle } from './style';
 import { PrivacyEnumLive, PrivacyEnumLiveOptions } from '../../../@types/Youtube/PrivacyEnumLive';
 import { IYoutube } from '../../../@types/Youtube/IYoutube';
 import dayjs from 'dayjs';
-import { UploadFile } from '../../Upload';
+import { UploadFile } from '../../Upload/file-upload';
+import { FileUploaded } from '../../Upload/file-list';
+import { ObjectIsEquals } from '../../../Utils/objectIsEquals';
+import { InitialStateThumbnaisl } from '../../../@types/InitialStateThumbnails';
 
 
 interface ILiveStreamsAccordion {
@@ -31,7 +30,7 @@ interface ILiveStreamsAccordion {
 
 export const LiveStreamAccordion = ({ days }: ILiveStreamsAccordion) => {
 
-  const { scaleContext, fromDay, setScaleContext } = useContext(ScaleContext);
+  const { thumbnails } = useContext(ScaleContext);
 
   const [expanded, setExpanded] = useState<string | false>(false);
 
@@ -42,10 +41,13 @@ export const LiveStreamAccordion = ({ days }: ILiveStreamsAccordion) => {
     privacy: PrivacyEnumLive.Public
   })
 
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
+  const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  const managerFileUploaded = () => !ObjectIsEquals(thumbnails, InitialStateThumbnaisl) ? <FileUploaded /> : <UploadFile /> 
+
+  useEffect(() => { managerFileUploaded() }, [thumbnails])
 
   const managerAccordions = () => {
     return days.map((day) => {
@@ -133,7 +135,7 @@ export const LiveStreamAccordion = ({ days }: ILiveStreamsAccordion) => {
                 setLiveStream({ ...liveStream, privacy: PrivacyEnumLive[event.target.innerText as keyof typeof PrivacyEnumLive] })
               }}
             />
-            <UploadFile />
+            { managerFileUploaded() }
           </AlignGroupStyle>
         </AccordionDetails>
       </Accordion>
