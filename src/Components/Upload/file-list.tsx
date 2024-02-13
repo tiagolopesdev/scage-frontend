@@ -1,11 +1,11 @@
-import { Button, IconButton, Typography } from "@mui/material"
-
-import DeleteIcon from '../../Assets/icon_trash.svg'
-import EyeIcon from '../../Assets/icon_eye_image.svg'
+import { IconButton, Typography } from "@mui/material"
 import { Icon } from "../Img"
 import { ScaleContext } from "../../Context/scale"
 import { useContext } from "react"
 import { InitialStateThumbnaisl } from "../../@types/Youtube/InitialStateThumbnails"
+import { FilesUploadedGroupStyle, InformationsFilesGroupStyle } from "./styles"
+
+import DeleteIcon from '../../Assets/icon_trash.svg'
 
 
 export const FileUploaded = () => {
@@ -14,8 +14,8 @@ export const FileUploaded = () => {
 
   const sizeFormated = (thumbnails.size / 1048576).toFixed(2)
 
-  return <div style={{ alignItems: 'center', display: 'flex', flexDirection: "row", width: '100%' }}>
-    <img
+  return <FilesUploadedGroupStyle>
+    <Icon
       src={thumbnails.url}
       style={{
         width: '100px',
@@ -25,12 +25,14 @@ export const FileUploaded = () => {
       }}
       onClick={() => { window.open(thumbnails.url, '_blank') }}
     />
-    <div style={{ marginLeft: '10px', display: 'flex', flexDirection: 'column', width: '100%' }}>
+    <InformationsFilesGroupStyle>
       <Typography sx={{ fontWeight: 600 }}>{thumbnails.name}</Typography>
       <Typography sx={{ fontSize: 13 }} >{`${sizeFormated} MB`}</Typography>
-    </div>
-    <IconButton children={<Icon src={String(DeleteIcon)} />} color="error"
+    </InformationsFilesGroupStyle>
+    <IconButton
+      color="error"
+      children={<Icon src={String(DeleteIcon)} />}
       onClick={() => { setThumbnails(InitialStateThumbnaisl) }}
     />
-  </div>
+  </FilesUploadedGroupStyle>
 }

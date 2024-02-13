@@ -1,6 +1,20 @@
 import styled, { css } from "styled-components";
 
 
+export const InformationsFilesGroupStyle = styled.div`
+  margin-left: 10px; 
+  display: flex; 
+  flex-direction: column; 
+  width: 100%;
+`
+
+export const FilesUploadedGroupStyle = styled.div`
+  align-items: center; 
+  display: flex; 
+  flex-direction: row; 
+  width: 100%;
+`
+
 interface IUploadMessage {
   type?: string
 } 
