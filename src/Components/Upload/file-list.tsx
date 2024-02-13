@@ -5,7 +5,7 @@ import EyeIcon from '../../Assets/icon_eye_image.svg'
 import { Icon } from "../Img"
 import { ScaleContext } from "../../Context/scale"
 import { useContext } from "react"
-import { InitialStateThumbnaisl } from "../../@types/InitialStateThumbnails"
+import { InitialStateThumbnaisl } from "../../@types/Youtube/InitialStateThumbnails"
 
 
 export const FileUploaded = () => {

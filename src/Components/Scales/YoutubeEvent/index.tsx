@@ -21,7 +21,7 @@ import dayjs from 'dayjs';
 import { UploadFile } from '../../Upload/file-upload';
 import { FileUploaded } from '../../Upload/file-list';
 import { ObjectIsEquals } from '../../../Utils/objectIsEquals';
-import { InitialStateThumbnaisl } from '../../../@types/InitialStateThumbnails';
+import { InitialStateThumbnaisl } from '../../../@types/Youtube/InitialStateThumbnails';
 
 
 interface ILiveStreamsAccordion {

@@ -4,8 +4,8 @@ import { IScaleMonth } from "../@types/IScaleMonth";
 import { initialStateDay, initialStateUser } from "../@types/InitialStateDay";
 import { ISerfHandler } from "../@types/IFromDay";
 import { InitialStateScaleMonth } from "../@types/InitialStateScaleMonth";
-import { IImage } from "../Components/Upload/file-upload";
-import { InitialStateThumbnaisl } from "../@types/InitialStateThumbnails";
+import { InitialStateThumbnaisl } from "../@types/Youtube/InitialStateThumbnails";
+import { IThumbnails } from "../@types/Youtube/Thumbnails";
 
 
 const InitialState: ISerfHandler = {
@@ -30,15 +30,15 @@ interface IScaleContext {
   setFromDay: React.Dispatch<React.SetStateAction<ISerfHandler>>
   isNotDisplayScale: boolean
   setIsNotDisplayScale: React.Dispatch<React.SetStateAction<boolean>>
-  thumbnails: IImage
-  setThumbnails: React.Dispatch<React.SetStateAction<IImage>>
+  thumbnails: IThumbnails
+  setThumbnails: React.Dispatch<React.SetStateAction<IThumbnails>>
 }
 
 export const ScaleContext = createContext({} as IScaleContext)
 
 export const ScaleProvider = ({ children }: IScaleContextProvider) => {
 
-  const [thumbnails, setThumbnails] = useState<IImage>(InitialStateThumbnaisl)
+  const [thumbnails, setThumbnails] = useState<IThumbnails>(InitialStateThumbnaisl)
   const [fromDay, setFromDay] = useState<ISerfHandler>(InitialState);
   const [toDay, setToDay] = useState<ISerfHandler>(InitialState);
   const [scaleId, setScaleId] = useState('');

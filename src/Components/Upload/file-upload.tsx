@@ -1,22 +1,10 @@
 
 import { useDropzone } from "react-dropzone";
 import { DropContainer, UploadMessage } from "./styles";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext } from "react";
 import { ScaleContext } from "../../Context/scale";
+import { AcceptFormats } from "../../@types/Youtube/AcceptedFormats";
 
-
-const acceptFormats = {
-  'image/png': [],
-  'image/jpg': [],
-  'image/jpeg': [],
-}
-
-export interface IImage {
-  name: string
-  size: number
-  type: string
-  url: any
-}
 
 export const UploadFile = () => {
 
@@ -28,7 +16,7 @@ export const UploadFile = () => {
     isDragActive,
     isDragReject
   } = useDropzone({
-    accept: acceptFormats,
+    accept: AcceptFormats,
     onDrop: acceptedFiles => {
       setThumbnails({
         name: acceptedFiles[0].name,
