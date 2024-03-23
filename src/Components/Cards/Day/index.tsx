@@ -183,8 +183,8 @@ export const CardDay = ({ day }: ICardDay) => {
                     <Icon
                       src={
                         index === 2 ?
-                        String(DeskIcon) :
-                        String(CameraIcon)
+                          String(DeskIcon) :
+                          String(CameraIcon)
                       }
                       style={{ width: '25px' }}
                       className="action-icon-indication"
@@ -260,6 +260,9 @@ export const CardDay = ({ day }: ICardDay) => {
           }
         </GroupButtonsStyle>
       </CardContent>
+      {/* 
+          // TODO: use component function to hide condition that show component
+      */}
       {
         openModalNewDay ?
           <ModalDay

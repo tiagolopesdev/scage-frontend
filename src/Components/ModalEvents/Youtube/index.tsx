@@ -1,19 +1,13 @@
 import {
-  Alert,
   Box,
   Modal
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { ActionButtons } from "../../ActionButtons";
 import { ScroolCustom } from "../../../Styles";
 import { InputStyle } from "../../ModalChangedSerf/style";
 import { Input } from "../../Input";
-import { IUser } from "../../../@types/IUser";
-import { LiveStreamAccordion } from "../../Scales/YoutubeEvent";
-import { ScaleContext } from "../../../Context/scale";
-import { IDay } from "../../../@types/IScaleMonth";
-import { InitialStateScaleMonth } from "../../../@types/InitialStateScaleMonth";
+import { LiveStreamList } from "../../Scales/YoutubeEvent/livestream-list";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -40,81 +34,36 @@ export const YoutubeModalEvent = (props: IModalGenerationScale) => {
 
   const { openModal, setOpenModal } = props
 
-  const { scaleContext, setIsNotDisplayScale, setScaleId, setScaleContext } = useContext(ScaleContext)
-
-  // const [openModalNewDay, setOpenModalNewDay] = useState(false);
-  // const [daysList, setDaysList] = useState<IDay[]>([]);
-  // const [dayToEdit, setDayToEdit] = useState<IDay>(initialStateDay);
-  // const [nameSerfToFind, setNameSerfToFind] = useState('');
-
   const HandlerClose = () => {
     setOpenModal(!openModal)
-    setIsNotDisplayScale(false)
-    setScaleId('')
-    setScaleContext(InitialStateScaleMonth)
   }
 
-  // const findUsers = async () => {
-  //   try {
-  //     const users: IUser[] = nameSerfToFind ?
-  //       await getAllUsersByFiltersService(nameSerfToFind) :
-  //       await getAllUsersService();
-
-  //     users.map((item) => { item.isEnable = true })
-
-  //     setUsers(users)
-
-  //   } catch (error) {
-  //   }
-  // }
-
-  // useEffect(() => { findUsers() }, [nameSerfToFind])
-
-  const ManagerInformations = () => {
-    return <LiveStreamAccordion days={scaleContext.days} />
-  }
-
-  useEffect(() => {
-    ManagerInformations()
-  }, [])
-
-  return <div>
-    <Modal
-      open={openModal}
-      onClose={() => { HandlerClose() }}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
-      <Box sx={style}>
-        <InputStyle>
-          <Input
-            label="Digite o nome do evento"
-            style={{ width: '55%' }}
-            // onChange={(event: any) => { setNameSerfToFind(event.target.value) }}
-          />
-        </InputStyle>
-        <ScroolCustom style={{ height: '22rem' }}>
-          {ManagerInformations()}
-        </ScroolCustom>
-        <ActionButtons
-          nameLeft="Cancelar"
-          nameRight="Concluir"
-          actionLeft={() => { HandlerClose() }}
-          actionRight={() => { HandlerClose() }}
+  return <Modal
+    open={openModal}
+    // onClose={() => { HandlerClose() }}
+    aria-labelledby="modal-modal-title"
+    aria-describedby="modal-modal-description"
+  >
+    <Box sx={style}>
+      <InputStyle>
+        <Input
+          label="Digite o nome do evento"
+          style={{ width: '55%' }}
         />
-        <Toaster
-          position="bottom-center"
-          reverseOrder={false}
-        />
-      </Box>
-    </Modal>
-    {/* {conditionHandling(openModalNewDay, <ModalDay
-      openModal={openModalNewDay}
-      setOpenModal={setOpenModalNewDay}
-      manipulationDay={dayToEdit}
-      setManipulationDay={setDayToEdit}
-      listManipulationDay={daysList}
-      setListManipulationDay={setDaysList} />
-    )} */}
-  </div>
+      </InputStyle>
+      <ScroolCustom style={{ height: '22rem' }}>
+        <LiveStreamList />
+      </ScroolCustom>
+      <ActionButtons
+        nameLeft="Cancelar"
+        nameRight="Concluir"
+        actionLeft={() => { HandlerClose() }}
+        actionRight={() => { HandlerClose() }}
+      />
+      <Toaster
+        position="bottom-center"
+        reverseOrder={false}
+      />
+    </Box>
+  </Modal>
 }

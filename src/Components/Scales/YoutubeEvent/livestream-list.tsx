@@ -1,56 +1,48 @@
-import * as React from 'react';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import { Autocomplete, Badge, TextField } from '@mui/material';
-import { Icon } from '../../Img';
-import { TextBaseStyle } from '../../../Styles';
 import { useContext, useEffect, useState } from 'react';
 import { ScaleContext } from '../../../Context/scale';
+import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Badge, Button, TextField } from '@mui/material';
+import { AlignGroupStyle } from './style';
+import { InformationSerfContainerStyle, InformationSerfGroupStyle } from '../../Users/Serving/style';
+import { Icon } from '../../Img';
+import { TimePicker } from '@mui/x-date-pickers';
+import { ObjectIsEquals } from '../../../Utils/objectIsEquals';
+import { TextBaseStyle } from '../../../Styles';
+import { FileUploaded } from '../../Upload/file-list';
+import { UploadFile } from '../../Upload/file-upload';
 import { IDay } from '../../../@types/IScaleMonth';
+import { IYoutube } from '../../../@types/Youtube/IYoutube';
+import { PrivacyEnumLive, PrivacyEnumLiveOptions } from '../../../@types/Youtube/PrivacyEnumLive';
+import dayjs from 'dayjs';
 
 import IconExpand from '../../../Assets/icon_arrow.svg';
 import IconUser from '../../../Assets/icon_user.svg';
-import { InformationSerfContainerStyle, InformationSerfGroupStyle } from '../../Users/Serving/style';
-import { Input } from '../../Input';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { AlignGroupStyle } from './style';
-import { PrivacyEnumLive, PrivacyEnumLiveOptions } from '../../../@types/Youtube/PrivacyEnumLive';
-import { IYoutube } from '../../../@types/Youtube/IYoutube';
-import dayjs from 'dayjs';
-import { UploadFile } from '../../Upload/file-upload';
-import { FileUploaded } from '../../Upload/file-list';
-import { ObjectIsEquals } from '../../../Utils/objectIsEquals';
-import { InitialStateThumbnaisl } from '../../../@types/Youtube/InitialStateThumbnails';
 
 
-interface ILiveStreamsAccordion {
-  days: IDay[]
+// TODO: move const below to @types folder
+const InitialStateLiveStream = {
+  dateTime: '',
+  descrition: '',
+  title: '',
+  privacy: PrivacyEnumLive.Public
 }
 
-export const LiveStreamAccordion = ({ days }: ILiveStreamsAccordion) => {
+export const LiveStreamList = () => {
 
-  const { thumbnails } = useContext(ScaleContext);
+  const { scaleContext, setScaleContext } = useContext(ScaleContext);
 
   const [expanded, setExpanded] = useState<string | false>(false);
-
-  const [liveStream, setLiveStream] = useState<IYoutube>({
-    dateTime: '',
-    descrition: '',
-    title: '',
-    privacy: PrivacyEnumLive.Public
-  })
+  const [liveStream, setLiveStream] = useState<IYoutube>(InitialStateLiveStream)
 
   const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const managerFileUploaded = () => !ObjectIsEquals(thumbnails, InitialStateThumbnaisl) ? <FileUploaded /> : <UploadFile /> 
-
-  useEffect(() => { managerFileUploaded() }, [thumbnails])
+  const managerFileUploaded = (day: IDay) => day.thumbnails && day.thumbnails.url !== '' ?
+    <FileUploaded day={day} /> :
+    <UploadFile day={day} />
 
   const managerAccordions = () => {
-    return days.map((day) => {
+    return scaleContext.days.map((day) => {
       return <Accordion
         expanded={expanded === `panel-${day.id}`}
         onChange={handleChange(`panel-${day.id}`)}
@@ -89,12 +81,12 @@ export const LiveStreamAccordion = ({ days }: ILiveStreamsAccordion) => {
         </AccordionSummary>
         <AccordionDetails style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
           <AlignGroupStyle>
-            <Input
+            <TextField
               style={{ minWidth: '40%', width: '100%', marginRight: '10px' }}
-              value={liveStream.title ?? ''}
-              label='Título'
+              label='Título *'
+              value={liveStream.title}
               onChange={(event: any) => {
-                setLiveStream({ ...liveStream, title: event as string })
+                setLiveStream({ ...liveStream, title: event.target.value as string })
               }}
             />
             <TimePicker
@@ -118,8 +110,9 @@ export const LiveStreamAccordion = ({ days }: ILiveStreamsAccordion) => {
             multiline
             style={{ width: '32vw' }}
             label='Descrição da live'
+            value={liveStream.descrition}
             onChange={(event: any) => {
-              setLiveStream({ ...liveStream, descrition: event as string })
+              setLiveStream({ ...liveStream, descrition: event.target.value as string })
             }}
           />
           <AlignGroupStyle>
@@ -135,12 +128,42 @@ export const LiveStreamAccordion = ({ days }: ILiveStreamsAccordion) => {
                 setLiveStream({ ...liveStream, privacy: PrivacyEnumLive[event.target.innerText as keyof typeof PrivacyEnumLive] })
               }}
             />
-            { managerFileUploaded() }
+            {managerFileUploaded(day)}
           </AlignGroupStyle>
+          <Button
+            variant="contained"
+            disabled={ObjectIsEquals(liveStream, InitialStateLiveStream) || liveStream.title === ''}
+            size='small'
+            color='success'
+            fullWidth
+            onClick={() => { 
+
+              let daysInScale: IDay[] = scaleContext.days
+
+              let positionToRemove = daysInScale.findIndex((item) => { return item === day })
+
+              day.youtube = liveStream
+
+              daysInScale.splice(positionToRemove, 1, day)
+
+              setScaleContext({
+                ...scaleContext, ...{
+                  id: scaleContext.id,
+                  name: scaleContext.name,
+                  start: scaleContext.start,
+                  end: scaleContext.end,
+                  days: daysInScale,
+                  isEnable: scaleContext.isEnable
+                }
+              })
+            }}
+          >Salvar</Button>
         </AccordionDetails>
       </Accordion>
     })
   }
+
+  useEffect(() => { managerAccordions() }, [scaleContext.days])
 
   return <>{managerAccordions()}</>
 }

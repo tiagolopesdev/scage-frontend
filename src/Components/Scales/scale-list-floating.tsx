@@ -13,7 +13,7 @@ import { Element, manageFeedbackDisplay } from "../../Utils/manageFeedbackDispla
 
 export const ScaleListFloating = () => {
 
-  const { scaleContext } = useContext(ScaleContext);
+  const { scaleContext, isNotDisplayScale } = useContext(ScaleContext);
   const [scales, setScales] = useState<ISingleScale[]>([]);
   const [selectedMonth, setSelectedMonth] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -38,7 +38,7 @@ export const ScaleListFloating = () => {
   }
 
   useEffect(() => {
-    managementFindScales()
+    if (!isNotDisplayScale) managementFindScales()
   }, [selectedMonth, scaleContext])
 
   const managerScaleRender = manageFeedbackDisplay({

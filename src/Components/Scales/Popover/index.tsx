@@ -46,7 +46,7 @@ export const ScaleEventsPopover = (props: IScaleEventsPopoverProps) => {
 
   const [isOpenModal, setIsOpenModal] = useState(false)
 
-  const { setScaleId, setIsNotDisplayScale } = useContext(ScaleContext)
+  const { scaleId, setScaleId, setIsNotDisplayScale } = useContext(ScaleContext)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -93,7 +93,7 @@ export const ScaleEventsPopover = (props: IScaleEventsPopoverProps) => {
           onClick={() => { 
             setIsNotDisplayScale(true)
             setScaleId(scale.id)
-            setIsOpenModal(!isOpenModal) 
+            setIsOpenModal(true) 
           }}
           startIcon={<Icon src={String(YoutubeIcon)} />}
           variant="contained"

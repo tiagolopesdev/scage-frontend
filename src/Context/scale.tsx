@@ -1,11 +1,9 @@
 import { ReactNode, createContext, useEffect, useState } from "react"
 import { GetScale } from "../Services/Scale";
-import { IScaleMonth } from "../@types/IScaleMonth";
+import { IDay, IScaleMonth } from "../@types/IScaleMonth";
 import { initialStateDay, initialStateUser } from "../@types/InitialStateDay";
 import { ISerfHandler } from "../@types/IFromDay";
 import { InitialStateScaleMonth } from "../@types/InitialStateScaleMonth";
-import { InitialStateThumbnaisl } from "../@types/Youtube/InitialStateThumbnails";
-import { IThumbnails } from "../@types/Youtube/Thumbnails";
 
 
 const InitialState: ISerfHandler = {
@@ -30,15 +28,15 @@ interface IScaleContext {
   setFromDay: React.Dispatch<React.SetStateAction<ISerfHandler>>
   isNotDisplayScale: boolean
   setIsNotDisplayScale: React.Dispatch<React.SetStateAction<boolean>>
-  thumbnails: IThumbnails
-  setThumbnails: React.Dispatch<React.SetStateAction<IThumbnails>>
+  thumbnails: IDay
+  setThumbnails: React.Dispatch<React.SetStateAction<IDay>>
 }
 
 export const ScaleContext = createContext({} as IScaleContext)
 
 export const ScaleProvider = ({ children }: IScaleContextProvider) => {
 
-  const [thumbnails, setThumbnails] = useState<IThumbnails>(InitialStateThumbnaisl)
+  const [thumbnails, setThumbnails] = useState<IDay>(initialStateDay)
   const [fromDay, setFromDay] = useState<ISerfHandler>(InitialState);
   const [toDay, setToDay] = useState<ISerfHandler>(InitialState);
   const [scaleId, setScaleId] = useState('');
@@ -58,13 +56,39 @@ export const ScaleProvider = ({ children }: IScaleContextProvider) => {
     if (scaleId && scaleId !== '') getScale()
   }, [scaleId])
 
+  // const includeThumbnails = () => {
+
+  //   console.log('Inside function')
+
+  //   let positionToRemove = scaleContext.days.findIndex((item) => { return item.id === thumbnails.id })
+
+  //   let dayToUpdate: IDay[] = scaleContext.days
+
+  //   dayToUpdate.splice(positionToRemove, 1, thumbnails)
+
+  //   setScaleContext({
+  //     ...scaleContext, ...{
+  //       id: scaleContext.id,
+  //       name: scaleContext.name,
+  //       start: scaleContext.start,
+  //       end: scaleContext.end,
+  //       days: dayToUpdate,
+  //       isEnable: scaleContext.isEnable
+  //     }
+  //   })      
+  // }  
+
+  // useEffect(() => {
+  //   if (thumbnails !== initialStateDay) includeThumbnails()
+  // }, [thumbnails])
+
   return (
     <ScaleContext.Provider value={{
-      scaleId, 
-      setScaleId, 
-      scaleContext, 
-      setScaleContext, 
-      displayScale, 
+      scaleId,
+      setScaleId,
+      scaleContext,
+      setScaleContext,
+      displayScale,
       setDisplayScale,
       fromDay,
       setFromDay,

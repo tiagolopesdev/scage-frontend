@@ -5,5 +5,6 @@ export const InitialStateThumbnaisl: IThumbnails = {
   name: '',
   size: 0,
   type: '',
-  url: ''
+  url: '',
+  day: ''
 }

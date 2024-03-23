@@ -4,7 +4,7 @@ import IconClock from "../../Assets/icon_clock_dark.svg"
 import IconChange from "../../Assets/icon_changed.svg"
 import { InformationContainerStyle, InformationGroupStyle, InformationStyle, TextStyle } from "./style"
 import { IconButton } from "@mui/material"
-import React, { useContext, useState } from "react"
+import { useContext, useState } from "react"
 import dayjs from "dayjs"
 import { ChangeSerfPopover } from "./ModalConfirmation"
 import { IDay } from "../../@types/IScaleMonth"
@@ -54,6 +54,9 @@ export const EventSerf = ({ day, user, isNotChange }: IEventSerf) => {
     >
       <Icon src={String(IconChange)} />
     </IconButton>
+    {/* 
+      // TODO: use component function to hide condition that show component
+    */}
     {
       openConfirmationModal ?
         <ChangeSerfPopover
